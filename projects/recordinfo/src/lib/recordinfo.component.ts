@@ -24,9 +24,11 @@ declare var JSONPath: any;
 
 @Component({
     selector: 'amberdata-recordinfo',
+
     template: `
     <div class="record--info--wrap" [style.width]="formWidth + 'px'">
     <mat-grid-list [gutterSize]="'0px'" #container cols="18" rowHeight="10px">
+        
         <mat-grid-tile  class="grid--border--box" *ngFor="let tile of tiles;let i = index" [colspan]="tile.options.cols" [rowspan]="tile.options.rows"
         [style.borderLeft]="tile.getStyle('border-left')"
         [style.borderRight]="tile.getStyle('border-right')"
@@ -76,120 +78,40 @@ declare var JSONPath: any;
                 <div *ngSwitchCase="'text-area'" class="form--build--box--input--box">
                     <textarea [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options" [disabled]="disableEdit" class="form-control form--build--box--input textarea--input" [(ngModel)]="entity[tile.options.attrName]"></textarea>
                 </div>
-                <div *ngSwitchCase="'upload'" class="create--record--dialog--upload--box">
-                    <span style="margin-left: 8px;">
-                        {{tile.options.fileDisplayName}}
-                    </span>
-                    <div class="head--box">
-                        <div *ngIf="!disableEdit">
-                            <form-upload class="upload--btn" 
-                            [ApiUrl]="ApiUrl"
-                            [baseUrl]="baseUrl"
-                            [AuthenticationService]="AuthenticationService"
-                            [uploadUrl]="'commonUpload'" [attrName]="tile.options.attrName" (uploadFinish)="uploadFinish($event)"></form-upload>
-                        </div>
-                    </div>
-                    <div class="upload--data--list--box">
-                        <div  *ngFor="let file of entity[tile.options.attrName];let i = index" class="single--data">
-                            <img class="file--type--icon" onerror="this.src='./assets/images/icon/unknown.svg'" src="./assets/images/icon/{{file['name'] | fileNameToIcon}}.svg"
-                                alt="">
-                            <span *ngIf="file.isNew" class="file--name">
-                                {{file['name']}}
-                            </span>
-                            <a *ngIf="!file.isNew" (click)="previewDoc(file['url'])" class="file--name">
-                                {{file['name']}}
-                            </a>
-                            <span *ngIf="!disableEdit" (click)="deleteFile(tile,file,i) " class="delete--btn ti-trash"></span>                          
-                        </div>
-                    </div>                                      
-                </div>
-
-                <div *ngSwitchCase="'date'" class="form--build--box--input--box">                    
-                    <nz-date-picker
-                    formValidPass [validPass]="validPass" [scene]="scene" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
-                    nzShowTime
-                     [ngClass]="{'showBorder' : tile.getStyle('inputBorder')  == 'show'}"  [(ngModel)]="entity[tile.options.attrName]"  class="form-control form--build--box--input" [nzFormat]="tile.options.typeFormat"></nz-date-picker>
-                </div>
-                <div *ngSwitchCase="'process-list'" class="form--build--box--input--box process--info--wrap">
-
-                    <ul class="process--info--box clearfix">
-                        <li                         
-                            *ngFor="let process of progressNodes;let i = index"
-                            (click)="showProcessDetail(process)"
-                            [ngClass]="{only:progressNodes.length==1}"
-                            class="process--node--box {{process.class}}"
-                        >
-                            <div (click)="$event.stopPropagation()"
-                                *ngIf="
-                                showProcessIcon(i)
-                                ">
-                                <div class="process--list--row--wrap--icon"></div>
-                            </div>
-                            <div>
-                                <div class="head">{{process.name}}</div>
-                                <div class="description">
-                                    <div><span class="MODULES_DATABASE_OPERATOR">操作人</span> : {{process.operator}}  </div>
-                                    <div>{{process.operate_date}}</div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>                  
-                </div>
-                <div *ngSwitchCase="'table'" class="form--build--box--input--box" style="overflow-y: auto;">
-                    <table class="table table-bordered">
-                        <tr>
-                            <ng-container *ngFor="let tableAttr of tile.options.tableAttrs;let x = index">
-                                <th *ngIf="!tableAttr.isNotShow">
-                                    {{tableAttr.title}}
-                                </th>
-                            </ng-container>
-                        </tr>
-                        <tr *ngFor="let tableEntity of tableEntitys[tile.options.attrName];let e = index">
-                            <ng-container *ngFor="let tableAttr of tile.options.tableAttrs;let x = index">
-                                <td *ngIf="!tableAttr.isNotShow">
-                                    <input [disabled]="disableEdit" type="text" class="form-control form--build--box--input" InitTableValue [tableEntity]="tableEntity" [key]="tableAttr.jsonPath"
-                                        [(ngModel)]="tableEntity[tableAttr.jsonPath]">
-                                        
-                                </td>
-                            </ng-container>
-                            <td>
-                                <button *ngIf="!disableEdit" class="btn btn-default fa fa-minus-circle" (click)="tableEntitys[tile.options.attrName].splice(e,1)"></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <button *ngIf="!disableEdit" class="btn btn-default fa fa-plus-circle" (click)="addTableList(tile.options.attrName)"></button>
-                        </tr>
-                    </table>
-                </div>
-                <div *ngSwitchCase="'logo'" class="form--build--box--input--box">
-                    <img style="height: 100%;
-                    width: 100%;" 
-                    onerror="this.src = './assets/images/icon-40.png'"
-                     [src]="tile.options.logoSrc" alt="">
-                </div>
-                <div *ngSwitchCase="'other-component'" class="form--build--box--input--box">
-                    <form-other-component
-                    [disableEdit]="disableEdit"
-                    [keyAttrName]="tile.options.keyAttrName"
-                    [valueAttrName]="tile.options.attrName"
-                    [_DepartmentManageServiceGetList]="_DepartmentManageServiceGetList"
-                    [_chooseUsersAccessServiceGetRoleList]="_chooseUsersAccessServiceGetRoleList"
-                    [_chooseUsersAccessServiceGetUserByDept]="_chooseUsersAccessServiceGetUserByDept"
-                    [_chooseUsersAccessServiceGetUserByRole]="_chooseUsersAccessServiceGetUserByRole"
-                    [_dwClassManageServiceGetMetadataCategoryInfo]="_dwClassManageServiceGetMetadataCategoryInfo"
-                    [_dwClassManageServiceGetMetaSysClassList]="_dwClassManageServiceGetMetaSysClassList"
-                    [entity]="entity"
-                     [componentType]="tile.options.componentType"></form-other-component>
-                   
-                </div>
-                <div *ngSwitchDefault>请选择一个类型</div>
             </div>
         </mat-grid-tile>
     </mat-grid-list>
+    <div class="radio--build--box">
+            <mat-radio-group>
+                <mat-radio-button  *ngFor="let property of policynames;let e = index" class="example-radio-button" (change)="getemiallist(property.name)" >
+                    {{property.name}}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <ul>
+            <li  *ngFor="let property of policys;let e = index" style="width:200px;height:50px">{{property.name}}
+            <div class="head--box">
+                <span style="margin-left: 8px;">
+              
+                </span>
+                <div >
+                    <form-upload class="upload--btn" [ApiUrl]="ApiUrl"
+                    [baseUrl]="baseUrl"
+                    [AuthenticationService]="AuthenticationService"
+                    [uploadUrl]="'commonUpload'"   (uploadFinish)="uploadFinish($event)" [attrName]=""></form-upload>
+                </div>
+               
+            </div>
+            </li>
+        </ul>
 </div>
   `,
     styleUrls: ['./recordinfo.component.scss']
 })
+// [ApiUrl]="ApiUrl"
+// [baseUrl]="baseUrl"
+// [AuthenticationService]="AuthenticationService"
+// [uploadUrl]="'commonUpload'" [attrName]="tile.options.attrName"
 export class RecordinfoComponent implements OnInit {
     deletePath: Array<any> = [];
     subs = new Subscription();
@@ -202,14 +124,18 @@ export class RecordinfoComponent implements OnInit {
     entity: any = {};
     formWidth: number = 700
     progressNodes: any[] = []
-    validPass : boolean = true 
+    validPass: boolean = true
+    policys: Array<any> = []
+    policynames: Array<any> = []
+    name: any
     @Input() id: string;
-    @Input() objectPath : string;
+    @Input() objectPath: string;
     @Input() disableEdit: boolean;
     @Input() serverFiles: Array<any>;
     @Input() showTemplateXml: any;
     @Input() jsonMetadataTemplate: any;
     @Input() info: any;
+    @Input() emial: any;
     @Input() formType?: 'create' | 'edit'
     @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<any>
     @Input() getDefaultValue: (defaultValue: DefaultValue) => string
@@ -219,18 +145,21 @@ export class RecordinfoComponent implements OnInit {
     @Input() _chooseUsersAccessServiceGetUserByDept: (groupName: string) => Promise<any>
     @Input() _chooseUsersAccessServiceGetUserByRole: (groupName: string) => Promise<any>
     @Input() _dwClassManageServiceGetMetadataCategoryInfo: (metadataSchemeId: string) => Promise<any>
-    @Input() _dwClassManageServiceGetMetaSysClassList: (parentId:string) => Promise<any>
-    @Input() environmentBaseUrl : string 
+    @Input() _dwClassManageServiceGetMetaSysClassList: (parentId: string) => Promise<any>
+    @Input() environmentBaseUrl: string
 
-    @Input() ApiUrl : any //接口枚举类型
-    @Input() baseUrl : string //上传所需url跟地址
-    @Input() AuthenticationService : any //用户服务 
+    @Input() ApiUrl: any //接口枚举类型
+    @Input() baseUrl: string //上传所需url跟地址
+    @Input() AuthenticationService: any //用户服务 
     @Input() scene?: string
     constructor(
         public dialog: MatDialog
     ) { }
 
     ngOnInit() {
+        // this.baseUrl=`http://${window.location.host}/erms/#/`
+        // console.log(this.ApiUrl)
+        // console.log(this.baseUrl)
     }
 
     isChecked(tile, attr) {
@@ -243,10 +172,23 @@ export class RecordinfoComponent implements OnInit {
         str = _.castArray(str)
         return str.indexOf(attr) >= 0
     }
-
+    getemiallist(value?) {
+        this.name = value
+        this.policynames.map(c => {
+            if (c.name == value) {
+                this.policys = c.category
+            }
+        })
+    }
     async getTemplateModule() {
+        console.log(this)
+        let allemial = []
         try {
-            this.loading = true
+            for (let i in this.emial) {
+                allemial.push(this.emial[i]);
+            }
+            this.policynames = allemial
+            if (!this.name) this.policys = this.policynames[0].category
             this.serverFiles = this.serverFiles || []
             let json = this.jsonMetadataTemplate
             this.jsonData = json
@@ -256,29 +198,29 @@ export class RecordinfoComponent implements OnInit {
             let showTempalteRows = this.xotree.parseXML(this.showTemplateXml).data.saveData
             showTempalteRows.forEach(c => {
                 filePathName = c.attrName == "$.record.block[?(@.name=='电子文件')].file" ? "$.record.block[?(@.name=='电子文件')].file" :
-                c.attrName == "$.record.block.file" ? "$.record.block.file" :
-                undefined
+                    c.attrName == "$.record.block.file" ? "$.record.block.file" :
+                        undefined
             });
-            if (!filePathName){
-                return 
-            }      
-            if (!this.entity[filePathName]) this.entity[filePathName] = []      
+            if (!filePathName) {
+                return
+            }
+            if (!this.entity[filePathName]) this.entity[filePathName] = []
             this.serverFiles.forEach(file => {
-                file.isChoosed = true 
+                file.isChoosed = true
                 let format = file['s_object_name'].split('.')
                 format = format[format.length - 1]
                 this.entity[filePathName].push({
                     'size': file['s_content_size'],
                     'name': file['s_object_name'],
-                    'checksum_type' : 'md5',
-                    'checksum' : file['s_md5'],                    
+                    'checksum_type': 'md5',
+                    'checksum': file['s_md5'],
                     'url': 'repo:' + file['s_object_id'],
                     'isNew': true,
-                    'format' : format,
+                    'format': format,
                     'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-                    'modify_date' : moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
+                    'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
                 })
-            })        
+            })
             this.initProcess()
             this.loading = false
         } catch (err) {
@@ -340,7 +282,7 @@ export class RecordinfoComponent implements OnInit {
         let xmlData = this.showTemplateXml
         this.formWidth = Number(this.xotree.parseXML(this.showTemplateXml).data.formWidth) || 700
         let data = this.xotree.parseXML(xmlData).data.saveData
-        data.forEach(option => {            
+        data.forEach(option => {
             if (!option.style) option.style = {}
             option.radioBtnAttrs = _.castArray(option.radioBtnAttrs);
             option.checkBoxAttrs = _.castArray(option.checkBoxAttrs);
@@ -351,9 +293,9 @@ export class RecordinfoComponent implements OnInit {
         data.forEach(c => {
             if (c.keyAttrName) {
                 if (c.contentType != 'table' && c.contentType != 'upload') {
-                    this.entity[c.keyAttrName] = jsonPath(this.jsonData, c.keyAttrName) !== false ? 
-                    jsonPath(this.jsonData, c.keyAttrName)[0] :
-                    ''         
+                    this.entity[c.keyAttrName] = jsonPath(this.jsonData, c.keyAttrName) !== false ?
+                        jsonPath(this.jsonData, c.keyAttrName)[0] :
+                        ''
                 }
             }
             if (c.attrName) {
@@ -378,8 +320,8 @@ export class RecordinfoComponent implements OnInit {
                     if (Array.isArray(files[0])) {
                         files = files[0]
                     }
-                    files.forEach(file => {                        
-                        if (file.name && file.checksum_type=="md5" ) {
+                    files.forEach(file => {
+                        if (file.name && file.checksum_type == "md5") {
                             this.entity[c.attrName].push(file)
                         }
                     });
@@ -447,11 +389,10 @@ export class RecordinfoComponent implements OnInit {
 
     checkFormValidator() {
         var validPass = true
-        this.tiles.forEach((tile: Tile) => {            
+        this.tiles.forEach((tile: Tile) => {
             tile.options.scene = tile.options.scene || ''
-            if (!tile.options.scene) {                
-                // console.log(tile.options.isRequired)
-                if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {                
+            if (!tile.options.scene) {
+                if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
                 } else if (tile.options.valueType == 'int' && _.isNumber(this.entity[tile.options.attrName])) {
                     validPass = false
@@ -492,10 +433,10 @@ export class RecordinfoComponent implements OnInit {
     deleteEmptyFile(jsonData) {
         if (jsonData.file && Array.isArray(jsonData.file)) {
             _.remove(jsonData.file, (c => {
-                return !c['size'] && !c['name'] && c.checksum_type!="md5" 
+                return !c['size'] && !c['name'] && c.checksum_type != "md5"
             }))
         } else if (jsonData.file && !Array.isArray(jsonData.file)) {
-            if (!jsonData.file.size && !jsonData.file.name && jsonData.file.checksum_type!="md5" ) {
+            if (!jsonData.file.size && !jsonData.file.name && jsonData.file.checksum_type != "md5") {
                 jsonData.file = []
             }
         }
@@ -597,19 +538,19 @@ export class RecordinfoComponent implements OnInit {
                         }
                     }
                 }
-                if (!this.saveEntity[key] ) {
+                if (!this.saveEntity[key]) {
                     result[0].parent[result[0].parentProperty] = this.saveEntity[key]
                     continue
                 }
-                if (this.saveEntity[key].length == 0){
+                if (this.saveEntity[key].length == 0) {
                     continue
                 }
                 if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {
                     if (result[0].parentProperty == 'file') {
                         result[0].parent[result[0].parentProperty] = _.castArray(result[0].parent[result[0].parentProperty])
-                        this.saveEntity[key].forEach((c,index)=> {
+                        this.saveEntity[key].forEach((c, index) => {
                             delete c.isNew
-                            
+
                             c.seq = index + 1
                             // c.type = '电子文件'
                             // if (result[0].parent[result[0].parentProperty][0]){
@@ -623,7 +564,7 @@ export class RecordinfoComponent implements OnInit {
                         });
                     } else {
                         result[0].value.file = result[0].value.file ? _.castArray(result[0].value.file) : []
-                        this.saveEntity[key].forEach((c,index)=> {
+                        this.saveEntity[key].forEach((c, index) => {
                             // c.type = '电子文件'                            
                             delete c.isNew
                             c.seq = index + 1
@@ -644,8 +585,6 @@ export class RecordinfoComponent implements OnInit {
             }
         }
     }
-
-
     uploadFinish({ data, attrName, name, size }) {
         if (!this.entity[attrName]) {
             this.entity[attrName] = []
@@ -657,14 +596,34 @@ export class RecordinfoComponent implements OnInit {
             'url': 'local:' + data.storagePath,
             'size': size,
             'name': name,
-            'checksum_type' : "md5" ,
+            'checksum_type': "md5",
             'checksum': data.md5,
             'isNew': true,
-            'format' : format,
+            'format': format,
             'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-            'modify_date' : moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
+            'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
         })
     }
+
+    // uploadFinish({ data, attrName, name, size }) {
+    //     if (!this.entity[attrName]) {
+    //         this.entity[attrName] = []
+    //     }
+    //     let format = name.split('.')
+    //     format = format[format.length - 1]
+    //     this.entity[attrName].push({
+    //         // 'type': attrName,
+    //         'url': 'local:' + data.storagePath,
+    //         'size': size,
+    //         'name': name,
+    //         'checksum_type': "md5",
+    //         'checksum': data.md5,
+    //         'isNew': true,
+    //         'format': format,
+    //         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+    //         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
+    //     })
+    // }
 
     toggleCheckbox(event, tile, attr) {
         if (!this.entity[tile.options.attrName]) {
@@ -683,9 +642,9 @@ export class RecordinfoComponent implements OnInit {
     }
 
     deleteFile(tile, file, i) {
-        let serverFile = this.serverFiles.find(c=>c.s_md5 == file.checksum)
-        if (serverFile){
-            serverFile.isChoosed = false 
+        let serverFile = this.serverFiles.find(c => c.s_md5 == file.checksum)
+        if (serverFile) {
+            serverFile.isChoosed = false
         }
         this.entity[tile.options.attrName].splice(i, 1)
         this.deletePath.push(file['url'])
@@ -700,17 +659,17 @@ export class RecordinfoComponent implements OnInit {
         // this.router.navigate(['/previewDoc'], { queryParams: { objectId: res } })
     }
 
-    showProcessIcon(i){
+    showProcessIcon(i) {
         let len = this.progressNodes.length
-        return (((((i+1)%5) == 0 && Math.ceil((i+1)/5)%2 != 0) || (i == len - 1 && Math.ceil((i+1)/5)%2 != 0)) || ((((i+1)%5) == 0 && Math.ceil((i+1)/5)%2 == 0) || (i == len - 1 && Math.ceil((i+1)/5)%2 == 0)))
-        &&
-        (i < this.progressNodes.length - 1)
+        return (((((i + 1) % 5) == 0 && Math.ceil((i + 1) / 5) % 2 != 0) || (i == len - 1 && Math.ceil((i + 1) / 5) % 2 != 0)) || ((((i + 1) % 5) == 0 && Math.ceil((i + 1) / 5) % 2 == 0) || (i == len - 1 && Math.ceil((i + 1) / 5) % 2 == 0)))
+            &&
+            (i < this.progressNodes.length - 1)
     }
 
-    initProcess(){
+    initProcess() {
         var i, j, len, len1, num, ref, results, rows;
-        this.progressNodes.sort(function(a, b) {
-          return parseInt(a.operate_date.toString().replace(/-/g, ''), 10) - parseInt(b.operate_date.toString().replace(/-/g, ''), 10);
+        this.progressNodes.sort(function (a, b) {
+            return parseInt(a.operate_date.toString().replace(/-/g, ''), 10) - parseInt(b.operate_date.toString().replace(/-/g, ''), 10);
         });
         ref = this.progressNodes;
         results = [];
@@ -719,20 +678,20 @@ export class RecordinfoComponent implements OnInit {
             rows = ref[num];
             i = num;
             len = this.progressNodes.length;
-            if (i == 0){
+            if (i == 0) {
                 rows["class"] = '_first'
                 continue
             }
             if ((i + 1) % 5 === 1 && parseInt(strI) % 2 !== 0) {
                 if (i === len - 1) {
-                rows["class"] = 'whole_last_right';
-                continue;
+                    rows["class"] = 'whole_last_right';
+                    continue;
                 }
                 results.push(rows["class"] = '_last');
             } else if ((i + 1) % 5 === 1 && parseInt(strI) % 2 === 0) {
                 if (i === len - 1) {
-                rows["class"] = 'whole_last_left';
-                continue;
+                    rows["class"] = 'whole_last_left';
+                    continue;
                 }
                 results.push(rows["class"] = '_first');
             } else if ((((i + 1) % 5) === 0 && Math.ceil((i + 1) / 5) % 2 !== 0) || (i === len - 1 && Math.ceil((i + 1) / 5) % 2 !== 0)) {
@@ -748,19 +707,19 @@ export class RecordinfoComponent implements OnInit {
         return results;
     }
 
-    showProcessDetail(node){
+    showProcessDetail(node) {
         let dialogRef = this.dialog.open(ShowProcessDetailDialog, {
             width: '',
             disableClose: true,
             data: {
-              info : node 
+                info: node
             }
-          });
-          dialogRef.afterClosed().subscribe(res => {           
-          });
+        });
+        dialogRef.afterClosed().subscribe(res => {
+        });
     }
-    
-    checkNeedProperty(){
+
+    checkNeedProperty() {
         if (!this.getMulModifeProPertyValues) console.warn(ErrorMessage.needGetMulModifeProPertyValues)
         if (!this.getDefaultValue) console.warn(ErrorMessage.getDefaultValue)
         if (!this._DepartmentManageServiceGetList) console.warn(ErrorMessage._DepartmentManageServiceGetList)
@@ -773,7 +732,7 @@ export class RecordinfoComponent implements OnInit {
         if (!this.baseUrl) console.warn(ErrorMessage.baseUrl)
         if (!this.AuthenticationService) console.warn(ErrorMessage.AuthenticationService)
         if (!this.objectPath) console.warn(ErrorMessage.ObjectPath)
-    }   
+    }
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         if (!this.showTemplateXml) {
@@ -788,6 +747,113 @@ export class RecordinfoComponent implements OnInit {
         }
 
     }
+    //     <div *ngSwitchCase="'upload'" class="create--record--dialog--upload--box">
+    //     <span style="margin-left: 8px;">
+    //         {{tile.options.fileDisplayName}}
+    //     </span>
+    //     <div class="head--box">
+    //         <div *ngIf="!disableEdit">
+    //             <form-upload class="upload--btn" 
+    //             [ApiUrl]="ApiUrl"
+    //             [baseUrl]="baseUrl"
+    //             [AuthenticationService]="AuthenticationService"
+    //             [uploadUrl]="'commonUpload'" [attrName]="tile.options.attrName" (uploadFinish)="uploadFinish($event)"></form-upload>
+    //         </div>
+    //     </div>
+    //     <div class="upload--data--list--box">
+    //         <div  *ngFor="let file of entity[tile.options.attrName];let i = index" class="single--data">
+    //             <img class="file--type--icon" onerror="this.src='./assets/images/icon/unknown.svg'" src="./assets/images/icon/{{file['name'] | fileNameToIcon}}.svg"
+    //                 alt="">
+    //             <span *ngIf="file.isNew" class="file--name">
+    //                 {{file['name']}}
+    //             </span>
+    //             <a *ngIf="!file.isNew" (click)="previewDoc(file['url'])" class="file--name">
+    //                 {{file['name']}}
+    //             </a>
+    //             <span *ngIf="!disableEdit" (click)="deleteFile(tile,file,i) " class="delete--btn ti-trash"></span>                          
+    //         </div>
+    //     </div>                                      
+    // </div>
+
+    // <div *ngSwitchCase="'date'" class="form--build--box--input--box">                    
+    //     <nz-date-picker
+    //     formValidPass [validPass]="validPass" [scene]="scene" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
+    //     nzShowTime
+    //      [ngClass]="{'showBorder' : tile.getStyle('inputBorder')  == 'show'}"  [(ngModel)]="entity[tile.options.attrName]"  class="form-control form--build--box--input" [nzFormat]="tile.options.typeFormat"></nz-date-picker>
+    // </div>
+    // <div *ngSwitchCase="'process-list'" class="form--build--box--input--box process--info--wrap">
+
+    //     <ul class="process--info--box clearfix">
+    //         <li                         
+    //             *ngFor="let process of progressNodes;let i = index"
+    //             (click)="showProcessDetail(process)"
+    //             [ngClass]="{only:progressNodes.length==1}"
+    //             class="process--node--box {{process.class}}"
+    //         >
+    //             <div (click)="$event.stopPropagation()"
+    //                 *ngIf="
+    //                 showProcessIcon(i)
+    //                 ">
+    //                 <div class="process--list--row--wrap--icon"></div>
+    //             </div>
+    //             <div>
+    //                 <div class="head">{{process.name}}</div>
+    //                 <div class="description">
+    //                     <div><span class="MODULES_DATABASE_OPERATOR">操作人</span> : {{process.operator}}  </div>
+    //                     <div>{{process.operate_date}}</div>
+    //                 </div>
+    //             </div>
+    //         </li>
+    //     </ul>                  
+    // </div>
+    // <div *ngSwitchCase="'table'" class="form--build--box--input--box" style="overflow-y: auto;">
+    //     <table class="table table-bordered">
+    //         <tr>
+    //             <ng-container *ngFor="let tableAttr of tile.options.tableAttrs;let x = index">
+    //                 <th *ngIf="!tableAttr.isNotShow">
+    //                     {{tableAttr.title}}
+    //                 </th>
+    //             </ng-container>
+    //         </tr>
+    //         <tr *ngFor="let tableEntity of tableEntitys[tile.options.attrName];let e = index">
+    //             <ng-container *ngFor="let tableAttr of tile.options.tableAttrs;let x = index">
+    //                 <td *ngIf="!tableAttr.isNotShow">
+    //                     <input [disabled]="disableEdit" type="text" class="form-control form--build--box--input" InitTableValue [tableEntity]="tableEntity" [key]="tableAttr.jsonPath"
+    //                         [(ngModel)]="tableEntity[tableAttr.jsonPath]">
+
+    //                 </td>
+    //             </ng-container>
+    //             <td>
+    //                 <button *ngIf="!disableEdit" class="btn btn-default fa fa-minus-circle" (click)="tableEntitys[tile.options.attrName].splice(e,1)"></button>
+    //             </td>
+    //         </tr>
+    //         <tr>
+    //             <button *ngIf="!disableEdit" class="btn btn-default fa fa-plus-circle" (click)="addTableList(tile.options.attrName)"></button>
+    //         </tr>
+    //     </table>
+    // </div>
+    // <div *ngSwitchCase="'logo'" class="form--build--box--input--box">
+    //     <img style="height: 100%;
+    //     width: 100%;" 
+    //     onerror="this.src = './assets/images/icon-40.png'"
+    //      [src]="tile.options.logoSrc" alt="">
+    // </div>
+    // <div *ngSwitchCase="'other-component'" class="form--build--box--input--box">
+    //     <form-other-component
+    //     [disableEdit]="disableEdit"
+    //     [keyAttrName]="tile.options.keyAttrName"
+    //     [valueAttrName]="tile.options.attrName"
+    //     [_DepartmentManageServiceGetList]="_DepartmentManageServiceGetList"
+    //     [_chooseUsersAccessServiceGetRoleList]="_chooseUsersAccessServiceGetRoleList"
+    //     [_chooseUsersAccessServiceGetUserByDept]="_chooseUsersAccessServiceGetUserByDept"
+    //     [_chooseUsersAccessServiceGetUserByRole]="_chooseUsersAccessServiceGetUserByRole"
+    //     [_dwClassManageServiceGetMetadataCategoryInfo]="_dwClassManageServiceGetMetadataCategoryInfo"
+    //     [_dwClassManageServiceGetMetaSysClassList]="_dwClassManageServiceGetMetaSysClassList"
+    //     [entity]="entity"
+    //      [componentType]="tile.options.componentType"></form-other-component>
+
+    // </div>
+    // <div *ngSwitchDefault>请选择一个类型</div>
 }
 
 
