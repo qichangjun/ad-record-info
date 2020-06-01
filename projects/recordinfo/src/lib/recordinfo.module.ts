@@ -28,11 +28,12 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FormUploadComponent } from './formUpload/formUpload.component';
 import { Sizefilter } from './size.pipe';
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
+import {addElectronicDocumentComponent } from './add-electronic-document/add-electronic-document.component';
 
 @NgModule({
   declarations: [ShowProcessDetailDialog,Sizefilter,FormUploadComponent,chooseClassModuleContentComponent,
     LoadingButtonControllerDirective,LoadingMessageComponent,RecordinfoComponent,InitTableValueDirective,
-    fileNameToIconfilter,FormValidPassDirective,FormOtherCompComponent,FormSelectUserDialog,FormChooseCategoryDialog],
+    fileNameToIconfilter,FormValidPassDirective,FormOtherCompComponent,FormSelectUserDialog,FormChooseCategoryDialog,addElectronicDocumentComponent],
   imports: [
     CommonModule,
     FileUploadModule,
@@ -50,7 +51,7 @@ import { ShowProcessDetailDialog } from './show-process-detail/show-process-deta
     MatStepperModule,
     NzDatePickerModule
   ],
-  exports: [RecordinfoComponent,InitTableValueDirective,fileNameToIconfilter,FormValidPassDirective],
+  exports: [RecordinfoComponent,InitTableValueDirective,fileNameToIconfilter,FormValidPassDirective,addElectronicDocumentComponent],
   entryComponents:[FormSelectUserDialog,FormChooseCategoryDialog,ShowProcessDetailDialog]
 })
 export class RecordinfoModule { }

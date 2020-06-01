@@ -18,6 +18,7 @@ export class AppComponent {
   showTemplateXml: any = undefined
   loading: boolean = false
   info: any = {}
+  emial: any
   files = [{
       s_modify_date: "2020-03-18T20:44:05.470+08:00",
       'jcr:created': "2020-03-18T20:44:05.468+08:00",
@@ -49,6 +50,11 @@ export class AppComponent {
   }
   ngOnInit() {
     this.getRecordInfo()
+    this.getRecordemial()
+  }
+
+  async getRecordemial() {
+    this.emial = await this._AppService.getRecordemial()
   }
 
   async getRecordInfo() {

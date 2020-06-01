@@ -44,4 +44,20 @@ export class AppService {
                       alert (error)
                     );
   }
+    //获取电子文件类型
+    getRecordemial() : Promise<any> {
+      let params = new URLSearchParams();
+      let headers = new Headers()
+      headers.append('accessToken','a8ada0079cf1dfb4bb65d506a16192fe')         
+      params.set('metadataSchemeId','f045c1fa-1d2e-4b15-b6b0-02291d0b0d65')  
+      return this.http.get('./ermsapi/metadata/get_record_policy_details',{ headers:headers,search: params })
+                      .toPromise()
+                      .then(res =>{
+                          let body = res.json();
+                          return body
+                      })
+                      .catch(error =>
+                        alert (error)
+                      );
+    }
 }
