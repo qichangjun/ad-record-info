@@ -81,37 +81,9 @@ declare var JSONPath: any;
             </div>
         </mat-grid-tile>
     </mat-grid-list>
-    <div class="radio--build--box">
-            <mat-radio-group>
-                <mat-radio-button  *ngFor="let property of policynames;let e = index" class="example-radio-button" (change)="getemiallist(property.name)" >
-                    {{property.name}}
-                </mat-radio-button>
-            </mat-radio-group>
-        </div>
-        <ul>
-            <li  *ngFor="let property of policys;let e = index" style="width:200px;height:50px">{{property.name}}
-            <div class="head--box">
-                <span style="margin-left: 8px;">
-              
-                </span>
-                <div >
-                    <form-upload class="upload--btn" [ApiUrl]="ApiUrl"
-                    [baseUrl]="baseUrl"
-                    [AuthenticationService]="AuthenticationService"
-                    [uploadUrl]="'commonUpload'"   (uploadFinish)="uploadFinish($event)" [attrName]=""></form-upload>
-                </div>
-               
-            </div>
-            </li>
-        </ul>
-</div>
   `,
     styleUrls: ['./recordinfo.component.scss']
 })
-// [ApiUrl]="ApiUrl"
-// [baseUrl]="baseUrl"
-// [AuthenticationService]="AuthenticationService"
-// [uploadUrl]="'commonUpload'" [attrName]="tile.options.attrName"
 export class RecordinfoComponent implements OnInit {
     deletePath: Array<any> = [];
     subs = new Subscription();
@@ -157,9 +129,6 @@ export class RecordinfoComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        // this.baseUrl=`http://${window.location.host}/erms/#/`
-        // console.log(this.ApiUrl)
-        // console.log(this.baseUrl)
     }
 
     isChecked(tile, attr) {
@@ -181,7 +150,6 @@ export class RecordinfoComponent implements OnInit {
         })
     }
     async getTemplateModule() {
-        console.log(this)
         let allemial = []
         try {
             for (let i in this.emial) {
