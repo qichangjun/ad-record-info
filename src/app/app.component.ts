@@ -50,13 +50,7 @@ export class AppComponent {
   }
   ngOnInit() {
     this.getRecordInfo()
-    this.getRecordemial()
   }
-
-  async getRecordemial() {
-    this.emial = await this._AppService.getRecordemial()
-  }
-
   async getRecordInfo() {
     let res = await this._AppService.getRecordInfo()
     res.jsonMetadata = JSON.parse(res.jsonMetadata)

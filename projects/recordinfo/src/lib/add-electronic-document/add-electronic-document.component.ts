@@ -6,16 +6,10 @@ import { NzNotificationService } from 'ng-zorro-antd';
 import {
     debounceTime, distinctUntilChanged, switchMap
   } from 'rxjs/operators';
-export const EXE_COUNTER_VALUE_ACCESSOR: any = {
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => addElectronicDocumentComponent),
-    multi: true
-};
 @Component({
     selector: 'add-electronic-document',
     templateUrl: './add-electronic-document.component.html',
     styleUrls: ['./add-electronic-document.component.scss'],
-    providers: [EXE_COUNTER_VALUE_ACCESSOR]
 })
 export class addElectronicDocumentComponent implements OnInit,OnChanges{
     @ViewChild('nzTreeSelect') nzTreeSelect: any;
