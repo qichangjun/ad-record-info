@@ -1,0 +1,15 @@
+<ul>
+    <li  *ngFor="let property of policys;let e = index" style="width:200px;height:50px">{{property.name}}
+    <div class="head--box">
+        <span style="margin-left: 8px;">
+        
+        </span>
+        <div >
+            <form-upload class="upload--btn" [ApiUrl]="ApiUrl"
+            [baseUrl]="baseUrl"
+            [AuthenticationService]="AuthenticationService"
+            [uploadUrl]="'commonUpload'"   (uploadFinish)="uploadFinish($event)" [attrName]=""></form-upload>
+        </div>
+    </div>
+    </li>
+</ul>
