@@ -14,7 +14,7 @@
             <div>
                 <form-upload class="upload--btn" [ApiUrl]="ApiUrl" [baseUrl]="baseUrl"
                     [AuthenticationService]="AuthenticationService" [uploadUrl]="'commonUpload'"
-                    (uploadFinish)="uploadFinish($event,property.name)" [attrName]=""></form-upload>
+                    (uploadFinish)="uploadFinish($event,property)" [attrName]=""></form-upload>
             </div>
             <div *ngFor="let file of filelist">
                 <span *ngIf="file.type==property.name">{{file.name}}</span>

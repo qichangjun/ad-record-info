@@ -10,17 +10,20 @@ import {
 })
 export class AppComponent implements OnInit {
   @ViewChild('appRecord') appRecord: any;
+  @Input() info: any
   editStatus: boolean = false;
   jsonMetadataTemplate: any = undefined
   showTemplateXml: any = undefined
   loading: boolean = false
-  info: any = {}
   emial: any
   policys: any
   policynamelist: any
   files = []
   changepolicyname: any
   list = []
+  policycode: any
+  seq: any
+  emiallist=[]
   constructor(
     public _AppService: AppService,
   ) {
@@ -44,7 +47,7 @@ export class AppComponent implements OnInit {
   choserecordemial(changepolicyname?) {
     this.list.map(c => {
       c.name == changepolicyname.name
-      this.policys =c.category
+      this.policys = c.category
     })
 
   }
@@ -53,15 +56,27 @@ export class AppComponent implements OnInit {
     res.jsonMetadata = JSON.parse(res.jsonMetadata)
     this.jsonMetadataTemplate = res.jsonMetadata
     this.showTemplateXml = res.showTemplateXml
+    this.jsonMetadataTemplate.record.block.map(c => {
+      if (c.name == '电子文件') {
+        this.emiallist=c.block
+      }
+    })
     this.editStatus = false
   }
 
   async editRecord() {
-    let validPass = await this.appRecord.editRecord() //公用
-    let documentIds: Array<any> = []
-    if (this.files && this.files.length > 0) {
-      documentIds = this.files.filter((c: any) => c.isChoosed).map(c => c['jcr:path'])
-    }
+    let emial = []
+    this.jsonMetadataTemplate.record.block.map(c => {
+      if (c.name == '电子文件') {
+        this.files.map(file => {
+          emial.push({ file: [file], name: file.type })
+        })
+        c.block = emial
+        c.policy = this.policycode
+        c.policy_version = this.seq
+      }
+    })
+    let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
   }
 
   get_dwClassManageServiceGetMetaSysClassList() {
@@ -79,6 +94,12 @@ export class AppComponent implements OnInit {
     }
     if (event.files) {
       this.files = event.files
+    }
+    if (event.policycode) {
+      this.policycode = event.policycode
+    }
+    if (event.seq) {
+      this.seq = event.seq
     }
   }
 }
