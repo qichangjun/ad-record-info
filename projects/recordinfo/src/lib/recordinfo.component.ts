@@ -141,22 +141,10 @@ export class RecordinfoComponent implements OnInit {
         str = _.castArray(str)
         return str.indexOf(attr) >= 0
     }
-    getemiallist(value?) {
-        this.name = value
-        this.policynames.map(c => {
-            if (c.name == value) {
-                this.policys = c.category
-            }
-        })
-    }
+  
     async getTemplateModule() {
         let allemial = []
         try {
-            for (let i in this.emial) {
-                allemial.push(this.emial[i]);
-            }
-            this.policynames = allemial
-            if (!this.name) this.policys = this.policynames[0].category
             this.serverFiles = this.serverFiles || []
             let json = this.jsonMetadataTemplate
             this.jsonData = json
