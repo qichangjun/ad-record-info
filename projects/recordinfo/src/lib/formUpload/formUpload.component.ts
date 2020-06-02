@@ -7,7 +7,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
     styleUrls: ['./formUpload.component.scss'],
 })
 export class FormUploadComponent implements OnInit {
-    // public uploader: FileUploader;
+    public uploader: FileUploader;
     @Input() disabledUpload: any = false
     @Input() attrName: any;
     @Input() uploadUrl: string;
@@ -19,20 +19,23 @@ export class FormUploadComponent implements OnInit {
     @Input() AuthenticationService: any
 
     @Output() uploadFinish: EventEmitter<any> = new EventEmitter();
-    uploader = new FileUploader({
-        autoUpload: true,
-        // url: this.baseUrl + this.ApiUrl[url],   
-        url: '/ermsapi/resource/upload_file',
-        headers: [
-            { name: 'accessToken', value: '0a3f1234e2dc18d0f8fa30702accd5de' }
-        ]
-        , additionalParameter: {
-        },
-    });
 
     constructor(
         private notification: NzNotificationService,
     ) {
+        let url
+        this.uploadUrl == 'importRecord' ? url = 'importRecord' : url = 'upload'
+        if (!this.baseUrl || !this.ApiUrl) return
+        this.uploader  = new FileUploader({
+            autoUpload: true,
+            url: this.baseUrl + this.ApiUrl[url],   
+            // url: '/ermsapi/resource/upload_file',
+            headers: [
+                { name: 'accessToken', value: this.AuthenticationService.getAccessToken() }
+            ]
+            , additionalParameter: {
+            },
+        });
         this.uploader.onBeforeUploadItem = (item) => {
             for (let key in this.additionalParams) {
                 this.uploader.options.additionalParameter[key] = this.additionalParams[key]
@@ -64,9 +67,7 @@ export class FormUploadComponent implements OnInit {
     }
 
     ngOnInit() {
-        let url
-        this.uploadUrl == 'importRecord' ? url = 'importRecord' : url = 'upload'
-        if (!this.baseUrl || !this.ApiUrl) return
+       
 
 
     }
