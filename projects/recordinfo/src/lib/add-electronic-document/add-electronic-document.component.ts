@@ -22,6 +22,7 @@ export class addElectronicDocumentComponent implements OnInit {
     @Input() policys: any
     @Input() policynamelist: any
     @Output() updateInfo: EventEmitter<any> = new EventEmitter();
+    policycode:any
     filelist = []
     difendemail:any
     constructor(
@@ -30,16 +31,20 @@ export class addElectronicDocumentComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.updateInfo)
+        this.policycode=this.policynamelist[0].code
+        this.updateInfo.emit({ policycode:this.policycode })
     }
     getchangepolicyname(value) {
         this.updateInfo.emit({ changepolicyname: value.name })
+        this.policycode=value.code
+        this.updateInfo.emit({ policycode:this.policycode })
     }
     async uploadFinish(event,property) {
+        this.updateInfo.emit({ seq:property.seq })
         let format = event.name.split('.')
         format = format[format.length - 1]
         this.filelist.push({
-            'type':property,
+            'type':property.name,
             'url': 'local:' + event.data.storagePath,
             'size': event.size,
             'name': event.name,
@@ -49,7 +54,8 @@ export class addElectronicDocumentComponent implements OnInit {
             'format': format,
             'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
             'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
-        })
+        },
+       )
         this.updateInfo.emit({ files:this.filelist })
     }
 

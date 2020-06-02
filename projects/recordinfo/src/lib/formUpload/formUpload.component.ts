@@ -24,7 +24,7 @@ export class FormUploadComponent implements OnInit {
         // url: this.baseUrl + this.ApiUrl[url],   
         url: '/ermsapi/resource/upload_file',
         headers: [
-            { name: 'accessToken', value: 'db4d40c5a4dfe5408bca993c66f1664d' }
+            { name: 'accessToken', value: '0a3f1234e2dc18d0f8fa30702accd5de' }
         ]
         , additionalParameter: {
         },
