@@ -22,6 +22,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     @Input() policys: any
     @Input() policynamelist: any
     @Output() updateInfo: EventEmitter<any> = new EventEmitter();
+    @Input() ApiUrl: any //接口枚举类型
+    @Input() baseUrl: string //上传所需url跟地址
+    @Input() AuthenticationService: any //用户服务 
+
     policycode: any
     filelist = []
     difendemail: any
@@ -32,8 +36,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        // console.log(  this.jsonMetadataTemplate.record)
-
     }
     ngOnChanges() {
         this.jsonMetadataTemplate.record.block.map(c => {
@@ -46,7 +48,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
                 })
             }
         })
-        console.log(this.filelist)
     }
     getchangepolicyname(value) {
         this.updateInfo.emit({ changepolicyname: value.name })
@@ -54,7 +55,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         this.updateInfo.emit({ policycode: this.policycode })
     }
     async uploadFinish(event, property) {
-        console.log(property)
         let same = false
         this.updateInfo.emit({ seq: property.seq })
         let format = event.name.split('.')
@@ -62,7 +62,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         let res = []
         let seq = []
         let maxseq
-        console.log(this.filelist)
         this.filelist.map(c => {
             if (c.type == property.name) {
                 res.push(c)
