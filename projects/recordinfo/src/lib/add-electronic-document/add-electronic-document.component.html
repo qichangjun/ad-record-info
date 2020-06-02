@@ -1,13 +1,25 @@
-<!-- <ul>
-    <li  *ngFor="let property of policys;let e = index" style="width:200px;height:50px">{{property.name}}
-    <div class="head--box">
-        <span style="margin-left: 8px;">
-        
-        </span>
-        <div >
-           
+<div class="value--box">
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+        <mat-radio-button class="example-radio-button" *ngFor="let policyname of policynamelist; let i=index"
+            (click)="getchangepolicyname(policyname)">
+            {{policyname.name}}
+        </mat-radio-button>
+    </mat-radio-group>
+</div>
+<ul>
+    <li *ngFor="let property of policys;let e = index" style="width:200px;height:50px">{{property.name}}
+        <div class="head--box">
+            <span style="margin-left: 8px;">
+            </span>
+            <div>
+                <form-upload class="upload--btn" [ApiUrl]="ApiUrl" [baseUrl]="baseUrl"
+                    [AuthenticationService]="AuthenticationService" [uploadUrl]="'commonUpload'"
+                    (uploadFinish)="uploadFinish($event,property)" [attrName]=""></form-upload>
+            </div>
+            <div *ngFor="let file of filelist">
+                <span *ngIf="file.type==property.name">{{file.name}}</span>
+            </div>
         </div>
-    </div>
     </li>
 </ul> -->
 

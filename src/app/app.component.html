@@ -7,6 +7,6 @@
  [serverFiles] ="files"
  [info]="info" >
 </amberdata-recordinfo>
-
-<add-electronic-document></add-electronic-document>
-<button (click)="editRecord()">xxx</button>
+<add-electronic-document (updateInfo)="updateInfo($event)" [jsonMetadataTemplate]="jsonMetadataTemplate"    [policys]="policys" [policynamelist]="policynamelist">
+</add-electronic-document >
+<button (click)="editRecord()">保存</button>
