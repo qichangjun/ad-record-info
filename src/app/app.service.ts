@@ -8,8 +8,6 @@ export class AppService {
   constructor(
     private http : Http,
   ) { }
-
-
   getRecordInfo() : Promise<any> {
     let params = new URLSearchParams();
     let headers = new Headers()
@@ -68,18 +66,19 @@ export class AppService {
       params.set('id',id)
       params.set('actionType','1')
       params.set('licensed',licensed)
-      params.set('categoryCode',categoryCode) 
-      // params.set("actionType", '')
+      params.set('categoryCode',categoryCode)
+
+      // params.set("actionType", '1')
       // params.set('parentId','bf834002767314944')
       // params.set('collectionWay', 'record')
       // params.set('aclName', '')
       // params.set('metadataSchemeId', 'f045c1fa-1d2e-4b15-b6b0-02291d0b0d65')
-      // params.set('licensed','')
-      // params.set('categoryId', '')
-      // params.set('year', '2022')
-      // params.set('categoryCode','')
-      // params.set('versionNo','')
-      // return this.http.put('./ermsapi/record/create_record',jsonMetadata,{ headers:headers,search: params })
+      // params.set('licensed','false')
+      // params.set('categoryId', 'bf832999638695936')
+      // params.set('year', '2020')
+      // params.set('categoryCode','DZZL')
+      // params.set('versionNo','1')
+      // return this.http.post('./ermsapi/record/create_record',jsonMetadata,{ headers:headers,search: params })
       return this.http.put('./ermsapi/record/update_record',jsonMetadata,{ headers:headers,search: params })
                       .toPromise()
                       .then(res =>{

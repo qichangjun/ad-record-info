@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   list = []
   policycode: any
   seq: any
+  emiallist=[]
   constructor(
     public _AppService: AppService,
   ) {
@@ -55,22 +56,27 @@ export class AppComponent implements OnInit {
     res.jsonMetadata = JSON.parse(res.jsonMetadata)
     this.jsonMetadataTemplate = res.jsonMetadata
     this.showTemplateXml = res.showTemplateXml
+    this.jsonMetadataTemplate.record.block.map(c => {
+      if (c.name == '电子文件') {
+        this.emiallist=c.block
+      }
+    })
     this.editStatus = false
   }
 
   async editRecord() {
-    let emial=[]
+    let emial = []
     this.jsonMetadataTemplate.record.block.map(c => {
       if (c.name == '电子文件') {
         this.files.map(file => {
-          emial.push({file:[file],name:file.type})
+          emial.push({ file: [file], name: file.type })
         })
         c.block = emial
         c.policy = this.policycode
         c.policy_version = this.seq
       }
     })
-    let res = await this._AppService.uodataRecordemial('bf834175564775424', '1', this.jsonMetadataTemplate)
+    let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
   }
 
   get_dwClassManageServiceGetMetaSysClassList() {
