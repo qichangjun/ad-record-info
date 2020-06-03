@@ -161,22 +161,24 @@ export class RecordinfoComponent implements OnInit {
                 return
             }
             if (!this.entity[filePathName]) this.entity[filePathName] = []
-            this.serverFiles.forEach(file => {
-                file.isChoosed = true
-                let format = file['s_object_name'].split('.')
-                format = format[format.length - 1]
-                this.entity[filePathName].push({
-                    'size': file['s_content_size'],
-                    'name': file['s_object_name'],
-                    'checksum_type': 'md5',
-                    'checksum': file['s_md5'],
-                    'url': 'repo:' + file['s_object_id'],
-                    'isNew': true,
-                    'format': format,
-                    'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-                    'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
-                })
-            })
+            //先把服务器挂接附件功能去掉
+            this.serverFiles = []
+            // this.serverFiles.forEach(file => {
+            //     file.isChoosed = true
+            //     let format = file['s_object_name'].split('.')
+            //     format = format[format.length - 1]
+            //     this.entity[filePathName].push({
+            //         'size': file['s_content_size'],
+            //         'name': file['s_object_name'],
+            //         'checksum_type': 'md5',
+            //         'checksum': file['s_md5'],
+            //         'url': 'repo:' + file['s_object_id'],
+            //         'isNew': true,
+            //         'format': format,
+            //         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+            //         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
+            //     })
+            // })
             this.initProcess()
             this.loading = false
         } catch (err) {
@@ -587,6 +589,7 @@ export class RecordinfoComponent implements OnInit {
     }
 
     async previewDoc(url) {
+        
         let preview_window = window.open('')
         // let res = await this._RecordInfoService.getDocumentId(this.id, url)
         let objectId = this.objectPath + url

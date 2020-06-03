@@ -11,7 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
-
+import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InitTableValueDirective } from './initTableValue.directive';
@@ -29,6 +29,7 @@ import { FormUploadComponent } from './formUpload/formUpload.component';
 import { Sizefilter } from './size.pipe';
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
 import {addElectronicDocumentComponent } from './add-electronic-document/add-electronic-document.component';
+import { NzUploadModule } from 'ng-zorro-antd';
 
 @NgModule({
   declarations: [ShowProcessDetailDialog,Sizefilter,FormUploadComponent,chooseClassModuleContentComponent,
@@ -41,8 +42,10 @@ import {addElectronicDocumentComponent } from './add-electronic-document/add-ele
     MatProgressSpinnerModule,
     MatDialogModule,
     MatListModule,
+    NzTreeModule,
     FormsModule,
     NzNotificationModule,
+    NzUploadModule,
     ReactiveFormsModule,
     MatGridListModule,
     MatRadioModule,

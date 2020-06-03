@@ -2,11 +2,19 @@
 [scene]="'erms_zljh'" 
   class="show--template--content--box" [id]="id" 
  [showTemplateXml]="showTemplateXml" [jsonMetadataTemplate]="jsonMetadataTemplate" 
+
+ [getMulModifeProPertyValues]="_AppService.getMulModifeProPertyValuesFormatted"
  [_dwClassManageServiceGetMetadataCategoryInfo]="get_dwClassManageServiceGetMetaSysClassList"
  [_dwClassManageServiceGetMetaSysClassList]="_AppService.getClassLIst"
  [serverFiles] ="files"
  [info]="info" >
 </amberdata-recordinfo>
-<add-electronic-document (updateInfo)="updateInfo($event)" [jsonMetadataTemplate]="jsonMetadataTemplate"    [policys]="policys" [policynamelist]="policynamelist">
+<add-electronic-document #elecDocument 
+[jsonMetadataTemplate]="jsonMetadataTemplate"
+[metadataSchemeId]="metadataSchemeId" 
+[AuthenticationService]="_AppService"
+[baseUrl]="'/ermsapi'"
+[ApiUrl]="_ApiUrl"
+[getPolicyInfoPomise]="_AppService.getRecordemial">
 </add-electronic-document >
 <button (click)="editRecord()">保存</button>

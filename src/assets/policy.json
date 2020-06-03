@@ -1,0 +1,105 @@
+{
+  "data": [{
+    "policy": {
+      "version_no": "4",
+      "code": "cacacacacaca",
+      "name": "电子文件策略2",
+      "property": [{
+        "name": "organization_code",
+        "title": "所属机构编码",
+        "content": "cacaca"
+      }, {
+        "name": "metadata_scheme_code",
+        "title": "关联元数据方案编码",
+        "content": "DZZL-RECORD"
+      }],
+      "category": {
+        "file_type": {
+          "file_name": "2222",
+          "allow_null": "true",
+          "required": "true",
+          "file_format": "PDF"
+        },
+        "name": "1111",
+        "seq": "1"
+      }
+    }
+  }, {   
+    "policy": {
+      "version_no": "4",
+      "code": "WS·GW-FW",
+      "name": "电子公文发文",
+      "property": [{
+        "name": "organization_code",
+        "title": "所属机构编码",
+        "content": "430001"
+      }, {
+        "name": "metadata_scheme_code",
+        "title": "关联元数据方案编码",
+        "content": "DZZL-RECORD"
+      }],
+      "category": [{
+        "file_type": {
+          "file_name": "附件1",
+          "allow_null": "true",
+          "required": "true",
+          "file_format": "true"
+        },
+        "name": "电子公文分类1",
+        "category": {
+          "file_type": [{
+            "file_name": "版式文件",
+            "allow_null": "true",
+            "required": "true",
+            "file_format": "true"
+          }, {
+            "file_name": "电子附件2",
+            "allow_null": "true",
+            "required": "true",
+            "file_format": "true"
+          }],
+          "name": "电子公文分类1-1",
+          "seq": "1.1"
+        },
+        "seq": "1"
+      }, {
+        "name": "电子公文分类2",
+        "seq": "2"
+      }]
+    }
+  }, {
+    "policy": {
+      "version_no": "1",
+      "code": "WS·GW-SW",
+      "name": "电子公文收文",
+      "property": [{
+        "name": "organization_code",
+        "title": "所属机构编码",
+        "content": "430001"
+      }, {
+        "name": "metadata_scheme_code",
+        "title": "关联元数据方案编码",
+        "content": "DZZL-RECORD"
+      }],
+      "category": [{
+        "file_type": {
+          "file_name": "版式文件",
+          "allow_null": "false",
+          "required": "true",
+          "file_format": "PDF,OFD"
+        },
+        "name": "版式文件",
+        "seq": "1"
+      }, {
+        "file_type": {
+          "file_name": "附件",
+          "allow_null": "false",
+          "required": "true",
+          "file_format": "PDF,OFD"
+        },
+        "name": "附件",
+        "seq": "2"
+      }]
+    }
+  }]
+}

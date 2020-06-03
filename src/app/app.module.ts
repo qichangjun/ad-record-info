@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecordinfoModule } from '../../projects/recordinfo/src/lib/recordinfo.module';
 import { MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule } from "@angular/common/http";
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
@@ -16,6 +17,7 @@ registerLocaleData(zh);
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     HttpModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -11,26 +11,46 @@ export class AppService {
   getRecordInfo() : Promise<any> {
     let params = new URLSearchParams();
     let headers = new Headers()
-    headers.append('accessToken','0a3f1234e2dc18d0f8fa30702accd5de')         
-    params.set('id','bf834175564775424')  
+    headers.append('accessToken','a483abb57c23ea295d7f6ae228996844')         
+    params.set('parentId','bf834222922661889')  
     params.set('collectionWay','record')
     params.set('actionType','1')
     params.set('sceneCode','erms_zljh')      
-    return this.http.get('./ermsapi/record/get_record_details',{ headers:headers,search: params })
+    return this.http.get('./ermsapi/metadata/get_form_base_info',{ headers:headers,search: params })
                     .toPromise()
                     .then(res =>{
                         let body = res.json();
                         return body
                     })
                     .catch(error =>
-                      alert (error)
+                      1
+                      // alert (error)
                     );
+  }
+
+  getRecordJson() : Promise<any> {
+    let params = new URLSearchParams();
+    let headers = new Headers()  
+    return this.http.get('/assets/record.json',{ headers:headers,search: params })
+                    .toPromise()
+                    .then(res =>{
+                        let body = res.json();
+                        return body
+                    })
+                    .catch(error =>
+                      1
+                      // alert (error)
+                    );
+  }
+
+  getAccessToken = ()=>{
+    return 'a483abb57c23ea295d7f6ae228996844'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {
     let params = new URLSearchParams();
     let headers = new Headers()
-    headers.append('accessToken','0a3f1234e2dc18d0f8fa30702accd5de')         
+    headers.append('accessToken','f355e0dd8c2a7c9825aa0d3720df7a64')         
     params.set('parentId',parentId)              
     return this.http.get('./transferapi/metadata/get_category_list',{ headers:headers,search: params })
                     .toPromise()
@@ -39,46 +59,37 @@ export class AppService {
                         return body
                     })
                     .catch(error =>
-                      alert (error)
+                      1
+                      // alert (error)
                     );
   }
     //获取电子文件类型
-    getRecordemial() : Promise<any> {
+    getRecordemial = (metadataSchemeId) : Promise<any> =>{
       let params = new URLSearchParams();
       let headers = new Headers()
-      headers.append('accessToken','0a3f1234e2dc18d0f8fa30702accd5de')         
-      params.set('metadataSchemeId','f045c1fa-1d2e-4b15-b6b0-02291d0b0d65')  
+      headers.append('accessToken',this.getAccessToken())         
+      params.set('metadataSchemeId',metadataSchemeId)  
+      // return this.http.get('/assets/policy.json',{ headers:headers,search: params })
       return this.http.get('./ermsapi/metadata/get_record_policy_details',{ headers:headers,search: params })
                       .toPromise()
-                      .then(res =>{
-                          let body = res.json();
-                          return body
+                      .then(res =>{                         
+                          let body = res.json();                                                    
+                          return body 
                       })
                       .catch(error =>
-                        alert (error)
+                        1
+                        // alert (error)
                       );
     }
     //修改record
     uodataRecordemial(id:string,actionType,jsonMetadata,categoryCode?,licensed?:any) : Promise<any> {
       let params = new URLSearchParams();
       let headers = new Headers()
-      headers.append('accessToken','0a3f1234e2dc18d0f8fa30702accd5de')         
+      headers.append('accessToken',this.getAccessToken())         
       params.set('id',id)
       params.set('actionType','1')
       params.set('licensed',licensed)
       params.set('categoryCode',categoryCode)
-
-      // params.set("actionType", '1')
-      // params.set('parentId','bf834002767314944')
-      // params.set('collectionWay', 'record')
-      // params.set('aclName', '')
-      // params.set('metadataSchemeId', 'f045c1fa-1d2e-4b15-b6b0-02291d0b0d65')
-      // params.set('licensed','false')
-      // params.set('categoryId', 'bf832999638695936')
-      // params.set('year', '2020')
-      // params.set('categoryCode','DZZL')
-      // params.set('versionNo','1')
-      // return this.http.post('./ermsapi/record/create_record',jsonMetadata,{ headers:headers,search: params })
       return this.http.put('./ermsapi/record/update_record',jsonMetadata,{ headers:headers,search: params })
                       .toPromise()
                       .then(res =>{
@@ -88,6 +99,57 @@ export class AppService {
                       .catch(error =>
                         alert (error)
                       );
+    }
+
+    getMulModifeProPertyValuesFormatted = (objectName: string): Promise<any> => {
+      let params = new URLSearchParams();
+      let headers = new Headers()
+      params.set('objectName', objectName)
+      headers.append('accessToken', this.getAccessToken())
+      return this.http.get('/ermsapi/metadata/get_standard_code_by_name', { search: params, headers: headers })
+        .toPromise()
+        .then(res => {
+          let data = res.json();
+          return data.map(c => {
+            return {
+              displayName: c.name,
+              value: c.value
+            }
+          })
+        })
+        .catch(error =>
+          1
+        );
+    }
+
+
+    createRecord(create_info): Promise<any> {
+      let params = new URLSearchParams();
+      let headers = new Headers()
+      headers.set('accessToken', this.getAccessToken())
+      params.set('actionType','1')
+      params.set('parentId','bf834222922661889')
+      params.set('collectionWay','record')
+      params.set('metadataSchemeId','f045c1fa-1d2e-4b15-b6b0-02291d0b0d65')
+      params.set('licensed','false')
+      params.set('categoryId','bf832999638695936')
+      params.set('year','1993')
+      params.set('categoryCode','DZZL')
+      params.set('versionNo','1')
+ 
+      return this.http.post('/ermsapi/record/create_record',
+        create_info
+        , { search: params, headers: headers })
+        .toPromise()
+        .then(res =>
+          {
+            let body = res.json();
+            return body
+          }
+        )
+        .catch(error =>
+          1
+        );
     }
 }
 export enum ActionType{
