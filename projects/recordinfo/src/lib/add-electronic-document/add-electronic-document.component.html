@@ -1,10 +1,12 @@
-<div class="value--box">
+<div class="add--ele--doc--wrap">
+  <div class="add--ele--doc--radio--box">
+    <div class="head">请选择文件清单</div>
     <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
     (change)="changePolicy($event)">
       <mat-radio-button class="example-radio-button"
           [value]="'default'"
           >
-        传统上传
+        默认上传
       </mat-radio-button>
         <mat-radio-button class="example-radio-button" *ngFor="let policy of policyLists; let i=index"
             [value]="policy.policy.code"
@@ -13,38 +15,36 @@
         </mat-radio-button>
        
     </mat-radio-group>    
+  </div>
+  <div class="select--node--upload--box">
+      <div class="head">请选择节点上传附件</div>
+      <nz-tree *ngIf="currentPolicy!='currentPolicy'" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
+          <ng-template #nzTreeTemplate let-node>
+            <span class="custom-node" [class.active]="activedNode?.key === node.key">
+              <span *ngIf="!node.isLeaf" >                   
+                <span class="folder-name">{{ node.origin.name }}</span>
+              </span>
+              <div *ngIf="node.isLeaf" >
+                <span class="file-name">{{ node.origin.file_name }}</span>
+                    <ul class="file--list--box">
+                      <li *ngFor="let file of node.origin.fileLists;let i = index ">
+                        <a (click)="previewDoc(file.url)">{{file.name}}</a>
+                        <span (click)="deleteFile(i,node.origin.key)" class="ti-trash"></span>
+                      </li>
+                    </ul>
+              </div>
+            </span>
+          </ng-template>
+        </nz-tree>
+        <ul *ngIf="currentPolicy=='currentPolicy'" class="defalut--list--box">
+            <li *ngFor="let file of defaultFileLists;let i = index ">
+                <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
+                <span (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
+            </li>
+        </ul>
+        <form-upload [hidden]="!activedNode && currentPolicy != 'default'" [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
+        [AuthenticationService]="AuthenticationService" 
+        (uploadFinish)="uploadFinish($event)"></form-upload>
+  </div>
+
 </div>
-
-<span>请选择节点上传附件</span>
-<nz-tree *ngIf="currentPolicy!='currentPolicy'" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
-   
-    <ng-template #nzTreeTemplate let-node>
-      <span class="custom-node" [class.active]="activedNode?.key === node.key">
-        <span *ngIf="!node.isLeaf" >
-               
-          <span class="folder-name">{{ node.origin.name }}</span>
-        
-        </span>
-        <div *ngIf="node.isLeaf" >
-          <span class="file-name">{{ node.origin.file_name }}</span>
-              <ul>
-                <li *ngFor="let file of node.origin.fileLists;let i = index ">
-                  <a (click)="previewDoc(file.url)">{{file.name}}</a>
-                  <span (click)="deleteFile(i,node.origin.key)">删除</span>
-                </li>
-              </ul>
-        </div>
-      </span>
-    </ng-template>
-  
-  </nz-tree>
-
-  <ul>
-      <li *ngFor="let file of defaultFileLists;let i = index ">
-          <a (click)="previewDoc(file.url)">{{file.name}}</a>
-          <span (click)="defaultFileLists.splice(i,1)">删除</span>
-      </li>
-  </ul>
-  <form-upload [hidden]="!activedNode && currentPolicy != 'default'" [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
-  [AuthenticationService]="AuthenticationService" 
-  (uploadFinish)="uploadFinish($event)"></form-upload>

@@ -1,5 +1,3 @@
-
-
 {
   "record": {
     "version_no": "1",
@@ -14,35 +12,37 @@
               {
                 "name": "archives_name",
                 "title": "档案馆名称",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "archives_code",
                 "title": "档案馆代码",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "archival_id",
                 "title": "档号",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "fonds_id",
                 "title": "全宗号",
-                "content": "asd"
+                "content": "111"
               },
               {
                 "name": "item_code",
                 "title": "件号",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "archive_1st_category",
-                "title": "一级门类编码"
+                "title": "一级门类编码",
+                "content": "DZZL"
               },
               {
                 "name": "category_code",
-                "title": "门类编码"
+                "title": "门类编码",
+                "content": "DZZL"
               },
               {
                 "name": "classification",
@@ -50,7 +50,8 @@
               },
               {
                 "name": "resources_tag",
-                "title": "资源标签"
+                "title": "资源标签",
+                "content": ""
               }
             ]
           },
@@ -60,22 +61,22 @@
               {
                 "name": "security_class",
                 "title": "密级",
-                "content": "PT"
+                "content": ""
               },
               {
                 "name": "released_network",
                 "title": "发布网段",
-                "content": "04"
+                "content": ""
               },
               {
                 "name": "open_class",
                 "title": "开放状态",
-                "content": "A"
+                "content": ""
               },
               {
                 "name": "decryption_status",
                 "title": "解密标识",
-                "content": "N"
+                "content": ""
               },
               {
                 "name": "secrecy_period",
@@ -89,67 +90,67 @@
               {
                 "name": "title",
                 "title": "题名",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "description",
                 "title": "描述信息",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "file_summary",
                 "title": "提要",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "annotation",
                 "title": "附注",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "subject",
                 "title": "主题",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "author",
                 "title": "责任者",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "fonds_unit",
                 "title": "立档单位",
-                "content": "asd"
+                "content": "1"
               },
               {
                 "name": "retention_period",
                 "title": "保管期限",
-                "content": "D30"
+                "content": "C"
               },
               {
                 "name": "filed_by",
                 "title": "归档者",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "filed_date",
                 "title": "归档时间",
-                "content": "2020-05-26T03:02:18.492Z"
+                "content": ""
               },
               {
                 "name": "file_year",
                 "title": "年度",
-                "content": "2018"
+                "content": "2022"
               },
               {
                 "name": "carrier_type",
                 "title": "载体类型",
-                "content": "02"
+                "content": "01"
               },
               {
                 "name": "material_num",
                 "title": "载体数量",
-                "content": "112"
+                "content": ""
               },
               {
                 "name": "digitized_status",
@@ -158,17 +159,18 @@
               },
               {
                 "name": "exist_document",
-                "title": "是否有原文"
+                "title": "是否有原文",
+                "content": "true"
               },
               {
                 "name": "physical_archive_location",
                 "title": "实体存址号",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "page_number",
                 "title": "张页号",
-                "content": "12345"
+                "content": ""
               }
             ]
           },
@@ -178,7 +180,7 @@
               {
                 "name": "transfer_batch",
                 "title": "移交批次",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "transfer_mode",
@@ -187,37 +189,37 @@
               {
                 "name": "transfer_by",
                 "title": "移交者",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "transfer_date",
                 "title": "移交时间",
-                "content": "2020-05-26T03:02:27.082Z"
+                "content": ""
               },
               {
                 "name": "out_houseware_status",
                 "title": "出库状态",
-                "content": "03"
+                "content": ""
               },
               {
                 "name": "identity_by",
                 "title": "鉴定人",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "identity_date",
                 "title": "鉴定时间",
-                "content": "2020-05-26T03:02:29.193Z"
+                "content": ""
               },
               {
                 "name": "rectification_desc",
                 "title": "整改情况说明",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "rectification_deadline",
                 "title": "整改截止时间",
-                "content": "2020-05-26T03:02:31.282Z"
+                "content": ""
               }
             ]
           }
@@ -235,89 +237,100 @@
               {
                 "name": "publisher",
                 "title": "出版单位",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "publish_date",
                 "title": "出版时间",
-                "content": "2020-05-26T03:02:36.673Z"
+                "content": ""
               },
               {
                 "name": "editor",
                 "title": "作者",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "publication_no",
                 "title": "刊号",
-                "content": "asd"
+                "content": ""
               },
               {
                 "name": "data_type",
                 "title": "资料类型",
-                "content": "02"
+                "content": ""
               }
             ]
           }
         ]
       },
       {
+        "policy_version": "5",
+        "name": "电子文件",
         "block": [
           {
+            "name": "1111",
+            "block": [],
             "file": [
               {
                 "checksum_type": "md5",
-                "size": "381986",
-                "name": "答案1.pdf",
-                "checksum": "1f09b9d65ada1a60e36546cb7e3949fb",
-                "format": "pdf",
-                "creation_date": "2020-05-26T10: 22",
-                "modify_date": "2020-05-26T10: 22",
-                "url": "\\答案1.pdf",
-                "seq": "1"
-              }
-            ],
-            "name": "版式文件"
-          },
-          {
-            "file": [
-              {
-                "checksum_type": "md5",
-                "size": "381986",
-                "name": "答案1.pdf",
-                "checksum": "1f09b9d65ada1a60e36546cb7e3949fb",
-                "format": "pdf",
-                "creation_date": "2020-05-26T10: 22",
-                "modify_date": "2020-05-26T10: 22",
-                "url": "\\答案1.pdf",
-                "seq": "1"
+                "size": 10921,
+                "name": "00v1 (1) (1) (1) (1).png",
+                "checksum": "c623edff83c4c22146297b5602ea34b9",
+                "format": "png",
+                "creation_date": "2020-06-03T23:41",
+                "modify_date": "2020-06-03T23:41",
+                "url": "local:\\0dd0b021-0b83-4ddb-a72d-b3c9d3514f87\\00v1 (1) (1) (1) (1).png",
+                "seq": 1,
+                "property": [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": "2222"
+                  }
+                ]
               },
               {
                 "checksum_type": "md5",
-                "size": "381986",
-                "name": "答案2.pdf",
-                "checksum": "1f09b9d65ada1a60e36546cb7e3949fb",
-                "format": "pdf",
-                "creation_date": "2020-05-26T10: 22",
-                "modify_date": "2020-05-26T10: 22",
-                "url": "\\答案1.pdf",
-                "seq": "2"
+                "size": 10921,
+                "name": "00v1 (1) (1) (1) (2).png",
+                "checksum": "c623edff83c4c22146297b5602ea34b9",
+                "format": "png",
+                "creation_date": "2020-06-03T23:41",
+                "modify_date": "2020-06-03T23:41",
+                "url": "local:\\f7b4b383-82cf-48b8-b733-897c4d552197\\00v1 (1) (1) (1) (2).png",
+                "seq": 2,
+                "property": [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": "2222"
+                  }
+                ]
+              },
+              {
+                "checksum_type": "md5",
+                "size": 10921,
+                "name": "00v1 (1) (1) (1).png",
+                "checksum": "c623edff83c4c22146297b5602ea34b9",
+                "format": "png",
+                "creation_date": "2020-06-03T23:41",
+                "modify_date": "2020-06-03T23:41",
+                "url": "local:\\c75dbf25-0c5a-4e0b-b2b9-d05501d1aa00\\00v1 (1) (1) (1).png",
+                "seq": 3,
+                "property": [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": "2222"
+                  }
+                ]
               }
-            ],
-            "name": "附件"
+            ]
           }
         ],
-        "name": "电子文件",
-        "policy": "WS·GW-FW",
-        "policy_version": "1"
+        "policy": "cacacacacaca"
       }
     ],
-    "metadata_scheme_code": "DZZL-RECORD",
-    "create_date": "2020-05-26",
-    "modify_date": "2020-05-26",
-    "template_id": "4adce4b4-fe34-4f59-8b81-a4b271cc48ba",
-    "name": "电子资料",
-    "id": "f045c1fa-1d2e-4b15-b6b0-02291d0b0d65"
+    "metadata_scheme_code": "DZZL-RECORD"
   }
 }
-

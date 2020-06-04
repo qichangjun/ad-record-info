@@ -11,12 +11,12 @@ export class AppService {
   getRecordInfo() : Promise<any> {
     let params = new URLSearchParams();
     let headers = new Headers()
-    headers.append('accessToken','a483abb57c23ea295d7f6ae228996844')         
-    params.set('parentId','bf834222922661889')  
+    headers.append('accessToken',this.getAccessToken())         
+    params.set('id','bf834230870867968')  
     params.set('collectionWay','record')
     params.set('actionType','1')
     params.set('sceneCode','erms_zljh')      
-    return this.http.get('./ermsapi/metadata/get_form_base_info',{ headers:headers,search: params })
+    return this.http.get('/ermsapi/record/get_record_details',{ headers:headers,search: params })
                     .toPromise()
                     .then(res =>{
                         let body = res.json();
@@ -44,13 +44,13 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return 'a483abb57c23ea295d7f6ae228996844'
+    return 'ccd7bf7f70daea9905a1d2f9d2f8b3c9'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {
     let params = new URLSearchParams();
     let headers = new Headers()
-    headers.append('accessToken','f355e0dd8c2a7c9825aa0d3720df7a64')         
+    headers.append('accessToken',this.getAccessToken())         
     params.set('parentId',parentId)              
     return this.http.get('./transferapi/metadata/get_category_list',{ headers:headers,search: params })
                     .toPromise()

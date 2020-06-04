@@ -18,8 +18,8 @@
       }
 
       .active {
-        background: #1890ff;
-        color: #fff;
+        background: #e7f5fe;
+        // color: #fff;
       }
 
       .file-name,
@@ -36,3 +36,34 @@
         position: relative;
         left: 12px;
       }
+
+
+.add--ele--doc--wrap{
+  padding-left: 13px;
+  padding-right: 13px;
+  font-size: 14px;
+  .add--ele--doc--radio--box{
+    margin-bottom: 16px;
+    .head{
+      margin-bottom: 8px;
+    }
+    .mat-radio-button{
+      margin-right: 16px;
+    }
+  }
+  .select--node--upload--box{
+    margin-bottom: 10px;
+    .head{
+      margin-bottom: 8px;
+    }
+    .ti-trash{
+      color: #c25764;
+      margin-left: 16px;
+    }
+    form-upload{
+      display: inline-block;
+      vertical-align: middle;
+      margin-top: 8px;
+    }
+  }
+}

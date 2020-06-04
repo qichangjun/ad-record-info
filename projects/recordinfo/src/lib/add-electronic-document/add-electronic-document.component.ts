@@ -1,3 +1,11 @@
+/**
+ * 问题(1) 历史版本的文件策略如果被删除如何处理？现在是变成默认default情况，上传到电子文件的block下
+ * 问题(2) 新上传的文件如何区分，使其不能预览
+ * 问题(3) 用户切换文件策略时，是否要把之前上传的文件都删掉
+ * 问题(4) 用户是否会在电子文件的block下再创建block,这样会导致使用文件策略生成的block把原来的电子文件下的block覆盖掉
+ * 问题(5) 目前只支持record下有多个block的情况
+ */
+
 import { Component, forwardRef, Input, Output, ViewChild, OnInit, OnChanges, EventEmitter, SimpleChanges } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors, ValidatorFn } from '@angular/forms';
 import * as _ from 'lodash';
@@ -21,6 +29,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     currentPolicy : any  = 'default'
     policyLists : any[] = []
     disableChangePolicy : boolean = false 
+    fileJsonPath : string = ''
     @Input() id : string //record的id
     @Input() environmentBaseUrl : string
     @Input() objectPath : string 
@@ -28,7 +37,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     @Input() ApiUrl : any 
     @Input() AuthenticationService : any
     @Input() metadataSchemeId : string  
-    @Input() jsonMetadataTemplate : string 
+    @Input() jsonMetadataTemplate : any 
     @Input() getPolicyInfoPomise : (metadataId: string) => Promise<any>
     openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
       if (data instanceof NzTreeNode) {
@@ -68,7 +77,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.currentPolicy = 'default'
       this.defaultFileLists = []
       this.policyInfo = {children:[]}
-      let block = JSONPath.JSONPath({ path: "$.record.block[?(@.name=='电子文件')]", json: this.jsonMetadataTemplate, resultType: 'all' })        
+      let block = JSONPath.JSONPath({ path:this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })        
       if (block[0].value.file){
         this.defaultFileLists = block[0].value.file 
       }
@@ -77,12 +86,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     async getPolicyInfo(){
       let policyInfo 
       this.policyLists = await this.getPolicyInfoPomise(this.metadataSchemeId)
-      let block = JSONPath.JSONPath({ path: "$.record.block[?(@.name=='电子文件')]", json: this.jsonMetadataTemplate, resultType: 'all' })        
+      let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })        
       //如果json里保存了文件策略     
       if (block[0] && block[0].value.policy){   
         this.disableChangePolicy = true      
         let policy_version = block[0].value.policy_version
-        let policy_code = block[0].value.policy                   
+        let policy_code = block[0].value.policy              
         let res  = this.policyLists.find(policy=>{          
           return policy.policy.code == policy_code && policy_version == policy.policy.version_no
         })
@@ -103,7 +112,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
 
     saveFileInfo(jsonMetadata){      
-      let res = JSONPath.JSONPath({ path: "$.record.block[?(@.name=='电子文件')]", json: jsonMetadata, resultType: 'all' })   
+      let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })   
       if (!res) return 
       if (this.currentPolicy != 'default'){
         let clone_policyInfo = _.cloneDeep(this.policyInfo)
@@ -111,6 +120,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         res[0].value.block = clone_policyInfo.block
         res[0].value.policy = this.policyInfo.code
         res[0].value.policy_version = this.policyInfo.version_no
+        delete res[0].value.file 
         return 
       }
       res[0].value.file = this.defaultFileLists
@@ -127,12 +137,19 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         format : e.data.contentType,
         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-        'url': 'local:' + e.data.storagePath,
+        'url': 'local:' + e.data.storagePath,       
       }
       if (this.currentPolicy != 'default'){
         let fileType = this.findFileType()
         fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
         file.seq = fileType.fileLists.length + 1
+        file.property = [
+          {
+            "name": "file_type",
+            "title": "材料名称",
+            "value": fileType.file_name
+          }
+        ]
         fileType.fileLists.push(file)
       }else{
         this.defaultFileLists.push(file)
@@ -159,6 +176,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     ngOnChanges(){
       if (this.metadataSchemeId && this.jsonMetadataTemplate){
         this.disableChangePolicy = false 
+        if (!Array.isArray(this.jsonMetadataTemplate.record.block)){
+          this.fileJsonPath = "$.record.block"
+        }else{
+          this.fileJsonPath = "$.record.block[?(@.name=='电子文件')]"
+        }
         this.getPolicyInfo()              
       }
     }
@@ -182,7 +204,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           c.isLeaf = true 
           c.key = this.guid()
           if (needInitFile){
-            let fileLists = this.findBlockByNameAndLevel(c.file_name,level)
+            let fileLists = this.findBlockByNameAndLevel(info.name,level)
             if (fileLists){
               c.fileLists = fileLists
             }   
@@ -200,7 +222,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     //返回block的文件集合  
     findBlockByNameAndLevel(name,level){
       let block_entity
-      let file_block = JSONPath.JSONPath({ path: "$.record.block[?(@.name=='电子文件')]", json: this.jsonMetadataTemplate, resultType: 'all' })        
+      let file_block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })        
       file_block = file_block[0].value
       if (!file_block) return false 
       let fn = (_file_block,self_level)=>{ 
@@ -258,12 +280,16 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             children : child.children || []
           })          
         }else{
-          info.block.push({
-            name : child.file_name,
-            children : [],
-            file : child.fileLists ? _.castArray(child.fileLists) : [] 
-          })
-        }                
+          if (child.fileLists){
+            info.file = child.fileLists ? _.castArray(child.fileLists) : [] 
+          }          
+          // info.block.push({
+          //   name : child.file_name,
+          //   children : [],
+          //   file : child.fileLists ? _.castArray(child.fileLists) : [] 
+          // })
+        }   
+        if (info.block.length == 0) delete info.block 
       })
       if (info.block){
         info.block.forEach(block=>{
@@ -271,7 +297,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             delete block.file
           }
           this.formatServicePolicyInfo(block)
-        })
+        })        
       }      
       delete info.children 
     }
