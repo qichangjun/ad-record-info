@@ -56,12 +56,14 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     ngOnInit(){
 
     }
+    //不是file_type类型不能选中
     activeNode(data: NzFormatEmitEvent): void {      
       if (data.node.origin.type == 'file_type'){
         this.activedNode = data.node!;
       }      
     }
 
+    //切换文件策略，次方法不会根据jsonData中的文件，吧文件初始化进policy的json里           
     changePolicy(e){            
       let res  = this.policyLists.find(policy=>policy.policy.code == this.currentPolicy)
       if (res){
@@ -73,6 +75,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       }   
     }
 
+    //当没有匹配的版本文件策略时（策略code和版本好都匹配）调用
+    //将policyInfo初始化成空
+    // 找到原jsonData中的电子文件节点下的file集合放到this.defaultFileLists中    
     setToDefaultPolicy(){
       this.currentPolicy = 'default'
       this.defaultFileLists = []
@@ -83,6 +88,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       }
     }
 
+    // 初始化时调用一次
+    // 获取文件策略集合
+    // 找到jsonData中的电子文件节点，判断是否有文件策略
+    // 若没有，或者没有与文件策略集合中匹配的，则调用setToDefaultPolicy方法初始化为默认上传
+    // 若有，则调用formatPoolicyInfo方法,把jsonData中的文件集合初始化到policy的json中
     async getPolicyInfo(){
       let policyInfo 
       this.policyLists = await this.getPolicyInfoPomise(this.metadataSchemeId)
@@ -110,7 +120,14 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       }
       
     }
-
+    
+    /**
+     * 保存文件信息
+     * 在外部控件中把jsonMetadata传入，一般和recordinfo共享一个
+     * @param jsonMetadata 外部空间的jsonData
+     * 如果currentPolicy是默认策略，则直接把文件放进电子文件block下的file中
+     * 否则调用formatServicePolicyInfo方法，生成对应的block
+     */
     saveFileInfo(jsonMetadata){      
       let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })   
       if (!res) return 
@@ -128,6 +145,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       return 
     } 
 
+    /**
+     * formupload上传完成时的回调
+     * @param e {size,name,data}
+     * 只有文件策略不是默认策略时，需要生成file的property
+     */
     uploadFinish(e){      
       let file : any = {
         checksum_type : 'md5',
@@ -156,11 +178,13 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       }      
     }
 
+    // 删除文件
     deleteFile(i,key){
       let fileType = this.findFileType(key)
       fileType.fileLists.splice(i, 1)
     }
 
+    // 预览文件
     async previewDoc(url) {
       if (!this.id){
         return 
@@ -239,7 +263,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       return block_entity ? _.castArray(block_entity.file) : []
     }
 
-    //根据key找到文件资料节点
+    
+    /**
+     * 根据key找到文件资料节点
+     * @param key 节点的key,不传时默认查当前节点的key
+     */
     findFileType(key?){
       if (!key) key = this.activedNode.origin.key
       let category  = undefined 
@@ -283,11 +311,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           if (child.fileLists){
             info.file = child.fileLists ? _.castArray(child.fileLists) : [] 
           }          
-          // info.block.push({
-          //   name : child.file_name,
-          //   children : [],
-          //   file : child.fileLists ? _.castArray(child.fileLists) : [] 
-          // })
         }   
         if (info.block.length == 0) delete info.block 
       })

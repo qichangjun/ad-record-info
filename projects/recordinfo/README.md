@@ -1,6 +1,18 @@
 # Recordinfo
 record根据xml数据，格式化成可修改的表单
 
+## 1.3.2
+    添加了电子文件上传组件
+    @Input() id : string                    record的id,新建时可不传
+    @Input() environmentBaseUrl : string    预览用基本地址
+    @Input() objectPath : string            record中的objectPath
+    @Input() baseUrl : string               后台接口地址
+    @Input() ApiUrl : any                   api接口枚举
+    @Input() AuthenticationService : any    用户服务
+    @Input() metadataSchemeId : string      元数据id
+    @Input() jsonMetadataTemplate : any     原数据的json
+    @Input() getPolicyInfoPomise : (metadataId: string) => Promise<any>  根据原数据id获取文件策略集合的服务方法
+
 ## 1.2.132
     预览附件的\替换成/
 
