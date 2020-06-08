@@ -78,6 +78,85 @@ declare var JSONPath: any;
                 <div *ngSwitchCase="'text-area'" class="form--build--box--input--box">
                     <textarea [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options" [disabled]="disableEdit" class="form-control form--build--box--input textarea--input" [(ngModel)]="entity[tile.options.attrName]"></textarea>
                 </div>
+
+                <div *ngSwitchCase="'date'" class="form--build--box--input--box">                    
+                    <nz-date-picker
+                    formValidPass [validPass]="validPass" [scene]="scene" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
+                    nzShowTime
+                     [ngClass]="{'showBorder' : tile.getStyle('inputBorder')  == 'show'}"  [(ngModel)]="entity[tile.options.attrName]"  class="form-control form--build--box--input" [nzFormat]="tile.options.typeFormat"></nz-date-picker>
+                </div>
+                <div *ngSwitchCase="'process-list'" class="form--build--box--input--box process--info--wrap">
+                    <ul class="process--info--box clearfix">
+                        <li                         
+                            *ngFor="let process of progressNodes;let i = index"
+                            (click)="showProcessDetail(process)"
+                            [ngClass]="{only:progressNodes.length==1}"
+                            class="process--node--box {{process.class}}"
+                        >
+                            <div (click)="$event.stopPropagation()"
+                                *ngIf="
+                                showProcessIcon(i)
+                                ">
+                                <div class="process--list--row--wrap--icon"></div>
+                            </div>
+                            <div>
+                                <div class="head">{{process.name}}</div>
+                                <div class="description">
+                                    <div><span class="MODULES_DATABASE_OPERATOR">操作人</span> : {{process.operator}}  </div>
+                                    <div>{{process.operate_date}}</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>                  
+                </div>
+                <div *ngSwitchCase="'table'" class="form--build--box--input--box" style="overflow-y: auto;">
+                    <table class="table table-bordered">
+                        <tr>
+                            <ng-container *ngFor="let tableAttr of tile.options.tableAttrs;let x = index">
+                                <th *ngIf="!tableAttr.isNotShow">
+                                    {{tableAttr.title}}
+                                </th>
+                            </ng-container>
+                        </tr>
+                        <tr *ngFor="let tableEntity of tableEntitys[tile.options.attrName];let e = index">
+                            <ng-container *ngFor="let tableAttr of tile.options.tableAttrs;let x = index">
+                                <td *ngIf="!tableAttr.isNotShow">
+                                    <input [disabled]="disableEdit" type="text" class="form-control form--build--box--input" InitTableValue [tableEntity]="tableEntity" [key]="tableAttr.jsonPath"
+                                        [(ngModel)]="tableEntity[tableAttr.jsonPath]">
+                                        
+                                </td>
+                            </ng-container>
+                            <td>
+                                <button *ngIf="!disableEdit" class="btn btn-default fa fa-minus-circle" (click)="tableEntitys[tile.options.attrName].splice(e,1)"></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <button *ngIf="!disableEdit" class="btn btn-default fa fa-plus-circle" (click)="addTableList(tile.options.attrName)"></button>
+                        </tr>
+                    </table>
+                </div>
+                <div *ngSwitchCase="'logo'" class="form--build--box--input--box">
+                    <img style="height: 100%;
+                    width: 100%;" 
+                    onerror="this.src = './assets/images/icon-40.png'"
+                     [src]="tile.options.logoSrc" alt="">
+                </div>
+                <div *ngSwitchCase="'other-component'" class="form--build--box--input--box">
+                    <form-other-component
+                    [disableEdit]="disableEdit"
+                    [keyAttrName]="tile.options.keyAttrName"
+                    [valueAttrName]="tile.options.attrName"
+                    [_DepartmentManageServiceGetList]="_DepartmentManageServiceGetList"
+                    [_chooseUsersAccessServiceGetRoleList]="_chooseUsersAccessServiceGetRoleList"
+                    [_chooseUsersAccessServiceGetUserByDept]="_chooseUsersAccessServiceGetUserByDept"
+                    [_chooseUsersAccessServiceGetUserByRole]="_chooseUsersAccessServiceGetUserByRole"
+                    [_dwClassManageServiceGetMetadataCategoryInfo]="_dwClassManageServiceGetMetadataCategoryInfo"
+                    [_dwClassManageServiceGetMetaSysClassList]="_dwClassManageServiceGetMetaSysClassList"
+                    [entity]="entity"
+                     [componentType]="tile.options.componentType"></form-other-component>
+                   
+                </div>
+                <div *ngSwitchDefault>请选择一个类型</div>
             </div>
         </mat-grid-tile>
     </mat-grid-list>

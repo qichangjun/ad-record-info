@@ -1,6 +1,9 @@
 # Recordinfo
 record根据xml数据，格式化成可修改的表单
 
+## 1.3.21
+    修复了日期，门类选择组件不见的问题
+
 ## 1.3.2
     添加了电子文件上传组件
     @Input() id : string                    record的id,新建时可不传
