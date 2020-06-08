@@ -59,8 +59,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     //不是file_type类型不能选中
     activeNode(data: NzFormatEmitEvent): void {      
       if (data.node.origin.type == 'file_type'){
-        this.activedNode = data.node!;
+        this.activedNode = data.node;
       }      
+      this.getWholePath()
     }
 
     //切换文件策略，次方法不会根据jsonData中的文件，吧文件初始化进policy的json里           
@@ -150,7 +151,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
      * @param e {size,name,data}
      * 只有文件策略不是默认策略时，需要生成file的property
      */
-    uploadFinish(e){      
+    uploadFinish(e){            
+      let storagePath = e.data.storagePath.split('\\')
       let file : any = {
         checksum_type : 'md5',
         size : e.size,
@@ -159,8 +161,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         format : e.data.contentType,
         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-        'url': 'local:' + e.data.storagePath,       
-      }
+        'url': 'local:\\\\' + storagePath[1] + '\\\\' + this.getWholePath() + storagePath[2]               
+      }      
+      console.log(file.url)
       if (this.currentPolicy != 'default'){
         let fileType = this.findFileType()
         fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
@@ -325,6 +328,21 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       delete info.children 
     }
 
+    //从当前路径开始获取到根节点的路径集合
+    getWholePath(){
+      let path = ''
+      let parent = this.activedNode
+      while (parent.getParentNode()){
+        parent = parent.getParentNode() 
+        if (parent.isLeaf){
+          path = path + '/' + parent.origin.file_name
+        }else{
+          path = path + '/' + parent.origin.name
+        }                        
+      }
+      path = path.split('/').reverse().join('\\\\')      
+      return path 
+    }
 }
 
 

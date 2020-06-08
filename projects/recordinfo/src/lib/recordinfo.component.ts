@@ -141,6 +141,8 @@ declare var JSONPath: any;
                     onerror="this.src = './assets/images/icon-40.png'"
                      [src]="tile.options.logoSrc" alt="">
                 </div>
+                <div *ngSwitchCase="'upload'" class="form--build--box--input--box">                 
+                </div>
                 <div *ngSwitchCase="'other-component'" class="form--build--box--input--box">
                     <form-other-component
                     [disableEdit]="disableEdit"
