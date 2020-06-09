@@ -161,7 +161,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         format : e.data.contentType,
         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-        'url': 'local:\\\\' + storagePath[1] + '\\\\' + this.getWholePath() + storagePath[2]               
+        'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]               
       }      
       console.log(file.url)
       if (this.currentPolicy != 'default'){
@@ -340,7 +340,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           path = path + '/' + parent.origin.name
         }                        
       }
-      path = path.split('/').reverse().join('\\\\')      
+      path = path.split('/').reverse().join('\\')      
       return path 
     }
 }
