@@ -35,13 +35,7 @@
               </div>
             </span>
           </ng-template>
-        </nz-tree>
-        <ul *ngIf="currentPolicy=='currentPolicy'" class="defalut--list--box">
-            <li *ngFor="let file of defaultFileLists;let i = index ">
-                <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
-                <span (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
-            </li>
-        </ul>
+        </nz-tree>       
         <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
           <li *ngFor="let file of defaultFileLists;let i = index ">
               <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
