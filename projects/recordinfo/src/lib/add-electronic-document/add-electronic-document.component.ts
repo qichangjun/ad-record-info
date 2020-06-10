@@ -153,7 +153,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
      * 只有文件策略不是默认策略时，需要生成file的property
      */
     uploadFinish(e){            
-      let storagePath = e.data.storagePath.split('\\')
+      // let storagePath = e.data.storagePath.split('\\')
       let file : any = {
         checksum_type : 'md5',
         size : e.size,
