@@ -43,6 +43,7 @@ export class FormUploadComponent implements OnInit, OnChanges {
                 // url: '/ermsapi/resource/upload_file',
                 headers: [
                     { name: 'accessToken', value: this.AuthenticationService.getAccessToken() }
+                    // { name: 'accessToken', value:"518d7b21996e41924f5e55c53b0ea584" }
                 ]
                 , additionalParameter: {
                 },
