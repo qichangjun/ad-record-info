@@ -88,7 +88,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     if (data.node.origin.type == 'file_type') {
       this.activedNode = data.node;
       this.getWholePath()
-    }    
+    }
   }
 
   //切换文件策略，次方法不会根据jsonData中的文件，吧文件初始化进policy的json里           
@@ -150,41 +150,40 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
   }
 
-    /**
-     * formupload上传完成时的回调
-     * @param e {size,name,data}
-     * 只有文件策略不是默认策略时，需要生成file的property
-     */
-    uploadFinish(e){            
-      // let storagePath = e.data.storagePath.split('\\')
-      let file : any = {
-        checksum_type : 'md5',
-        size : e.size,
-        name : e.name,
-        checksum : e.data.md5,
-        format : e.data.contentType,
-        'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-        'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-        'url': 'local:' + e.data.storagePath
-        // 'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
-        }      
-      console.log(file.url)
-      if (this.currentPolicy != 'default'){
-        let fileType = this.findFileType()
-        fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
-        file.seq = fileType.fileLists.length + 1
-        file.property = [
-          {
-            "name": "file_type",
-            "title": "材料名称",
-            "value": fileType.file_name
-          }
-        ]
-        fileType.fileLists.push(file)
-      }else{
-        this.defaultFileLists.push(file)
-      }      
+  /**
+   * formupload上传完成时的回调
+   * @param e {size,name,data}
+   * 只有文件策略不是默认策略时，需要生成file的property
+   */
+  uploadFinish(e) {
+    // let storagePath = e.data.storagePath.split('\\')
+    let file: any = {
+      checksum_type: 'md5',
+      size: e.size,
+      name: e.name,
+      checksum: e.data.md5,
+      format: e.data.contentType,
+      'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+      'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+      'url': 'local:' + e.data.storagePath
+      // 'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
     }
+    if (this.currentPolicy != 'default') {
+      let fileType: FileType = this.findFileType()
+      fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
+      file.seq = fileType.fileLists.length + 1
+      file.property = [
+        {
+          "name": "file_type",
+          "title": "材料名称",
+          "value": fileType.file_name
+        }
+      ]
+      fileType.fileLists.push(file)
+    } else {
+      this.defaultFileLists.push(file)
+    }
+  }
   /**
    * 保存文件信息
    * 在外部控件中把jsonMetadata传入，一般和recordinfo共享一个
@@ -232,15 +231,15 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.metadataSchemeId && this.jsonMetadataTemplate) {
       this.disableChangePolicy = false
-      this.fileJsonPath = !Array.isArray(this.jsonMetadataTemplate.record.block) ? "$.record.block" : 
-      "$.record.block[?(@.name=='电子文件')]"    
+      this.fileJsonPath = !Array.isArray(this.jsonMetadataTemplate.record.block) ? "$.record.block" :
+        "$.record.block[?(@.name=='电子文件')]"
       this.getPolicyInfo()
     }
   }
 
   //---------------------util方法------------
   //吧policy的json格式化成tree
-  formatPoolicyInfo(info, level:number, needInitFile?:boolean):void {
+  formatPoolicyInfo(info, level: number, needInitFile?: boolean): void {
     info.children = []
     if (info.category) {
       info.category = info.category ? _.castArray(info.category) : []
@@ -271,7 +270,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   //根据block名和层级寻找block        
   //吧json里的file集合取出来放进对应的policy的json里    
   //返回block的文件集合  
-  findBlockByNameAndLevel(name, level):FileType_File[] | false {
+  findBlockByNameAndLevel(name, level): FileType_File[] | false {
     let block_entity
     let file_block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     file_block = file_block[0].value
@@ -295,7 +294,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    * 根据key找到文件资料节点
    * @param key 节点的key,不传时默认查当前节点的key
    */
-  findFileType(key? : string): FileType {
+  findFileType(key?: string): FileType {
     if (!key) key = this.activedNode.origin.key
     let category = undefined
     let findCategoryFn = (data?) => {
@@ -317,7 +316,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   //生产随机key
-  guid() : string{
+  guid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = Math.random() * 16 | 0,
         v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -326,7 +325,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   //把policyInfo的children转成block
-  formatServicePolicyInfo(info) : void{
+  formatServicePolicyInfo(info): void {
     info.children.forEach(child => {
       info.block = info.block || []
       if (child.type == 'category') {
@@ -353,63 +352,63 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
 
-    //从当前路径开始获取到根节点的路径集合
-    getWholePath(){
-      let path = ''
-      let relativePath = ''
-      let parent = this.activedNode
-      while (parent.getParentNode()){
-        parent = parent.getParentNode() 
-        if (parent.isLeaf){
-          relativePath = '/' + parent.origin.name+relativePath
-          path = path + '/' + parent.origin.file_name
-        }else{
-          relativePath = '/' + parent.origin.name +relativePath
-          path = path + '/' + parent.origin.name
-        }                        
+  //从当前路径开始获取到根节点的路径集合
+  getWholePath() : string {
+    let path = ''
+    let relativePath = ''
+    let parent = this.activedNode
+    while (parent.getParentNode()) {
+      parent = parent.getParentNode()
+      if (parent.isLeaf) {
+        relativePath = '/' + parent.origin.name + relativePath
+        path = path + '/' + parent.origin.file_name
+      } else {
+        relativePath = '/' + parent.origin.name + relativePath
+        path = path + '/' + parent.origin.name
       }
-      this.relativePath = relativePath
-      path = path.split('/').reverse().join('\\')      
-      return path 
     }
+    this.relativePath = relativePath
+    path = path.split('/').reverse().join('\\')
+    return path
+  }
 }
 
 interface PolicyInfo {
-  version_no? : string;
-  code? : string;
-  children : Category[] | FileType[]
+  version_no?: string;
+  code?: string;
+  children: Category[] | FileType[]
 }
 //-----------------------file_type类型--------------------------
 interface FileType {
-  type : 'file_type';
-  isLeaf : boolean 
-  key : string 
-  file_name : string 
-  fileLists : FileType_File[]
+  type: 'file_type';
+  isLeaf: boolean
+  key: string
+  file_name: string
+  fileLists: FileType_File[]
 }
 
 interface FileType_File {
-  checksum_type? : 'md5'
-  size? : number
-  checksum? : string
-  format? : string 
-  creation_date? : string
-  modify_date? : string
-  url? : string 
-  property? : File_Property[]
-  seq? : number
-  name? : string 
+  checksum_type?: 'md5'
+  size?: number
+  checksum?: string
+  format?: string
+  creation_date?: string
+  modify_date?: string
+  url?: string
+  property?: File_Property[]
+  seq?: number
+  name?: string
 }
 interface File_Property {
-  name : "file_type"
-  title : "材料名称"
-  value : string 
+  name: "file_type"
+  title: "材料名称"
+  value: string
 }
 //---------------------------category类型--------------------------
 interface Category {
-  type : "category"
-  name : string 
-  isLeaf : boolean
-  key : string
-  children : Category[] | FileType[]
+  type: "category"
+  name: string
+  isLeaf: boolean
+  key: string
+  children: Category[] | FileType[]
 }
