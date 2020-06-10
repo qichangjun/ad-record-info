@@ -39,11 +39,11 @@ export class FormUploadComponent implements OnInit, OnChanges {
             this.uploadUrl == 'importRecord' ? url = 'importRecord' : url = 'upload'
             this.uploader.setOptions({
                 autoUpload: true,
-                url: this.baseUrl + this.ApiUrl[url],
-                // url: '/ermsapi/resource/upload_file',
+                // url: this.baseUrl + this.ApiUrl[url],
+                url: '/ermsapi/resource/upload_file',
                 headers: [
-                    { name: 'accessToken', value: this.AuthenticationService.getAccessToken() }
-                    // { name: 'accessToken', value:"518d7b21996e41924f5e55c53b0ea584" }
+                    // { name: 'accessToken', value: this.AuthenticationService.getAccessToken() }
+                    { name: 'accessToken', value:"fd2ff8cc80616166d8fd3db02c9d2194" }
                 ]
                 , additionalParameter: {
                 },
