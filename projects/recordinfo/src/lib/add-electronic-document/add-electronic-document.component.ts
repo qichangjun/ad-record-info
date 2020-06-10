@@ -150,6 +150,41 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
   }
 
+    /**
+     * formupload上传完成时的回调
+     * @param e {size,name,data}
+     * 只有文件策略不是默认策略时，需要生成file的property
+     */
+    uploadFinish(e){            
+      // let storagePath = e.data.storagePath.split('\\')
+      let file : any = {
+        checksum_type : 'md5',
+        size : e.size,
+        name : e.name,
+        checksum : e.data.md5,
+        format : e.data.contentType,
+        'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+        'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+        'url': 'local:' + e.data.storagePath
+        // 'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
+        }      
+      console.log(file.url)
+      if (this.currentPolicy != 'default'){
+        let fileType = this.findFileType()
+        fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
+        file.seq = fileType.fileLists.length + 1
+        file.property = [
+          {
+            "name": "file_type",
+            "title": "材料名称",
+            "value": fileType.file_name
+          }
+        ]
+        fileType.fileLists.push(file)
+      }else{
+        this.defaultFileLists.push(file)
+      }      
+    }
   /**
    * 保存文件信息
    * 在外部控件中把jsonMetadata传入，一般和recordinfo共享一个
@@ -168,44 +203,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       res[0].value.policy_version = this.policyInfo.version_no
       delete res[0].value.file
       return
+
     }
     res[0].value.file = this.defaultFileLists
     delete res[0].value.block
     return
-  }
-
-  /**
-   * formupload上传完成时的回调
-   * @param e {size,name,data}
-   * 只有文件策略不是默认策略时，需要生成file的property
-   */
-  uploadFinish(e) {
-    let storagePath = e.data.storagePath.split('\\')
-    let file: FileType_File = {
-      checksum_type: 'md5',
-      size: e.size,
-      name: e.name,
-      checksum: e.data.md5,
-      format: e.data.contentType,
-      'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-      'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-      'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
-    }
-    if (this.currentPolicy != 'default') {
-      let fileType : FileType = this.findFileType()
-      fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
-      file.seq = fileType.fileLists.length + 1
-      file.property = [
-        {
-          "name": "file_type",
-          "title": "材料名称",
-          "value": fileType.file_name
-        }
-      ]
-      fileType.fileLists.push(file)
-    } else {
-      this.defaultFileLists.push(file)
-    }
   }
 
   // 删除文件
@@ -350,22 +352,26 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     delete info.children
   }
 
-  //从当前路径开始获取到根节点的路径集合
-  getWholePath() : string {
-    let path = ''
-    let parent = this.activedNode
-    while (parent.getParentNode()) {
-      parent = parent.getParentNode()
-      if (parent.isLeaf) {
-        path = path + '/' + parent.origin.file_name
-      } else {
-        path = path + '/' + parent.origin.name
+
+    //从当前路径开始获取到根节点的路径集合
+    getWholePath(){
+      let path = ''
+      let relativePath = ''
+      let parent = this.activedNode
+      while (parent.getParentNode()){
+        parent = parent.getParentNode() 
+        if (parent.isLeaf){
+          relativePath = '/' + parent.origin.name+relativePath
+          path = path + '/' + parent.origin.file_name
+        }else{
+          relativePath = '/' + parent.origin.name +relativePath
+          path = path + '/' + parent.origin.name
+        }                        
       }
+      this.relativePath = relativePath
+      path = path.split('/').reverse().join('\\')      
+      return path 
     }
-    this.relativePath = path
-    path = path.split('/').reverse().join('\\')
-    return path
-  }
 }
 
 interface PolicyInfo {
