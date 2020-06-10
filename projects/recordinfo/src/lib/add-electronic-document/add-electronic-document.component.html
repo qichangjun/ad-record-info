@@ -2,7 +2,7 @@
   <div class="add--ele--doc--radio--box">
     <div class="head">请选择文件清单</div>
     <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
-    (change)="changePolicy($event)">
+    (change)="changePolicy()">
       <mat-radio-button class="example-radio-button"
           [value]="'default'"
           >

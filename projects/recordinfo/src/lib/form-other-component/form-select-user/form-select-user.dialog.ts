@@ -1,7 +1,5 @@
 import { Component, Inject,OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog,MatDialogRef } from '@angular/material';
-// import { chooseUsersAccessService } from '../../choose-users-set-access/choose-users-set-access.service';
-// import { DepartmentManageService } from '../../../../system-manage/department-manage/department-manage.service';
 import * as _ from 'lodash';
 @Component({
     selector: 'form-select-user-dialog',

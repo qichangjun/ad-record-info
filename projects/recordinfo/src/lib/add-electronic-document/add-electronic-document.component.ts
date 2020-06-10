@@ -3,33 +3,33 @@
  ***             C O N F I D E N T I A L  ---  A M B E R D A T A                             ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : 电子文件著录系统                                                *
+ *                 Project Name : 电子文件著录系统                                                    *
  *                                                                                             *
  *                    File Name : add-electronic-document.component.ts                         *
  *                                                                                             *
  *                   Programmer : qichangjun                                                   *
  *                                                                                             *
- *                   Start Date : 6月1日, 2020                                                  *
+ *                   Start Date : 6月1日, 2020                                                      *
  *                                                                                             *
- *                  Last Update : 6月10日 下午13:46,2020                                         *
+ *                  Last Update : 6月10日 下午13:46,2020                                             *
  *                               Determines                                                    *
  *---------------------------------------------------------------------------------------------*
- *  Functions:                                                                                  *
- *   openFolder -- 双击节点事件，更新节点的展开状态                                                  * 
- *   activeNode -- 点击选中节点事件，(只有type为file_type类型的根节点可以选中)                         *
+ *  Functions:                                                                                 *
+ *   openFolder -- 双击节点事件，更新节点的展开状态                                                    * 
+ *   activeNode -- 点击选中节点事件，(只有type为file_type类型的根节点可以选中)                           *
  *   changePolicy -- 切换文件策略事件.                                                            *
  *   setToDefaultPolicy -- 将当前文件策略切换至默认上传.                                            *
  *   getPolicyInfo -- 获取文件策略集合.                                                           *
  *   uploadFinish -- 文件上传完成后的callback.                                                    *
- *   saveFileInfo -- 将上传文件后的文件策略json保存进整体record的json中.                              *
+ *   saveFileInfo -- 将上传文件后的文件策略json保存进整体record的json中.                                 *
  *   deleteFile -- 删除文件.                                                                     *
  *   previewDoc -- 预览文件.                                                                     *
  *   formatPoolicyInfo --  将policy的json格式化成recordinfo的json中需要的格式.                      *
- *   findBlockByNameAndLevel -- 根据block的名称和层级找到指定的block对象                             *
+ *   findBlockByNameAndLevel -- 根据block的名称和层级找到指定的block对象                                *
  *   findFileType -- 根据key找到文件资料节点.                                                      *
- *   guid -- 生产随机的key.                                                                       *
+ *   guid -- 生产随机的key.                                                                          *
  *   formatServicePolicyInfo -- 将children转换成block                                            *
- *   getWholePath -- 获取从当前file-type节点到根路径的path                                          *
+ *   getWholePath -- 获取从当前file-type节点到根路径的path                                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 import { Component, forwardRef, Input, Output, ViewChild, OnInit, OnChanges, EventEmitter, SimpleChanges } from '@angular/core';
@@ -51,7 +51,7 @@ declare var JSONPath: any;
 export class addElectronicDocumentComponent implements OnInit, OnChanges {
   activedNode: NzTreeNode;
   defaultFileLists: any[] = []
-  policyInfo: any = []
+  policyInfo: PolicyInfo
   currentPolicy: any = 'default'
   policyLists: any[] = []
   disableChangePolicy: boolean = false
@@ -87,12 +87,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   activeNode(data: NzFormatEmitEvent): void {
     if (data.node.origin.type == 'file_type') {
       this.activedNode = data.node;
-    }
-    this.getWholePath()
+      this.getWholePath()
+    }    
   }
 
   //切换文件策略，次方法不会根据jsonData中的文件，吧文件初始化进policy的json里           
-  changePolicy(e) {
+  changePolicy() {
     let res = this.policyLists.find(policy => policy.policy.code == this.currentPolicy)
     this.activedNode = undefined
     if (res) {
@@ -181,7 +181,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    */
   uploadFinish(e) {
     let storagePath = e.data.storagePath.split('\\')
-    let file: any = {
+    let file: FileType_File = {
       checksum_type: 'md5',
       size: e.size,
       name: e.name,
@@ -192,7 +192,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
     }
     if (this.currentPolicy != 'default') {
-      let fileType = this.findFileType()
+      let fileType : FileType = this.findFileType()
       fileType.fileLists = fileType.fileLists ? _.castArray(fileType.fileLists) : []
       file.seq = fileType.fileLists.length + 1
       file.property = [
@@ -230,18 +230,15 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.metadataSchemeId && this.jsonMetadataTemplate) {
       this.disableChangePolicy = false
-      if (!Array.isArray(this.jsonMetadataTemplate.record.block)) {
-        this.fileJsonPath = "$.record.block"
-      } else {
-        this.fileJsonPath = "$.record.block[?(@.name=='电子文件')]"
-      }
+      this.fileJsonPath = !Array.isArray(this.jsonMetadataTemplate.record.block) ? "$.record.block" : 
+      "$.record.block[?(@.name=='电子文件')]"    
       this.getPolicyInfo()
     }
   }
 
   //---------------------util方法------------
   //吧policy的json格式化成tree
-  formatPoolicyInfo(info, level, needInitFile?) {
+  formatPoolicyInfo(info, level:number, needInitFile?:boolean):void {
     info.children = []
     if (info.category) {
       info.category = info.category ? _.castArray(info.category) : []
@@ -259,9 +256,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         c.key = this.guid()
         if (needInitFile) {
           let fileLists = this.findBlockByNameAndLevel(info.name, level)
-          if (fileLists) {
-            c.fileLists = fileLists
-          }
+          if (fileLists) c.fileLists = fileLists
         }
       })
       info.children = info.children.concat(info.file_type)
@@ -274,7 +269,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   //根据block名和层级寻找block        
   //吧json里的file集合取出来放进对应的policy的json里    
   //返回block的文件集合  
-  findBlockByNameAndLevel(name, level) {
+  findBlockByNameAndLevel(name, level):FileType_File[] | false {
     let block_entity
     let file_block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     file_block = file_block[0].value
@@ -298,7 +293,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    * 根据key找到文件资料节点
    * @param key 节点的key,不传时默认查当前节点的key
    */
-  findFileType(key?) {
+  findFileType(key? : string): FileType {
     if (!key) key = this.activedNode.origin.key
     let category = undefined
     let findCategoryFn = (data?) => {
@@ -320,7 +315,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   //生产随机key
-  guid() {
+  guid() : string{
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = Math.random() * 16 | 0,
         v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -329,7 +324,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   //把policyInfo的children转成block
-  formatServicePolicyInfo(info) {
+  formatServicePolicyInfo(info) : void{
     info.children.forEach(child => {
       info.block = info.block || []
       if (child.type == 'category') {
@@ -356,7 +351,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   //从当前路径开始获取到根节点的路径集合
-  getWholePath() {
+  getWholePath() : string {
     let path = ''
     let parent = this.activedNode
     while (parent.getParentNode()) {
@@ -373,5 +368,42 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 }
 
+interface PolicyInfo {
+  version_no? : string;
+  code? : string;
+  children : Category[] | FileType[]
+}
+//-----------------------file_type类型--------------------------
+interface FileType {
+  type : 'file_type';
+  isLeaf : boolean 
+  key : string 
+  file_name : string 
+  fileLists : FileType_File[]
+}
 
-
+interface FileType_File {
+  checksum_type? : 'md5'
+  size? : number
+  checksum? : string
+  format? : string 
+  creation_date? : string
+  modify_date? : string
+  url? : string 
+  property? : File_Property[]
+  seq? : number
+  name? : string 
+}
+interface File_Property {
+  name : "file_type"
+  title : "材料名称"
+  value : string 
+}
+//---------------------------category类型--------------------------
+interface Category {
+  type : "category"
+  name : string 
+  isLeaf : boolean
+  key : string
+  children : Category[] | FileType[]
+}
