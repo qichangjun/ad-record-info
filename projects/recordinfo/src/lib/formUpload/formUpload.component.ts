@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output,OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { NzNotificationService } from 'ng-zorro-antd';
 @Component({
@@ -6,14 +6,14 @@ import { NzNotificationService } from 'ng-zorro-antd';
     templateUrl: './formUpload.component.html',
     styleUrls: ['./formUpload.component.scss'],
 })
-export class FormUploadComponent implements OnInit ,OnChanges{
+export class FormUploadComponent implements OnInit, OnChanges {
     public uploader: FileUploader = new FileUploader({});;
     @Input() disabledUpload: any = false
     @Input() attrName: any;
     @Input() uploadUrl: string;
     @Input() additionalParams: any = {};
     @Input() updataDetail: any
-
+    @Input() relativePath:any
     @Input() ApiUrl: any
     @Input() baseUrl: string
     @Input() AuthenticationService: any
@@ -22,24 +22,24 @@ export class FormUploadComponent implements OnInit ,OnChanges{
 
     constructor(
         private notification: NzNotificationService,
-    ) {        
-        if (!this.baseUrl || !this.ApiUrl) return        
-        
+    ) {
+        if (!this.baseUrl || !this.ApiUrl) return
+
     }
 
     ngOnInit() {
-       
+
 
 
     }
 
-    ngOnChanges(){
-        if (this.baseUrl && this.ApiUrl){
+    ngOnChanges() {
+        if (this.baseUrl && this.ApiUrl) {
             let url
             this.uploadUrl == 'importRecord' ? url = 'importRecord' : url = 'upload'
             this.uploader.setOptions({
                 autoUpload: true,
-                url: this.baseUrl + this.ApiUrl[url],   
+                url: this.baseUrl + this.ApiUrl[url],
                 // url: '/ermsapi/resource/upload_file',
                 headers: [
                     { name: 'accessToken', value: this.AuthenticationService.getAccessToken() }
@@ -51,7 +51,7 @@ export class FormUploadComponent implements OnInit ,OnChanges{
                 for (let key in this.additionalParams) {
                     this.uploader.options.additionalParameter[key] = this.additionalParams[key]
                 }
-                this.uploader.options.additionalParameter['relativePath'] = '/' + this.attrName + '/' + item._file.name
+                this.uploader.options.additionalParameter['relativePath'] =this.relativePath
             }
             this.uploader.onSuccessItem = (item, res) => {
                 if (res) {
