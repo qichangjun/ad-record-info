@@ -162,8 +162,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         format : e.data.contentType,
         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-        'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]               
-      }      
+        'url': 'local:' + e.data.storagePath
+        // 'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
+        }      
       console.log(file.url)
       if (this.currentPolicy != 'default'){
         let fileType = this.findFileType()
@@ -332,16 +333,19 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     //从当前路径开始获取到根节点的路径集合
     getWholePath(){
       let path = ''
+      let relativePath = ''
       let parent = this.activedNode
       while (parent.getParentNode()){
         parent = parent.getParentNode() 
         if (parent.isLeaf){
+          relativePath = '/' + parent.origin.name+relativePath
           path = path + '/' + parent.origin.file_name
         }else{
+          relativePath = '/' + parent.origin.name +relativePath
           path = path + '/' + parent.origin.name
         }                        
       }
-      this.relativePath=path
+      this.relativePath = relativePath
       path = path.split('/').reverse().join('\\')      
       return path 
     }
