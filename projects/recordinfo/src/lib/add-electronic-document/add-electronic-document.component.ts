@@ -156,6 +156,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    * 只有文件策略不是默认策略时，需要生成file的property
    */
   uploadFinish(e) {
+    console.log(this.currentPolicy)
     // let storagePath = e.data.storagePath.split('\\')
     let file: any = {
       checksum_type: 'md5',
@@ -180,8 +181,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         }
       ]
       fileType.fileLists.push(file)
+      console.log(fileType.fileLists)
     } else {
       this.defaultFileLists.push(file)
+      console.log(this.defaultFileLists)
     }
   }
   /**
