@@ -43,7 +43,7 @@
             </li>
         </ul>
         <form-upload [hidden]="!activedNode && currentPolicy != 'default'" [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
-        [AuthenticationService]="AuthenticationService" 
+        [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" 
         (uploadFinish)="uploadFinish($event)"></form-upload>
   </div>
 

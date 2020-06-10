@@ -30,6 +30,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     policyLists : any[] = []
     disableChangePolicy : boolean = false 
     fileJsonPath : string = ''
+    relativePath: any//上传时候的relativePath
     @Input() id : string //record的id
     @Input() environmentBaseUrl : string
     @Input() objectPath : string 
@@ -340,6 +341,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           path = path + '/' + parent.origin.name
         }                        
       }
+      this.relativePath=path
       path = path.split('/').reverse().join('\\')      
       return path 
     }
