@@ -68,6 +68,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     //切换文件策略，次方法不会根据jsonData中的文件，吧文件初始化进policy的json里           
     changePolicy(e){            
       let res  = this.policyLists.find(policy=>policy.policy.code == this.currentPolicy)
+      this.activedNode = undefined
       if (res){
         let policyInfo = res          
         this.formatPoolicyInfo(policyInfo.policy,0,false)
