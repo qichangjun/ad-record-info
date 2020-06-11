@@ -14,35 +14,45 @@
             {{policy.policy.name}}
         </mat-radio-button>
        
-    </mat-radio-group>    
+    </mat-radio-group>  
+    {{currentPolicy}}  
+    {{activedNode}}
   </div>
   <div class="select--node--upload--box">
       <div class="head">请选择节点上传附件</div>
-      <nz-tree *ngIf="currentPolicy!='currentPolicy'" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
+      <nz-tree *ngIf="currentPolicy!='default'"
+      nzDraggable
+      nzBlockNode
+      [nzBeforeDrop]="beforeDrop"
+       [nzData]="policyInfo.children" [nzExpandAll]="true"
+       (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
           <ng-template #nzTreeTemplate let-node>
             <span class="custom-node" [class.active]="activedNode?.key === node.key">
-              <span *ngIf="!node.isLeaf" >                   
+              <span *ngIf="node.origin.type == 'category'" >                      
                 <span class="folder-name">{{ node.origin.name }}</span>
               </span>
-              <div *ngIf="node.isLeaf" >
-                <span class="file-name">{{ node.origin.file_name }}</span>
-                    <ul class="file--list--box">
-                      <li *ngFor="let file of node.origin.fileLists;let i = index ">
-                        <a (click)="previewDoc(file.url)">{{file.name}}</a>
-                        <span (click)="deleteFile(i,node.origin.key)" class="ti-trash"></span>
-                      </li>
-                    </ul>
+              <div *ngIf="node.origin.type == 'file_type'" >   
+                  (这里给个附件类型的图标)               
+                <span class="file-name">{{ node.origin.file_name }}</span>                  
               </div>
+              <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
+                
+                <ul class="file--list--box">
+                  <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
+                  <span (click)="deleteFile(node)" class="ti-trash">删除</span>
+                </ul>
+              </div>
+            
             </span>
           </ng-template>
-        </nz-tree>       
-        <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
-          <li *ngFor="let file of defaultFileLists;let i = index ">
-              <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
-              <span (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
-          </li>
+      </nz-tree>       
+      <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
+        <li *ngFor="let file of defaultFileLists;let i = index ">
+            <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
+            <span (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
+        </li>
       </ul>
-        <form-upload [hidden]="!activedNode && currentPolicy != 'default'" [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
+        <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
         [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" 
         (uploadFinish)="uploadFinish($event)"></form-upload>
   </div>

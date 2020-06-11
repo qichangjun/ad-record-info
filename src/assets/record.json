@@ -12,27 +12,27 @@
               {
                 "name": "archives_name",
                 "title": "档案馆名称",
-                "content": "1"
+                "content": "11"
               },
               {
                 "name": "archives_code",
                 "title": "档案馆代码",
-                "content": "1"
+                "content": "11"
               },
               {
                 "name": "archival_id",
                 "title": "档号",
-                "content": "1"
+                "content": "11"
               },
               {
                 "name": "fonds_id",
                 "title": "全宗号",
-                "content": "111"
+                "content": "11"
               },
               {
                 "name": "item_code",
                 "title": "件号",
-                "content": "1"
+                "content": "11"
               },
               {
                 "name": "archive_1st_category",
@@ -61,22 +61,22 @@
               {
                 "name": "security_class",
                 "title": "密级",
-                "content": ""
+                "content": "UM"
               },
               {
                 "name": "released_network",
                 "title": "发布网段",
-                "content": ""
+                "content": "04"
               },
               {
                 "name": "open_class",
                 "title": "开放状态",
-                "content": ""
+                "content": "A"
               },
               {
                 "name": "decryption_status",
                 "title": "解密标识",
-                "content": ""
+                "content": "Y"
               },
               {
                 "name": "secrecy_period",
@@ -90,7 +90,7 @@
               {
                 "name": "title",
                 "title": "题名",
-                "content": "1"
+                "content": "111"
               },
               {
                 "name": "description",
@@ -100,7 +100,7 @@
               {
                 "name": "file_summary",
                 "title": "提要",
-                "content": ""
+                "content": "11"
               },
               {
                 "name": "annotation",
@@ -115,17 +115,17 @@
               {
                 "name": "author",
                 "title": "责任者",
-                "content": "1"
+                "content": "11"
               },
               {
                 "name": "fonds_unit",
                 "title": "立档单位",
-                "content": "1"
+                "content": "11"
               },
               {
                 "name": "retention_period",
                 "title": "保管期限",
-                "content": "C"
+                "content": "D30"
               },
               {
                 "name": "filed_by",
@@ -140,12 +140,12 @@
               {
                 "name": "file_year",
                 "title": "年度",
-                "content": "2022"
+                "content": "111"
               },
               {
                 "name": "carrier_type",
                 "title": "载体类型",
-                "content": "01"
+                "content": "02"
               },
               {
                 "name": "material_num",
@@ -155,12 +155,12 @@
               {
                 "name": "digitized_status",
                 "title": "数字化状态",
-                "content": "02"
+                "content": "03"
               },
               {
                 "name": "exist_document",
                 "title": "是否有原文",
-                "content": "true"
+                "content": "false"
               },
               {
                 "name": "physical_archive_location",
@@ -264,71 +264,88 @@
         ]
       },
       {
-        "policy_version": "5",
         "name": "电子文件",
         "block": [
           {
             "name": "1111",
-            "block": [],
             "file": [
               {
                 "checksum_type": "md5",
                 "size": 10921,
-                "name": "00v1 (1) (1) (1) (1).png",
+                "name": "00v1 (2) (1).png",
                 "checksum": "c623edff83c4c22146297b5602ea34b9",
                 "format": "png",
-                "creation_date": "2020-06-03T23:41",
-                "modify_date": "2020-06-03T23:41",
-                "url": "local:\\0dd0b021-0b83-4ddb-a72d-b3c9d3514f87\\00v1 (1) (1) (1) (1).png",
+                "creation_date": "2020-06-11T18:22",
+                "modify_date": "2020-06-11T18:22",
+                "url": "local:\\ae951c1d-8ad4-4ab1-99a2-f6785ff1e92d\\1111\\00v1 (2) (1).png",
                 "seq": 1,
                 "property": [
                   {
                     "name": "file_type",
                     "title": "材料名称",
-                    "value": "2222"
+                    "value": "1111"
                   }
                 ]
               },
               {
                 "checksum_type": "md5",
                 "size": 10921,
-                "name": "00v1 (1) (1) (1) (2).png",
+                "name": "00v1 (2) (2).png",
                 "checksum": "c623edff83c4c22146297b5602ea34b9",
                 "format": "png",
-                "creation_date": "2020-06-03T23:41",
-                "modify_date": "2020-06-03T23:41",
-                "url": "local:\\f7b4b383-82cf-48b8-b733-897c4d552197\\00v1 (1) (1) (1) (2).png",
+                "creation_date": "2020-06-11T18:22",
+                "modify_date": "2020-06-11T18:22",
+                "url": "local:\\9edf7c26-8edd-42f9-9f05-78b36c8c8fb4\\1111\\00v1 (2) (2).png",
                 "seq": 2,
                 "property": [
                   {
                     "name": "file_type",
                     "title": "材料名称",
-                    "value": "2222"
+                    "value": "1111"
                   }
                 ]
               },
               {
                 "checksum_type": "md5",
                 "size": 10921,
-                "name": "00v1 (1) (1) (1).png",
+                "name": "00v1 (2) (3).png",
                 "checksum": "c623edff83c4c22146297b5602ea34b9",
                 "format": "png",
-                "creation_date": "2020-06-03T23:41",
-                "modify_date": "2020-06-03T23:41",
-                "url": "local:\\c75dbf25-0c5a-4e0b-b2b9-d05501d1aa00\\00v1 (1) (1) (1).png",
+                "creation_date": "2020-06-11T18:22",
+                "modify_date": "2020-06-11T18:22",
+                "url": "local:\\7461e52d-2642-4c1c-8a66-7a3707e01a4a\\1111\\00v1 (2) (3).png",
                 "seq": 3,
                 "property": [
                   {
                     "name": "file_type",
                     "title": "材料名称",
-                    "value": "2222"
+                    "value": "1111"
+                  }
+                ]
+              },
+              {
+                "checksum_type": "md5",
+                "size": 10921,
+                "name": "00v1 (2) (4).png",
+                "checksum": "c623edff83c4c22146297b5602ea34b9",
+                "format": "png",
+                "creation_date": "2020-06-11T18:22",
+                "modify_date": "2020-06-11T18:22",
+                "url": "local:\\67b010ea-931b-4493-a30f-acc045164fcd\\1111\\00v1 (2) (4).png",
+                "seq": 4,
+                "property": [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": "1111"
                   }
                 ]
               }
             ]
           }
         ],
-        "policy": "cacacacacaca"
+        "policy": "cacacacacaca",
+        "policy_version": "5"
       }
     ],
     "metadata_scheme_code": "DZZL-RECORD"
