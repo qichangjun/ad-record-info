@@ -1,8 +1,8 @@
 <div class="add--ele--doc--wrap">
   <div class="add--ele--doc--radio--box">
     <div class="head">请选择文件清单</div>
-    <!-- [disabled]="disableChangePolicy" -->
-    <mat-radio-group  aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
+    
+    <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
     (change)="changePolicy()">
       <mat-radio-button class="example-radio-button"
           [value]="'default'"
@@ -20,7 +20,7 @@
   <div class="select--node--upload--box">
       <div class="head">请选择节点上传附件</div>
       <nz-tree *ngIf="currentPolicy!='default'"
-      nzDraggable
+      [nzDraggable]="!disableChangePolicy"
       nzBlockNode
       [nzBeforeDrop]="beforeDrop"
        [nzData]="policyInfo.children" [nzExpandAll]="true"
