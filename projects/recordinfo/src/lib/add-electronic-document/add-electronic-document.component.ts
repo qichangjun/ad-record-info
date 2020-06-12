@@ -143,10 +143,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       if (res) {
         policyInfo = res
         this.currentPolicy = policyInfo.policy.code
-        this.formatPoolicyInfo(policyInfo.policy, 0, true)
-        console.log(policyInfo.policy)
+        this.formatPoolicyInfo(policyInfo.policy, 0, true)        
         this.policyInfo = policyInfo.policy
-      } else {
+      } else {        
         this.setToDefaultPolicy()
       }
     }
@@ -266,7 +265,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         if (needInitFile) {
           let children = this.findBlockByNameAndLevel(info.name, level)                          
           if (children) {
-            children.forEach(file=>{
+            children.forEach(file=>{              
               file.key = this.guid()
               file.type = 'file'
               file.isLeaf = true 
@@ -300,8 +299,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         })
       }
     }
-    fn(file_block, 0)
-    return block_entity ? _.castArray(block_entity.file) : []
+    fn(file_block, 0)    
+    return block_entity && block_entity.file ? _.castArray(block_entity.file) : []
   }
 
 

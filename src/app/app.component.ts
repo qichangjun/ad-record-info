@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     res.jsonMetadata = JSON.parse(res.jsonMetadata)
     console.log(res.jsonMetadata)
     this.jsonMetadataTemplate = res.jsonMetadata
-    this.metadataSchemeId = "f045c1fa-1d2e-4b15-b6b0-02291d0b0d65"
+    this.metadataSchemeId = "202f381e-722c-4cd1-902c-7521156733cc"
     this.showTemplateXml = res.showTemplateXml
   
   }
