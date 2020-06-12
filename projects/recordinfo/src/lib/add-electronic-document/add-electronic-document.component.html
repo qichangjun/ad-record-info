@@ -1,7 +1,8 @@
 <div class="add--ele--doc--wrap">
   <div class="add--ele--doc--radio--box">
     <div class="head">请选择文件清单</div>
-    <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
+    <!-- [disabled]="disableChangePolicy" -->
+    <mat-radio-group  aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
     (change)="changePolicy()">
       <mat-radio-button class="example-radio-button"
           [value]="'default'"
@@ -15,8 +16,6 @@
         </mat-radio-button>
        
     </mat-radio-group>  
-    {{currentPolicy}}  
-    {{activedNode}}
   </div>
   <div class="select--node--upload--box">
       <div class="head">请选择节点上传附件</div>
@@ -31,15 +30,15 @@
               <span *ngIf="node.origin.type == 'category'" >                      
                 <span class="folder-name">{{ node.origin.name }}</span>
               </span>
-              <div *ngIf="node.origin.type == 'file_type'" >   
-                  (这里给个附件类型的图标)               
-                <span class="file-name">{{ node.origin.file_name }}</span>                  
+              <div *ngIf="node.origin.type == 'file_type'" >                       
+                <span class="fa fa-paperclip"></span>
+                <span class="file-name">{{ node.origin.file_name }}</span>                       
               </div>
               <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
                 
                 <ul class="file--list--box">
                   <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
-                  <span (click)="deleteFile(node)" class="ti-trash">删除</span>
+                  <span (click)="deleteFile(node)" class="ti-trash"></span>
                 </ul>
               </div>
             

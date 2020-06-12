@@ -36,9 +36,10 @@ export class AppComponent implements OnInit {
 
   async getRecordInfo() {
     let res = await this._AppService.getRecordInfo()
-    let record_json = await this._AppService.getRecordJson()
+    // let record_json = await this._AppService.getRecordJson()
     // console.log(record_json)
-    res.jsonMetadata = record_json
+    res.jsonMetadata = JSON.parse(res.jsonMetadata)
+    console.log(res.jsonMetadata)
     this.jsonMetadataTemplate = res.jsonMetadata
     this.metadataSchemeId = "f045c1fa-1d2e-4b15-b6b0-02291d0b0d65"
     this.showTemplateXml = res.showTemplateXml

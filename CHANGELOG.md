@@ -1,6 +1,9 @@
 # Recordinfo
 record根据xml数据，格式化成可修改的表单
 
+## 1.3.4
+    添加电子文件可拖拽功能
+
 ## 1.3.31
     上传的relativePath问题，切换文件策略初始化activeNode
 

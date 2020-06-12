@@ -348,9 +348,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           name: child.name,
           children: child.children || []
         })
-      } else {
-        if (child.children) {          
-          info.file = child.children ? _.cloneDeep(_.castArray(child.children)) : []
+      } else if (child.type == 'file_type'){
+        child.children = child.children ? _.castArray(child.children) : []
+        if (child.children.length > 0) {          
+          info.file = _.cloneDeep(child.children) 
           info.file.forEach((file)=>{            
             delete file.level
             delete file.isLeaf
@@ -394,13 +395,17 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
-    // if insert node into another node, wait 1s        
-    if (!arg.node.parentNode || arg.node.parentNode.origin.type != 'file_type') {
+    // if insert node into another node, wait 1s   
+    if (arg.node.origin.type == 'file' && (arg.pos == 1 || arg.pos == -1)){
+      return of(true)
+    }
+    else if ((arg.node.origin.type == 'file_type' && arg.pos == 0)){      
+    //  || (arg.node.parentNode && arg.node.parentNode.origin.type == 'file_type'))  {
+      return of(true)
+    }else{
       alert('只能将文件放入附件节点')
       return of(false)
-    } else {
-      return of(true);
-    }
+    }   
   }
 }
 
