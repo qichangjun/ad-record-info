@@ -102,7 +102,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     let res = this.policyLists.find(policy => policy.policy.code == this.currentPolicy)
     this.activedNode = undefined
     if (res) {
-      let policyInfo = res
+      let policyInfo = _.cloneDeep(res)
       this.formatPoolicyInfo(policyInfo.policy, 0, false)
       this.policyInfo = policyInfo.policy
     } else {
@@ -141,7 +141,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         return policy.policy.code == policy_code && policy_version == policy.policy.version_no
       })
       if (res) {
-        policyInfo = res
+        policyInfo = _.cloneDeep(res)
         this.currentPolicy = policyInfo.policy.code
         this.formatPoolicyInfo(policyInfo.policy, 0, true)        
         this.policyInfo = policyInfo.policy
@@ -404,7 +404,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }else{
       alert('只能将文件放入附件节点')
       return of(false)
-    }   
+    }  
   }
 }
 
