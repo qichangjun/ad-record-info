@@ -12,7 +12,7 @@ export class AppService {
     let params = new URLSearchParams();
     let headers = new Headers()
     headers.append('accessToken',this.getAccessToken())         
-    params.set('id','bf833649286053888')  
+    params.set('id','bf834765657735168')  
     params.set('collectionWay','record')
     params.set('actionType','1')
     params.set('sceneCode','erms_zljh')      

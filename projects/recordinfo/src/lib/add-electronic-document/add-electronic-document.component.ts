@@ -57,7 +57,7 @@ declare var JSONPath: any;
 export class addElectronicDocumentComponent implements OnInit, OnChanges {
   activedNode: NzTreeNode;
   defaultFileLists: any[] = []
-  policyInfo: PolicyInfo
+  policyInfo: PolicyInfo = {children:[]}
   currentPolicy: any = 'default'
   policyLists: any[] = []
   disableChangePolicy: boolean = false
@@ -119,7 +119,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     if (block[0].value.file) {
-      this.defaultFileLists = block[0].value.file
+      let files = block[0].value.file ? _.castArray(block[0].value.file) : []
+      this.defaultFileLists = files
     }
   }
 
@@ -294,6 +295,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         block_entity = _file_block
       } else {
         if (!_file_block.block) return
+        _file_block.block = _file_block.block ? _.castArray(_file_block.block) : []
         _file_block.block.forEach(c => {
           return fn(c, self_level + 1)
         })
