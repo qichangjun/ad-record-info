@@ -21,6 +21,7 @@
       <div class="head">请选择节点上传附件</div>
       <nz-tree *ngIf="currentPolicy!='default'"
       [nzDraggable]="!disableChangePolicy"
+      (nzOnDragEnd)="dragEnd($event)"
       nzBlockNode
       [nzBeforeDrop]="beforeDrop"
        [nzData]="policyInfo.children" [nzExpandAll]="true"

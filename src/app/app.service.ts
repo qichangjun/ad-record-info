@@ -12,7 +12,7 @@ export class AppService {
     let params = new URLSearchParams();
     let headers = new Headers()
     headers.append('accessToken',this.getAccessToken())         
-    params.set('id','bf834765657735168')  
+    params.set('id','bf834809487163392')  
     params.set('collectionWay','record')
     params.set('actionType','1')
     params.set('sceneCode','erms_zljh')      
@@ -44,7 +44,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return '64fea3c77d02c0f6896f6d7418fedb66'
+    return '0962f3899cb9650eb5d29c3e3d687038'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {

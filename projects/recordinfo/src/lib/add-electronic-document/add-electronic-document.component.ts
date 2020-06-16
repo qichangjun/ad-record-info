@@ -26,7 +26,7 @@
  *   previewDoc -- 预览文件.                                                                     *
  *   formatPoolicyInfo --  将policy的json格式化成recordinfo的json中需要的格式.                      *
  *   findBlockByNameAndLevel -- 根据block的名称和层级找到指定的block对象                                *
- *   findFileType -- 根据key找到文件资料节点.                                                      *
+ *   findFileType -- 根据key找到相关节点的父节点.                                                      *
  *   guid -- 生产随机的key.                                                                          *
  *   formatServicePolicyInfo -- 将children转换成block                                            *
  *   getWholePath -- 获取从当前file-type节点到根路径的path                                             *
@@ -188,7 +188,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           "value": this.activedNode.origin.file_name
         }
       ]     
-      this.activedNode.addChildren([file])    
+      this.activedNode.addChildren([file]) 
+      this.activedNode.update()   
     } else {
       this.defaultFileLists.push(file)
     }
@@ -204,7 +205,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })
     if (!res) return
     if (this.currentPolicy != 'default') {
-      let clone_policyInfo = _.cloneDeep(this.policyInfo)
+      let clone_policyInfo = _.cloneDeep(this.policyInfo)      
       this.formatServicePolicyInfo(clone_policyInfo)
       res[0].value.block = clone_policyInfo.block
       res[0].value.policy = this.policyInfo.code
@@ -234,6 +235,40 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     objectId = objectId.replace(/\\/g, '/')
     preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&recordId=${this.id}`
     // this.router.navigate(['/previewDoc'], { queryParams: { objectId: res } })
+  }
+
+  //拖拽事件开始前的校验
+  //只能拖拽到file节点的上下级和file_type节点内
+  // po=0 为节点内，-1,1分别是下级和上级
+  beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
+    // if insert node into another node, wait 1s   
+    if (arg.node.origin.type == 'file' && (arg.pos == 1 || arg.pos == -1)){
+      return of(true)
+    }
+    else if ((arg.node.origin.type == 'file_type' && arg.pos == 0)){      
+    //  || (arg.node.parentNode && arg.node.parentNode.origin.type == 'file_type'))  {
+      return of(true)
+    }else{
+      alert('只能将文件放入附件节点')
+      return of(false)
+    }  
+  }
+
+  //拖拽事件结束后，删除原本的节点内容，貌似为插件自带的bug,所以需要在这里手动删除一下
+  dragEnd(event:NzFormatEmitEvent){
+    let file_types : any = this.findFileType(event.dragNode.key)
+    let key 
+    if (event.node.origin.type == 'file_type'){
+      key = event.node.key      
+    }else if (event.node.origin.type == 'file'){
+      key = event.node.getParentNode().key
+    }
+    file_types = file_types.find((file_type)=>file_type.key != key)
+    if (file_types){
+      _.remove(file_types.children,(child)=>{
+        return child.key == event.dragNode.key
+      })
+    }
   }
 
   ngOnChanges() {
@@ -310,20 +345,20 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    * 根据key找到文件资料节点
    * @param key 节点的key,不传时默认查当前节点的key
    */
-  findFileType(key?: string): FileType {
+  findFileType(key?: string): any[] {
     if (!key) key = this.activedNode.origin.key
-    let category = undefined
+    let category = []
     let findCategoryFn = (data?) => {
       if (!data) data = this.policyInfo
-      let row = data.children.find(c => c.key == key)
-      if (row) {
-        category = row
-        return
-      } else {
+      if(data.children){
+        let row = data.children.find(c => c.key == key)
+        if (row) {
+          category.push(data)        
+        } 
         data.children.forEach((c) => {
           findCategoryFn(c)
         })
-      }
+      }            
     }
     findCategoryFn()
     if (category) {
@@ -349,16 +384,24 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           name: child.name,
           children: child.children || []
         })
-      } else if (child.type == 'file_type'){
+      } else if (child.type == 'file_type'){        
         child.children = child.children ? _.castArray(child.children) : []
-        if (child.children.length > 0) {          
-          info.file = _.cloneDeep(child.children) 
-          info.file.forEach((file)=>{            
+        if (child.children.length > 0) {           
+          let file_lists =  _.cloneDeep(child.children) 
+          file_lists.forEach((file)=>{            
             delete file.level
             delete file.isLeaf
             delete file.key 
             delete file.type
+            file.property = [
+              {
+                "name": "file_type",
+                "title": "材料名称",
+                "value": child.file_name
+              }
+            ]  
           })
+          info.file = info.file ? info.file.concat(file_lists) : file_lists         
         }
       }
       if (info.block.length == 0) delete info.block
@@ -395,19 +438,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     return path
   }
 
-  beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
-    // if insert node into another node, wait 1s   
-    if (arg.node.origin.type == 'file' && (arg.pos == 1 || arg.pos == -1)){
-      return of(true)
-    }
-    else if ((arg.node.origin.type == 'file_type' && arg.pos == 0)){      
-    //  || (arg.node.parentNode && arg.node.parentNode.origin.type == 'file_type'))  {
-      return of(true)
-    }else{
-      alert('只能将文件放入附件节点')
-      return of(false)
-    }  
-  }
+  
 }
 
 interface PolicyInfo {
