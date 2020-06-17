@@ -173,6 +173,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
       'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
       'url': 'local:' + e.data.storagePath
+
       // 'url': 'local:\\' + storagePath[1] + '\\' + this.getWholePath() + storagePath[2]
     }
     if (this.currentPolicy != 'default') {
@@ -191,6 +192,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.activedNode.addChildren([file]) 
       this.activedNode.update()   
     } else {
+      file.seq = this.defaultFileLists.length + 1
       this.defaultFileLists.push(file)
     }
   }
