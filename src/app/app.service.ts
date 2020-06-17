@@ -12,10 +12,10 @@ export class AppService {
     let params = new URLSearchParams();
     let headers = new Headers()
     headers.append('accessToken',this.getAccessToken())         
-    params.set('id','bf834809487163392')  
+    params.set('id','bf834856108425216')  
     params.set('collectionWay','record')
     params.set('actionType','1')
-    params.set('sceneCode','erms_zljh')      
+    params.set('sceneCode','zljh')      
     return this.http.get('/ermsapi/record/get_record_details',{ headers:headers,search: params })
                     .toPromise()
                     .then(res =>{
@@ -44,7 +44,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return '0962f3899cb9650eb5d29c3e3d687038'
+    return 'eef5f1ba56570d42a1f6d4e11f7edfb9'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {

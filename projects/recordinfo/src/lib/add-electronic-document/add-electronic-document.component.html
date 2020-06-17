@@ -20,7 +20,7 @@
   <div class="select--node--upload--box">
       <div class="head">请选择节点上传附件</div>
       <nz-tree *ngIf="currentPolicy!='default'"
-      [nzDraggable]="!disableChangePolicy"
+      [nzDraggable]="true"
       (nzOnDragEnd)="dragEnd($event)"
       nzBlockNode
       [nzBeforeDrop]="beforeDrop"

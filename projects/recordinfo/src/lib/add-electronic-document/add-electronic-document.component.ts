@@ -299,14 +299,25 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         // c.isLeaf = false
         c.key = this.guid()
         if (needInitFile) {
-          let children = this.findBlockByNameAndLevel(info.name, level)                          
+          let children = this.findBlockByNameAndLevel(info.name, level)                                   
           if (children) {
             children.forEach(file=>{              
               file.key = this.guid()
               file.type = 'file'
               file.isLeaf = true 
+              if (!Array.isArray(file.property)){
+                file.property = [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": file.property['content']
+                  }
+                ] 
+              }          
             })
-            c.children = children 
+            c.children =  children.filter(file=>{                                       
+              return file.property[0].value == c.file_name 
+            })           
           }
         }
       })      
