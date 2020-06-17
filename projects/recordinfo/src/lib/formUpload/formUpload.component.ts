@@ -52,6 +52,7 @@ export class FormUploadComponent implements OnInit, OnChanges {
                 for (let key in this.additionalParams) {
                     this.uploader.options.additionalParameter[key] = this.additionalParams[key]
                 }
+                if(!this.relativePath)this.relativePath=''
                 this.uploader.options.additionalParameter['relativePath'] =this.relativePath
             }
             this.uploader.onSuccessItem = (item, res) => {
