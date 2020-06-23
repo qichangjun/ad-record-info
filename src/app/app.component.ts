@@ -36,13 +36,14 @@ export class AppComponent implements OnInit {
 
   async getRecordInfo() {
     let res = await this._AppService.getRecordInfo()
-    // let record_json = await this._AppService.getRecordJson()
-    // console.log(record_json)
-    res.jsonMetadata = JSON.parse(res.jsonMetadata)    
+    let record_json = await this._AppService.getRecordJson()
+    
+    // res.jsonMetadata = JSON.parse(res.jsonMetadata)    
+    res.jsonMetadata = record_json
     this.jsonMetadataTemplate = res.jsonMetadata
-    this.metadataSchemeId = "f045c1fa-1d2e-4b15-b6b0-02291d0b0d65"
+    this.metadataSchemeId = res.metadataSchemeId
     this.showTemplateXml = res.showTemplateXml
-  
+    
   }
 
   async editRecord() {
@@ -53,6 +54,7 @@ export class AppComponent implements OnInit {
     }
     await this.elecDocument.saveFileInfo(this.info.jsonData)
     await this._AppService.createRecord(this.info.jsonData)
+
     // let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
   }
 

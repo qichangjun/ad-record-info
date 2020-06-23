@@ -11,7 +11,7 @@
  *                                                                                             *
  *                   Start Date : 6月1日, 2020                                                      *
  *                                                                                             *
- *                  Last Update : 6月10日 下午13:46,2020                                             *
+ *                  Last Update : 6月23日 下午12:46,2020                                             *
  *                               Determines                                                    *
  *---------------------------------------------------------------------------------------------*
  *  Functions:                                                                                 *
@@ -25,11 +25,12 @@
  *   deleteFile -- 删除文件.                                                                     *
  *   previewDoc -- 预览文件.                                                                     *
  *   formatPoolicyInfo --  将policy的json格式化成recordinfo的json中需要的格式.                      *
- *   findBlockByNameAndLevel -- 根据block的名称和层级找到指定的block对象                                *
- *   findFileType -- 根据key找到相关节点的父节点.                                                      *
- *   guid -- 生产随机的key.                                                                          *
- *   formatServicePolicyInfo -- 将children转换成block                                            *
- *   getWholePath -- 获取从当前file-type节点到根路径的path                                             *
+ *   findBlockByNameAndLevel -- 根据block的名称和层级找到指定的block对象                             *
+ *   findFileType -- 根据key找到相关节点的父节点.                                                   *
+ *   guid -- 生产随机的key.                                                                       *
+ *   formatServicePolicyInfo -- 将children转换成block                                             *
+ *   getWholePath -- 获取从当前file-type节点到根路径的path                                           *
+ *   setWholePathForEachBlock  --  给电子文件节点开始的block下面所有block添加path路径                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 import { Component, forwardRef, Input, Output, ViewChild, OnInit, OnChanges, EventEmitter, SimpleChanges } from '@angular/core';
@@ -284,11 +285,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
   //---------------------util方法------------
   //吧policy的json格式化成tree
-  formatPoolicyInfo(info, level: number, needInitFile?: boolean): void {
+  formatPoolicyInfo(info, level: number, needInitFile?: boolean,path='/电子文件'): void {
     info.children = info.children ? _.castArray(info.children) : []
     if (info.category) {
       info.category = info.category ? _.castArray(info.category) : []
       info.category.forEach(c => {
+        c.path = path + '/' + c.name 
         c.type = 'category'
         c.key = this.guid()
       })
@@ -301,7 +303,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         // c.isLeaf = false
         c.key = this.guid()
         if (needInitFile) {
-          let children = this.findBlockByNameAndLevel(info.name, level)                                   
+          let children = this.findBlockByNameAndLevel(info.name, level,info.path)                                   
           if (children) {
             children.forEach(file=>{              
               file.key = this.guid()
@@ -326,21 +328,23 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       info.children = info.children.concat(info.file_type)
     }
     info.children.forEach(child => {
-      this.formatPoolicyInfo(child, level + 1, needInitFile)
+      this.formatPoolicyInfo(child, level + 1, needInitFile,child.path)
     });
   }
 
   //根据block名和层级寻找block        
   //吧json里的file集合取出来放进对应的policy的json里    
   //返回block的文件集合  
-  findBlockByNameAndLevel(name, level): FileType_File[] | false {
+  findBlockByNameAndLevel(name, level,path): FileType_File[] | false {
     let block_entity
     let file_block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-    file_block = file_block[0].value
+    file_block = _.cloneDeep(file_block[0].value)
+    this.setWholePathForEachBlock(file_block)
     if (!file_block) return false
     let fn = (_file_block, self_level) => {
-      if (self_level == level && _file_block.name == name) {
-        block_entity = _file_block
+      if (self_level == level && _file_block.name == name && _file_block.path == path) {                
+        block_entity = _.cloneDeep(_file_block) 
+        return 
       } else {
         if (!_file_block.block) return
         _file_block.block = _file_block.block ? _.castArray(_file_block.block) : []
@@ -351,6 +355,17 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
     fn(file_block, 0)    
     return block_entity && block_entity.file ? _.castArray(block_entity.file) : []
+  }
+
+  //给电子文件节点开始的block下面所有block添加path路径
+  setWholePathForEachBlock(file_block,path=''){    
+    file_block.path = path + '/' + file_block.name
+    if (file_block.block){
+      file_block.block = file_block.block ? _.castArray(file_block.block) : []
+      file_block.block.forEach((block)=>{
+        this.setWholePathForEachBlock(block,file_block.path)
+      })
+    }
   }
 
 
@@ -401,11 +416,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         child.children = child.children ? _.castArray(child.children) : []
         if (child.children.length > 0) {           
           let file_lists =  _.cloneDeep(child.children) 
-          file_lists.forEach((file)=>{            
+          file_lists.forEach((file)=>{                        
             delete file.level
             delete file.isLeaf
             delete file.key 
             delete file.type
+            delete file.children 
             file.property = [
               {
                 "name": "file_type",

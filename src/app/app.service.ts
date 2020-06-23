@@ -12,7 +12,7 @@ export class AppService {
     let params = new URLSearchParams();
     let headers = new Headers()
     headers.append('accessToken',this.getAccessToken())         
-    params.set('id','bf834856108425216')  
+    params.set('id','bf835009446936576')  
     params.set('collectionWay','record')
     params.set('actionType','1')
     params.set('sceneCode','zljh')      
@@ -44,7 +44,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return 'eef5f1ba56570d42a1f6d4e11f7edfb9'
+    return '2e81ebd38a305efb6351ec21746c70ac'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {
@@ -127,17 +127,10 @@ export class AppService {
       let params = new URLSearchParams();
       let headers = new Headers()
       headers.set('accessToken', this.getAccessToken())
+      params.set('id','bf834864754982912')
       params.set('actionType','1')
-      params.set('parentId','bf834222922661889')
-      params.set('collectionWay','record')
-      params.set('metadataSchemeId','f045c1fa-1d2e-4b15-b6b0-02291d0b0d65')
-      params.set('licensed','false')
-      params.set('categoryId','bf832999638695936')
-      params.set('year','1993')
-      params.set('categoryCode','DZZL')
-      params.set('versionNo','1')
- 
-      return this.http.post('/ermsapi/record/create_record',
+      params.set('sceneCode','zljh') 
+      return this.http.put('/ermsapi/record/update_record',
         create_info
         , { search: params, headers: headers })
         .toPromise()
