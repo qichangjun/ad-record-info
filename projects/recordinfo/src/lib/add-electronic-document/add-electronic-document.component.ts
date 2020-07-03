@@ -207,7 +207,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    */
   saveFileInfo(jsonMetadata) {
     let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })
-    if (!res) return
+    if (!res || !res[0]) return
     if (this.currentPolicy != 'default') {
       let clone_policyInfo = _.cloneDeep(this.policyInfo)      
       this.formatServicePolicyInfo(clone_policyInfo)

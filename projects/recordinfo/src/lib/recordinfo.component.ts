@@ -566,25 +566,25 @@ export class RecordinfoComponent implements OnInit {
             let result = JSONPath.JSONPath({ path: path, json: jsonData, resultType: 'all' })
             if (result[0]) {
                 //   根据deletePath,去掉json中的被删除文件
-                if (isArray(this.saveEntity[key])) {
-                    //父节点是{file:{name:xx,size:xx}}这种情况
-                    if (result[0].parentProperty == 'file') {
-                        _.remove(result[0].parent[result[0].parentProperty], (file) => {
-                            return file['url'] && this.deletePath.indexOf(file['url']) >= 0
-                        })
-                    } else {
-                        //父节点是{file:[{name:xx,size:xx},{name:}]}情况
-                        if (!Array.isArray(result[0].value.file) && result[0].value.file) {
-                            if (this.deletePath.indexOf(result[0].value.file.url) >= 0) {
-                                delete result[0].value.file
-                            }
-                        } else {
-                            _.remove(result[0].value.file, (file) => {
-                                return file['url'] && this.deletePath.indexOf(file['url']) >= 0
-                            })
-                        }
-                    }
-                }
+                // if (isArray(this.saveEntity[key])) {
+                //     //父节点是{file:{name:xx,size:xx}}这种情况
+                //     if (result[0].parentProperty == 'file') {
+                //         _.remove(result[0].parent[result[0].parentProperty], (file) => {
+                //             return file['url'] && this.deletePath.indexOf(file['url']) >= 0
+                //         })
+                //     } else {
+                //         //父节点是{file:[{name:xx,size:xx},{name:}]}情况
+                //         if (!Array.isArray(result[0].value.file) && result[0].value.file) {
+                //             if (this.deletePath.indexOf(result[0].value.file.url) >= 0) {
+                //                 delete result[0].value.file
+                //             }
+                //         } else {
+                //             _.remove(result[0].value.file, (file) => {
+                //                 return file['url'] && this.deletePath.indexOf(file['url']) >= 0
+                //             })
+                //         }
+                //     }
+                // }
                 if (!this.saveEntity[key]) {
                     result[0].parent[result[0].parentProperty] = this.saveEntity[key]
                     continue
@@ -593,26 +593,26 @@ export class RecordinfoComponent implements OnInit {
                     continue
                 }
                 if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {
-                    if (result[0].parentProperty == 'file') {
-                        result[0].parent[result[0].parentProperty] = _.castArray(result[0].parent[result[0].parentProperty])
-                        this.saveEntity[key].forEach((c, index) => {
-                            delete c.isNew
-                            c.seq = index + 1                           
-                            if (!result[0].parent[result[0].parentProperty].find(file => file.checksum == c.checksum)) {
-                                result[0].parent[result[0].parentProperty].push(c)
-                            }
-                        });
-                    } else {
-                        result[0].value.file = result[0].value.file ? _.castArray(result[0].value.file) : []
-                        this.saveEntity[key].forEach((c, index) => {
-                            // c.type = '电子文件'                            
-                            delete c.isNew
-                            c.seq = index + 1
-                            if (!result[0].value.file.find(file => (c.url && file.url == c.url))) {
-                                result[0].value.file.push(c)
-                            }
-                        });
-                    }
+                    // if (result[0].parentProperty == 'file') {
+                    //     result[0].parent[result[0].parentProperty] = _.castArray(result[0].parent[result[0].parentProperty])
+                    //     this.saveEntity[key].forEach((c, index) => {
+                    //         delete c.isNew
+                    //         c.seq = index + 1                           
+                    //         if (!result[0].parent[result[0].parentProperty].find(file => file.checksum == c.checksum)) {
+                    //             result[0].parent[result[0].parentProperty].push(c)
+                    //         }
+                    //     });
+                    // } else {
+                    //     result[0].value.file = result[0].value.file ? _.castArray(result[0].value.file) : []
+                    //     this.saveEntity[key].forEach((c, index) => {
+                    //         // c.type = '电子文件'                            
+                    //         delete c.isNew
+                    //         c.seq = index + 1
+                    //         if (!result[0].value.file.find(file => (c.url && file.url == c.url))) {
+                    //             result[0].value.file.push(c)
+                    //         }
+                    //     });
+                    // }
                     continue
                 }
                 result[0].parent[result[0].parentProperty] = this.saveEntity[key]
