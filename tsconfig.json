@@ -19,12 +19,20 @@
       "dom"
     ],
     "paths": {
-      "@angular/*": ["node_modules/@angular/*"],
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
       "recordinfo": [
         "dist/recordinfo"
       ],
       "recordinfo/*": [
         "dist/recordinfo/*"
+      ],
+      "ad-ui": [
+        "dist/ad-ui"
+      ],
+      "ad-ui/*": [
+        "dist/ad-ui/*"
       ]
     }
   }

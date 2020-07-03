@@ -1,0 +1,32 @@
+<nz-tree
+#nzTreeComponent
+[nzCheckable]="option.enableCheck"
+[nzData]="option.data"
+(nzClick)="activeNode($event)" 
+(nzExpandChange)="nzCheck($event)"
+>
+<ng-container *ngIf="nzTreeTemplateDiy">
+        <ng-template  #nzTreeTemplate let-node>
+            <ng-template [ngTemplateOutlet]="nzTreeTemplateDiy" 
+                [ngTemplateOutletContext]="{ $implicit: node, origin: node.origin }">
+            </ng-template>
+        </ng-template>
+</ng-container>
+<ng-container *ngIf="!nzTreeTemplateDiy">
+        <ng-template #nzTreeTemplate let-node>
+                <span class="custom-node" [class.active]="activedNode?.key === node.key">
+                  <span *ngIf="!node.isLeaf" >                  
+                    <span class="folder-name">{{ node.title }}</span>                    
+                  </span>
+                  <span *ngIf="node.isLeaf">
+                    
+                    <span class="file-name">{{ node.title }}</span>
+                  </span>
+                </span>
+              </ng-template>
+</ng-container>
+    
+</nz-tree>
+
+
+

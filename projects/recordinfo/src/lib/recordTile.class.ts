@@ -78,6 +78,7 @@ export class Tile {
                 return 
             }
             this.options.selectAttrs = await this.options.getMulModifeProPertyValues(this.options.allowedValuesCode)
+            console.log(this.options.selectAttrs)
             // let res = await this._RecordService.getMulModifeProPertyValues(this.options.allowedValuesCode)                      
             // this.options.selectAttrs = res.map(c=>{
             //     return {

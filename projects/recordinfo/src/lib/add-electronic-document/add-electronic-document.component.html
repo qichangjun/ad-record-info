@@ -1,4 +1,4 @@
-<div class="add--ele--doc--wrap">
+<div class="add--ele--doc--wrap" [hidden]="hasNoFileBlock">
   <div class="add--ele--doc--radio--box">
     <div class="head">请选择文件清单</div>
     
@@ -57,4 +57,8 @@
         (uploadFinish)="uploadFinish($event)"></form-upload>
   </div>
 
+</div>
+
+<div [hidden]="!hasNoFileBlock">
+  <span>没有电子文件block，请创建后再上传附件</span>
 </div>

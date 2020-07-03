@@ -7,6 +7,7 @@ import { Tile, DefaultValue } from './recordTile.class';
 import { ErrorMessage } from './message.enum';
 import { MatDialog } from '@angular/material';
 import * as _moment from 'moment';
+import { formatDate } from '@angular/common'
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
 const moment = _moment;
 import {
@@ -260,7 +261,7 @@ export class RecordinfoComponent implements OnInit {
             //         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
             //     })
             // })
-            this.initProcess()
+            this.initProcess()            
             this.loading = false
         } catch (err) {
             console.error(err)
@@ -340,6 +341,14 @@ export class RecordinfoComponent implements OnInit {
             if (c.attrName) {
                 if (c.contentType != 'table' && c.contentType != 'upload') {
                     if (jsonPath(this.jsonData, c.attrName) !== false) {
+                        // if (c.contentType == 'date'){
+                        //     let value = jsonPath(this.jsonData, c.attrName)[0]
+                        //     value = formatDate(value,c.typeFormat,'zh')
+                        //     this.entity[c.attrName] = value
+                        //     return 
+                        // }else{
+                            
+                        // }                             
                         this.entity[c.attrName] = jsonPath(this.jsonData, c.attrName)[0]
                         return
                     }
@@ -410,7 +419,6 @@ export class RecordinfoComponent implements OnInit {
         this.formatArrayItems(jsonData.record)
         // 根据jsonPath填入数据
         this.formatServiceData(jsonData)
-
         // 把所有单个对象转换成数组
         this.formatObjTOArray(jsonData.record)
         // 将可重复block拆分成多个blcok
@@ -589,14 +597,7 @@ export class RecordinfoComponent implements OnInit {
                         result[0].parent[result[0].parentProperty] = _.castArray(result[0].parent[result[0].parentProperty])
                         this.saveEntity[key].forEach((c, index) => {
                             delete c.isNew
-
-                            c.seq = index + 1
-                            // c.type = '电子文件'
-                            // if (result[0].parent[result[0].parentProperty][0]){
-                            //     c.type = result[0].parent[result[0].parentProperty][0].type
-                            // }else{
-                            //     c.type = result[0].value.type
-                            // }                            
+                            c.seq = index + 1                           
                             if (!result[0].parent[result[0].parentProperty].find(file => file.checksum == c.checksum)) {
                                 result[0].parent[result[0].parentProperty].push(c)
                             }
@@ -670,13 +671,10 @@ export class RecordinfoComponent implements OnInit {
     }
 
     async previewDoc(url) {
-        
         let preview_window = window.open('')
-        // let res = await this._RecordInfoService.getDocumentId(this.id, url)
         let objectId = this.objectPath + url
         objectId = objectId.replace(/\\/g, '/')        
         preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&recordId=${this.id}`
-        // this.router.navigate(['/previewDoc'], { queryParams: { objectId: res } })
     }
 
     showProcessIcon(i) {
@@ -767,6 +765,7 @@ export class RecordinfoComponent implements OnInit {
         }
 
     }
+
 }
 
 

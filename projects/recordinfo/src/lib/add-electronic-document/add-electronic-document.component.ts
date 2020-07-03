@@ -64,6 +64,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   disableChangePolicy: boolean = false
   fileJsonPath: string = ''
   relativePath: any//上传时候的relativePath
+  hasNoFileBlock : boolean = false
   @Input() id: string //record的id
   @Input() environmentBaseUrl: string
   @Input() objectPath: string
@@ -119,7 +120,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.defaultFileLists = []
     this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-    if (block[0].value.file) {
+    if (block[0] && block[0].value.file) {
       let files = block[0].value.file ? _.castArray(block[0].value.file) : []
       this.defaultFileLists = files
     }
@@ -279,6 +280,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.disableChangePolicy = false
       this.fileJsonPath = !Array.isArray(this.jsonMetadataTemplate.record.block) ? "$.record.block" :
         "$.record.block[?(@.name=='电子文件')]"
+      let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
+      if (!block || !block[0]){
+        this.hasNoFileBlock = true       
+        return   
+      }
+      this.hasNoFileBlock = false       
       this.getPolicyInfo()
     }
   }

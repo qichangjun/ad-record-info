@@ -9,11 +9,17 @@ import { MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { HttpClientModule } from "@angular/common/http";
 import { registerLocaleData } from '@angular/common';
+
 import zh from '@angular/common/locales/zh';
+import { AdUiModule } from '../../projects/ad-ui/src/lib/ad-ui.module';
+import { AdUiTreeComponent } from './ad-ui-tree/ad-ui-tree.component';
+import { AdRecordinfoComponent } from './ad-recordinfo/ad-recordinfo.component';
 registerLocaleData(zh);
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AdUiTreeComponent,
+    AdRecordinfoComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +27,8 @@ registerLocaleData(zh);
     HttpModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    RecordinfoModule
+    RecordinfoModule,
+    AdUiModule
   ],
   providers: [
     // { provide: DateAdapter, useClass: AppDateAdapter },

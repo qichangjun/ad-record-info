@@ -1,0 +1,17 @@
+<ad-tree [option]="option" [nzTreeTemplateDiy]="nzTreeTemplateDiy"
+[ids]="ids"
+(clickTree)="clickTree($event)"
+>
+        <!-- <ng-template #nzTreeTemplateDiy let-node>
+          <span class="custom-node">
+            <span *ngIf="!node.isLeaf" >
+            
+              <span class="folder-name">{{ node.title }} </span>
+            </span>
+            <span *ngIf="node.isLeaf">
+            
+              <span class="file-name">{{ node.title }}</span>
+            </span>
+          </span>
+        </ng-template> -->
+</ad-tree>
