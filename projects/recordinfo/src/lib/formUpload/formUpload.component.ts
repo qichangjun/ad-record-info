@@ -13,11 +13,11 @@ export class FormUploadComponent implements OnInit, OnChanges {
     @Input() uploadUrl: string;
     @Input() additionalParams: any = {};
     @Input() updataDetail: any
-    @Input() relativePath:any
+    @Input() relativePath: any
     @Input() ApiUrl: any
     @Input() baseUrl: string
     @Input() AuthenticationService: any
-
+    @Input() disableEdit:any
     @Output() uploadFinish: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -52,8 +52,8 @@ export class FormUploadComponent implements OnInit, OnChanges {
                 for (let key in this.additionalParams) {
                     this.uploader.options.additionalParameter[key] = this.additionalParams[key]
                 }
-                if(!this.relativePath)this.relativePath=''
-                this.uploader.options.additionalParameter['relativePath'] =this.relativePath
+                if (!this.relativePath) this.relativePath = ''
+                this.uploader.options.additionalParameter['relativePath'] = this.relativePath
             }
             this.uploader.onSuccessItem = (item, res) => {
                 if (res) {

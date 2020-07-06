@@ -73,6 +73,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() AuthenticationService: any
   @Input() metadataSchemeId: string
   @Input() jsonMetadataTemplate: any
+  @Input() disableEdit: boolean;
+
   @Input() getPolicyInfoPomise: (metadataId: string) => Promise<any>
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     if (data instanceof NzTreeNode) {
