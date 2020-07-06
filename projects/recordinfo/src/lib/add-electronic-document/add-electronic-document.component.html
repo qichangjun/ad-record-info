@@ -49,11 +49,11 @@
       <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
         <li *ngFor="let file of defaultFileLists;let i = index ">
             <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
-            <span (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
+            <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
         </li>
       </ul>
         <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
-        [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" 
+        [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
         (uploadFinish)="uploadFinish($event)"></form-upload>
   </div>
 
