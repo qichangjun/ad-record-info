@@ -83,7 +83,6 @@ declare var JSONPath: any;
                 <div *ngSwitchCase="'date'" class="form--build--box--input--box">                    
                     <nz-date-picker
                     formValidPass [validPass]="validPass" [scene]="scene" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
-                    nzShowTime
                      [ngClass]="{'showBorder' : tile.getStyle('inputBorder')  == 'show'}"  [(ngModel)]="entity[tile.options.attrName]"  class="form-control form--build--box--input" [nzFormat]="tile.options.typeFormat"></nz-date-picker>
                 </div>
                 <div *ngSwitchCase="'process-list'" class="form--build--box--input--box process--info--wrap">
