@@ -39,7 +39,11 @@
                 
                 <ul class="file--list--box">
                   <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
+                  <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
+                  [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
+                  (uploadFinish)="uploadFinish($event)"></form-upload>
                   <span (click)="deleteFile(node)" class="ti-trash"></span>
+
                 </ul>
               </div>
             
