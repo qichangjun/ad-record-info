@@ -33,15 +33,16 @@
               </span>
               <div *ngIf="node.origin.type == 'file_type'" >                       
                 <span class="fa fa-paperclip"></span>
-                <span class="file-name">{{ node.origin.file_name }}</span>                       
+                <span class="file-name">{{ node.origin.file_name }}</span>  
+                <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
+                  [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
+                  (uploadFinish)="uploadFinish($event)"></form-upload>                     
               </div>
               <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
                 
                 <ul class="file--list--box">
                   <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
-                  <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
-                  [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
-                  (uploadFinish)="uploadFinish($event)"></form-upload>
+                  
                   <span (click)="deleteFile(node)" class="ti-trash"></span>
 
                 </ul>
