@@ -73,7 +73,7 @@ declare var JSONPath: any;
                 </div>
                 <div *ngSwitchCase="'select'" class="form--build--box--input--box" >
                     <select [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"  [disabled]="disableEdit" class="form-control form--build--box--input" [(ngModel)]="entity[tile.options.attrName]">
-                    <option [value]="'"></option>    
+                    <option [value]="''"></option>    
                     <option *ngFor="let selectAttr of tile.options.selectAttrs" [value]="selectAttr.value">{{selectAttr.displayName}}</option>
                     </select>
                 </div>
