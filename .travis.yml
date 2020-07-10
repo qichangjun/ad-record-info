@@ -1,29 +1,52 @@
 language : node_js
 node_js:
- - "10"
- - "9"
+  - "10"
+  - "9"
 install:
-- npm install
+  - npm install
 os:
- - linux
+  - linux
+
+cache:
+  directories:
+    - ./node_modules
 
 stages:
- - name: deploy
+  - name: deploy
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 jobs:
- include:
-   - stage: deploy
-     script:
-       - echo "NPM Deploying Started ..."
-       - npm version
-       - npm run build
-       - echo "NPM Building Finished."
-       - cd dist/recordinfo
+  include:
+    - stage: test
+        if : $TRAVIS_PULL_REQUEST != false
+        script:
+          - echo "NPM Test Started ..."
+          - npm run build
+          - echo "NPM Test Finished."
 
-     deploy:
-       provider: npm
-       email: 1061427304@qq.com
-       api_key: "$NPM_TOKEN"
-       skip_cleanup: true
-       on:
-         all_branches: true
+    - stage: deploy
+        if : $TRAVIS_PULL_REQUEST == false
+        script:
+          - echo "NPM Deploying Started ..."
+          - npm version
+          - npm run build
+          - echo "NPM Building Finished."
+        
+
+        before_deploy: "cd dist/recordinfo"
+
+        deploy:  
+          provider: npm
+          email: 1061427304@qq.com
+          api_key: "$NPM_TOKEN"
+          skip_cleanup: true
+          on:
+            all_branches: true
+
+        after_deploy: "echo 'publish finish'"
