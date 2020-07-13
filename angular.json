@@ -157,7 +157,19 @@
             "codeCoverage": true,
             "main": "projects/recordinfo/src/test.ts",
             "tsConfig": "projects/recordinfo/tsconfig.spec.json",
-            "karmaConfig": "projects/recordinfo/karma.conf.js"
+            "karmaConfig": "projects/recordinfo/karma.conf.js",
+            "scripts": [
+              "node_modules/jsonpath-plus/dist/index-umd.js",
+              "src/assets/js/XML-Util/ObjTree.js",
+              "src/assets/js/XML-Util/jkl-dumper.js",
+              "src/assets/js/jsonPath/jsonPath.js"
+            ],
+            "styles": [
+            ],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ]
           }
         },
         "lint": {
