@@ -46,10 +46,11 @@ import * as _moment from 'moment';
 import { NzFormatBeforeDropEvent } from 'ng-zorro-antd';
 import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-
+// import {JSONPath} from 'jsonpath-plus';
 
 const moment = _moment;
 declare var JSONPath: any;
+declare var jsonPath: any;
 @Component({
   selector: 'add-electronic-document',
   templateUrl: './add-electronic-document.component.html',

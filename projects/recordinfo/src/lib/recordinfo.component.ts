@@ -244,23 +244,7 @@ export class RecordinfoComponent implements OnInit {
             }
             if (!this.entity[filePathName]) this.entity[filePathName] = []
             //先把服务器挂接附件功能去掉
-            this.serverFiles = []
-            // this.serverFiles.forEach(file => {
-            //     file.isChoosed = true
-            //     let format = file['s_object_name'].split('.')
-            //     format = format[format.length - 1]
-            //     this.entity[filePathName].push({
-            //         'size': file['s_content_size'],
-            //         'name': file['s_object_name'],
-            //         'checksum_type': 'md5',
-            //         'checksum': file['s_md5'],
-            //         'url': 'repo:' + file['s_object_id'],
-            //         'isNew': true,
-            //         'format': format,
-            //         'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-            //         'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL)
-            //     })
-            // })
+            this.serverFiles = []         
             this.initProcess()            
             this.loading = false
         } catch (err) {
@@ -340,15 +324,7 @@ export class RecordinfoComponent implements OnInit {
             }
             if (c.attrName) {
                 if (c.contentType != 'table' && c.contentType != 'upload') {
-                    if (jsonPath(this.jsonData, c.attrName) !== false) {
-                        // if (c.contentType == 'date'){
-                        //     let value = jsonPath(this.jsonData, c.attrName)[0]
-                        //     value = formatDate(value,c.typeFormat,'zh')
-                        //     this.entity[c.attrName] = value
-                        //     return 
-                        // }else{
-                            
-                        // }                             
+                    if (jsonPath(this.jsonData, c.attrName) !== false) {                                           
                         this.entity[c.attrName] = jsonPath(this.jsonData, c.attrName)[0]
                         return
                     }
@@ -564,27 +540,7 @@ export class RecordinfoComponent implements OnInit {
         for (let key in this.saveEntity) {
             let path = key.replace('.file', '')
             let result = JSONPath.JSONPath({ path: path, json: jsonData, resultType: 'all' })
-            if (result[0]) {
-                //   根据deletePath,去掉json中的被删除文件
-                // if (isArray(this.saveEntity[key])) {
-                //     //父节点是{file:{name:xx,size:xx}}这种情况
-                //     if (result[0].parentProperty == 'file') {
-                //         _.remove(result[0].parent[result[0].parentProperty], (file) => {
-                //             return file['url'] && this.deletePath.indexOf(file['url']) >= 0
-                //         })
-                //     } else {
-                //         //父节点是{file:[{name:xx,size:xx},{name:}]}情况
-                //         if (!Array.isArray(result[0].value.file) && result[0].value.file) {
-                //             if (this.deletePath.indexOf(result[0].value.file.url) >= 0) {
-                //                 delete result[0].value.file
-                //             }
-                //         } else {
-                //             _.remove(result[0].value.file, (file) => {
-                //                 return file['url'] && this.deletePath.indexOf(file['url']) >= 0
-                //             })
-                //         }
-                //     }
-                // }
+            if (result[0]) {              
                 if (!this.saveEntity[key]) {
                     result[0].parent[result[0].parentProperty] = this.saveEntity[key]
                     continue
@@ -592,27 +548,7 @@ export class RecordinfoComponent implements OnInit {
                 if (this.saveEntity[key].length == 0) {
                     continue
                 }
-                if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {
-                    // if (result[0].parentProperty == 'file') {
-                    //     result[0].parent[result[0].parentProperty] = _.castArray(result[0].parent[result[0].parentProperty])
-                    //     this.saveEntity[key].forEach((c, index) => {
-                    //         delete c.isNew
-                    //         c.seq = index + 1                           
-                    //         if (!result[0].parent[result[0].parentProperty].find(file => file.checksum == c.checksum)) {
-                    //             result[0].parent[result[0].parentProperty].push(c)
-                    //         }
-                    //     });
-                    // } else {
-                    //     result[0].value.file = result[0].value.file ? _.castArray(result[0].value.file) : []
-                    //     this.saveEntity[key].forEach((c, index) => {
-                    //         // c.type = '电子文件'                            
-                    //         delete c.isNew
-                    //         c.seq = index + 1
-                    //         if (!result[0].value.file.find(file => (c.url && file.url == c.url))) {
-                    //             result[0].value.file.push(c)
-                    //         }
-                    //     });
-                    // }
+                if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {                
                     continue
                 }
                 result[0].parent[result[0].parentProperty] = this.saveEntity[key]
