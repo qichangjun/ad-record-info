@@ -24,14 +24,12 @@ addons:
 jobs:
   include:
     - stage: test
-        if : $TRAVIS_PULL_REQUEST != false
         script:
           - echo "NPM Test Started ..."
           - npm run build
           - echo "NPM Test Finished."
 
     - stage: deploy
-        if : $TRAVIS_PULL_REQUEST == false
         script:
           - echo "NPM Deploying Started ..."
           - npm version
