@@ -23,28 +23,18 @@ addons:
 
 jobs:
   include:
-    - stage: test
-        script:
-          - echo "NPM Test Started ..."
-          - npm run build
-          - echo "NPM Test Finished."
-
     - stage: deploy
-        script:
-          - echo "NPM Deploying Started ..."
-          - npm version
-          - npm run build
-          - echo "NPM Building Finished."
-        
-
-        before_deploy: "cd dist/recordinfo"
-
-        deploy:  
-          provider: npm
-          email: 1061427304@qq.com
-          api_key: "$NPM_TOKEN"
-          skip_cleanup: true
-          on:
-            all_branches: true
-
-        after_deploy: "echo 'publish finish'"
+      script:
+        - echo "NPM Deploying Started ..."
+        - npm version
+        - npm run build
+        - echo "NPM Building Finished."
+      before_deploy: "cd dist/recordinfo"
+      deploy:  
+        provider: npm
+        email: 1061427304@qq.com
+        api_key: "$NPM_TOKEN"
+        skip_cleanup: true
+        on:
+          all_branches: true
+      after_deploy: "echo 'publish finish'"
