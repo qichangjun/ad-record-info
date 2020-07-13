@@ -165,7 +165,7 @@
             "styles": [
             ],
             "assets": [
-              "src/assets"
+              "projects/recordinfo/src/lib/assets"
             ]
           }
         },
