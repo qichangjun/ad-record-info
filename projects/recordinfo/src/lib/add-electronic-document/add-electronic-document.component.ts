@@ -59,13 +59,13 @@ declare var jsonPath: any;
 export class addElectronicDocumentComponent implements OnInit, OnChanges {
   activedNode: NzTreeNode;
   defaultFileLists: any[] = []
-  policyInfo: PolicyInfo = {children:[]}
+  policyInfo: PolicyInfo = { children: [] }
   currentPolicy: any = 'default'
   policyLists: any[] = []
   disableChangePolicy: boolean = false
   fileJsonPath: string = ''
   relativePath: any//上传时候的relativePath
-  hasNoFileBlock : boolean = false
+  hasNoFileBlock: boolean = false
   @Input() id: string //record的id
   @Input() environmentBaseUrl: string
   @Input() objectPath: string
@@ -75,7 +75,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() metadataSchemeId: string
   @Input() jsonMetadataTemplate: any
   @Input() disableEdit: boolean;
-
+  @Input() scene?: string
   @Input() getPolicyInfoPomise: (metadataId: string) => Promise<any>
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     if (data instanceof NzTreeNode) {
@@ -149,9 +149,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       if (res) {
         policyInfo = _.cloneDeep(res)
         this.currentPolicy = policyInfo.policy.code
-        this.formatPoolicyInfo(policyInfo.policy, 0, true)        
+        this.formatPoolicyInfo(policyInfo.policy, 0, true)
         this.policyInfo = policyInfo.policy
-      } else {        
+      } else {
         this.setToDefaultPolicy()
       }
     }
@@ -185,7 +185,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       // let fileType: FileType = this.findFileType()  
       file.seq = this.activedNode.getChildren().length + 1
       file.type = 'file'
-      file.isLeaf = true 
+      file.isLeaf = true
       file.key = this.guid()
       file.property = [
         {
@@ -193,9 +193,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           "title": "材料名称",
           "value": this.activedNode.origin.file_name
         }
-      ]     
-      this.activedNode.addChildren([file]) 
-      this.activedNode.update()   
+      ]
+      this.activedNode.addChildren([file])
+      this.activedNode.update()
     } else {
       file.seq = this.defaultFileLists.length + 1
       this.defaultFileLists.push(file)
@@ -212,7 +212,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })
     if (!res || !res[0]) return
     if (this.currentPolicy != 'default') {
-      let clone_policyInfo = _.cloneDeep(this.policyInfo)      
+      let clone_policyInfo = _.cloneDeep(this.policyInfo)
       this.formatServicePolicyInfo(clone_policyInfo)
       res[0].value.block = clone_policyInfo.block
       res[0].value.policy = this.policyInfo.code
@@ -227,8 +227,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   // 删除文件
-  deleteFile(node) {    
-    node.remove()        
+  deleteFile(node) {
+    node.remove()
   }
 
   // 预览文件
@@ -240,7 +240,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     // let res = await this._RecordInfoService.getDocumentId(this.id, url)
     let objectId = this.objectPath + url
     objectId = objectId.replace(/\\/g, '/')
-    preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&recordId=${this.id}`
+    preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&objectPath=${this.objectPath}&recordId=${this.id}&scene=${this.scene}`
     // this.router.navigate(['/previewDoc'], { queryParams: { objectId: res } })
   }
 
@@ -249,30 +249,30 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   // po=0 为节点内，-1,1分别是下级和上级
   beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
     // if insert node into another node, wait 1s   
-    if (arg.node.origin.type == 'file' && (arg.pos == 1 || arg.pos == -1)){
+    if (arg.node.origin.type == 'file' && (arg.pos == 1 || arg.pos == -1)) {
       return of(true)
     }
-    else if ((arg.node.origin.type == 'file_type' && arg.pos == 0)){      
-    //  || (arg.node.parentNode && arg.node.parentNode.origin.type == 'file_type'))  {
+    else if ((arg.node.origin.type == 'file_type' && arg.pos == 0)) {
+      //  || (arg.node.parentNode && arg.node.parentNode.origin.type == 'file_type'))  {
       return of(true)
-    }else{
+    } else {
       alert('只能将文件放入附件节点')
       return of(false)
-    }  
+    }
   }
 
   //拖拽事件结束后，删除原本的节点内容，貌似为插件自带的bug,所以需要在这里手动删除一下
-  dragEnd(event:NzFormatEmitEvent){
-    let file_types : any = this.findFileType(event.dragNode.key)
-    let key 
-    if (event.node.origin.type == 'file_type'){
-      key = event.node.key      
-    }else if (event.node.origin.type == 'file'){
+  dragEnd(event: NzFormatEmitEvent) {
+    let file_types: any = this.findFileType(event.dragNode.key)
+    let key
+    if (event.node.origin.type == 'file_type') {
+      key = event.node.key
+    } else if (event.node.origin.type == 'file') {
       key = event.node.getParentNode().key
     }
-    file_types = file_types.find((file_type)=>file_type.key != key)
-    if (file_types){
-      _.remove(file_types.children,(child)=>{
+    file_types = file_types.find((file_type) => file_type.key != key)
+    if (file_types) {
+      _.remove(file_types.children, (child) => {
         return child.key == event.dragNode.key
       })
     }
@@ -284,23 +284,23 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.fileJsonPath = !Array.isArray(this.jsonMetadataTemplate.record.block) ? "$.record.block" :
         "$.record.block[?(@.name=='电子文件')]"
       let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-      if (!block || !block[0]){
-        this.hasNoFileBlock = true       
-        return   
+      if (!block || !block[0]) {
+        this.hasNoFileBlock = true
+        return
       }
-      this.hasNoFileBlock = false       
+      this.hasNoFileBlock = false
       this.getPolicyInfo()
     }
   }
 
   //---------------------util方法------------
   //吧policy的json格式化成tree
-  formatPoolicyInfo(info, level: number, needInitFile?: boolean,path='/电子文件'): void {
+  formatPoolicyInfo(info, level: number, needInitFile?: boolean, path = '/电子文件'): void {
     info.children = info.children ? _.castArray(info.children) : []
     if (info.category) {
       info.category = info.category ? _.castArray(info.category) : []
       info.category.forEach(c => {
-        c.path = path + '/' + c.name 
+        c.path = path + '/' + c.name
         c.type = 'category'
         c.key = this.guid()
       })
@@ -313,48 +313,48 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         // c.isLeaf = false
         c.key = this.guid()
         if (needInitFile) {
-          let children = this.findBlockByNameAndLevel(info.name, level,info.path)                                   
+          let children = this.findBlockByNameAndLevel(info.name, level, info.path)
           if (children) {
-            children.forEach(file=>{              
+            children.forEach(file => {
               file.key = this.guid()
               file.type = 'file'
-              file.isLeaf = true 
-              if (!Array.isArray(file.property)){
+              file.isLeaf = true
+              if (!Array.isArray(file.property)) {
                 file.property = [
                   {
                     "name": "file_type",
                     "title": "材料名称",
                     "value": file.property['content']
                   }
-                ] 
-              }          
+                ]
+              }
             })
-            c.children =  children.filter(file=>{                                       
-              return file.property[0].value == c.file_name 
-            })           
+            c.children = children.filter(file => {
+              return file.property[0].value == c.file_name
+            })
           }
         }
-      })      
+      })
       info.children = info.children.concat(info.file_type)
     }
     info.children.forEach(child => {
-      this.formatPoolicyInfo(child, level + 1, needInitFile,child.path)
+      this.formatPoolicyInfo(child, level + 1, needInitFile, child.path)
     });
   }
 
   //根据block名和层级寻找block        
   //吧json里的file集合取出来放进对应的policy的json里    
   //返回block的文件集合  
-  findBlockByNameAndLevel(name, level,path): FileType_File[] | false {
+  findBlockByNameAndLevel(name, level, path): FileType_File[] | false {
     let block_entity
     let file_block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     file_block = _.cloneDeep(file_block[0].value)
     this.setWholePathForEachBlock(file_block)
     if (!file_block) return false
     let fn = (_file_block, self_level) => {
-      if (self_level == level && _file_block.name == name && _file_block.path == path) {                
-        block_entity = _.cloneDeep(_file_block) 
-        return 
+      if (self_level == level && _file_block.name == name && _file_block.path == path) {
+        block_entity = _.cloneDeep(_file_block)
+        return
       } else {
         if (!_file_block.block) return
         _file_block.block = _file_block.block ? _.castArray(_file_block.block) : []
@@ -363,17 +363,17 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         })
       }
     }
-    fn(file_block, 0)    
+    fn(file_block, 0)
     return block_entity && block_entity.file ? _.castArray(block_entity.file) : []
   }
 
   //给电子文件节点开始的block下面所有block添加path路径
-  setWholePathForEachBlock(file_block,path=''){    
+  setWholePathForEachBlock(file_block, path = '') {
     file_block.path = path + '/' + file_block.name
-    if (file_block.block){
+    if (file_block.block) {
       file_block.block = file_block.block ? _.castArray(file_block.block) : []
-      file_block.block.forEach((block)=>{
-        this.setWholePathForEachBlock(block,file_block.path)
+      file_block.block.forEach((block) => {
+        this.setWholePathForEachBlock(block, file_block.path)
       })
     }
   }
@@ -388,15 +388,15 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     let category = []
     let findCategoryFn = (data?) => {
       if (!data) data = this.policyInfo
-      if(data.children){
+      if (data.children) {
         let row = data.children.find(c => c.key == key)
         if (row) {
-          category.push(data)        
-        } 
+          category.push(data)
+        }
         data.children.forEach((c) => {
           findCategoryFn(c)
         })
-      }            
+      }
     }
     findCategoryFn()
     if (category) {
@@ -422,25 +422,25 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           name: child.name,
           children: child.children || []
         })
-      } else if (child.type == 'file_type'){        
+      } else if (child.type == 'file_type') {
         child.children = child.children ? _.castArray(child.children) : []
-        if (child.children.length > 0) {           
-          let file_lists =  _.cloneDeep(child.children) 
-          file_lists.forEach((file)=>{                        
+        if (child.children.length > 0) {
+          let file_lists = _.cloneDeep(child.children)
+          file_lists.forEach((file) => {
             delete file.level
             delete file.isLeaf
-            delete file.key 
+            delete file.key
             delete file.type
-            delete file.children 
+            delete file.children
             file.property = [
               {
                 "name": "file_type",
                 "title": "材料名称",
                 "value": child.file_name
               }
-            ]  
+            ]
           })
-          info.file = info.file ? info.file.concat(file_lists) : file_lists         
+          info.file = info.file ? info.file.concat(file_lists) : file_lists
         }
       }
       if (info.block.length == 0) delete info.block
@@ -458,7 +458,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
 
   //从当前路径开始获取到根节点的路径集合
-  getWholePath() : string {
+  getWholePath(): string {
     let path = ''
     let relativePath = ''
     let parent = this.activedNode
@@ -477,7 +477,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     return path
   }
 
-  
+
 }
 
 interface PolicyInfo {
@@ -491,7 +491,7 @@ interface FileType {
   isLeaf: boolean
   key: string
   file_name: string
-  children : FileType_File[]
+  children: FileType_File[]
 }
 
 interface FileType_File {
@@ -505,9 +505,9 @@ interface FileType_File {
   property?: File_Property[]
   seq?: number
   name?: string
-  key? : string 
-  type? : string 
-  isLeaf? : boolean 
+  key?: string
+  type?: string
+  isLeaf?: boolean
 }
 interface File_Property {
   name: "file_type"
