@@ -610,7 +610,7 @@ export class RecordinfoComponent implements OnInit {
         let preview_window = window.open('')
         let objectId = this.objectPath + url
         objectId = objectId.replace(/\\/g, '/')        
-        preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&recordId=${this.id}`
+        preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&recordId=${this.id}&objectPath=${this.objectPath}&scene=${this.scene}`
     }
 
     showProcessIcon(i) {
