@@ -61,7 +61,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   defaultFileLists: any[] = []
   policyInfo: PolicyInfo = { children: [] }
   volumeInfo: volumeInfo = { children: [] }
-  oldVolumeInfo:any=[];
+  oldVolumeInfo: any = [];
   currentPolicy: any = 'default'
   policyLists: any[] = []
   disableChangePolicy: boolean = false
@@ -238,7 +238,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   deleteFile(node) {
     node.remove()
   }
-
+  getvolume(e) {
+    this.previewDoc(e.node.origin.url)
+  }
   // 预览文件
   async previewDoc(url) {
     if (!this.id) {
@@ -357,73 +359,69 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.volumeInfo.children = this.getInfoResult(info)
   }
   //处理info数组
-  getInfoResult(info){
-    let nameList=null;
-    let newObj=[]
-    info.forEach(data=>{
-      let obj=[],obj1=[]
-     if(data.file){
-      if (data.file.constructor === Array) {
-        data.file.forEach(element => {
-          // console.log(element)
-          nameList = element.url.split('/')
-                  if(nameList.length>=5){
-                    if(!obj[nameList[3]]){
-                      obj[nameList[3]]=new Array()
-                      obj[nameList[3]].push(element)
-                    }else{
-                      obj[nameList[3]].push(element)
-                    }
-      
-                  }else{
-                    obj1.push(element)
-                  }
-        });
+  getInfoResult(info) {
+    let nameList = null;
+    let newObj = []
+    info.forEach(data => {
+      let obj = [], obj1 = []
+      if (data.file) {
+        if (data.file.constructor === Array) {
+          data.file.forEach(element => {
+            nameList = element.url.split('/')
+            if (nameList.length >= 5) {
+              if (!obj[nameList[3]]) {
+                obj[nameList[3]] = new Array()
+                obj[nameList[3]].push(element)
+              } else {
+                obj[nameList[3]].push(element)
+              }
 
-        console.log(this.objChangeArr(obj))
-        let a={
-          name:data.name,
-          children:[...this.objChangeArr(obj).children,...obj1]
+            } else {
+              obj1.push(element)
+            }
+          });
+
+          let a = {
+            name: data.name,
+            children: [...this.objChangeArr(obj).children, ...obj1]
+          }
+          newObj.push(a)
+        } else {
+          newObj.push(data)
         }
-       newObj.push(a)
-      }else{
+      } else {
         newObj.push(data)
       }
-     }else{
-      newObj.push(data)
-    }
     })
-    console.log(newObj)
     return newObj
   }
   //处理将obj变为数组形式
-  objChangeArr(obj){
-    console.log(obj,"==========")
-    let arr={children:[]}
-    Object.keys(obj).forEach(item=>{
-      let newArr = {children:[]}
-        obj[item].forEach(element => {
-          newArr['children'].push(element)
+  objChangeArr(obj) {
+    let arr = { children: [] }
+    Object.keys(obj).forEach(item => {
+      let newArr = { children: [] }
+      obj[item].forEach(element => {
+        newArr['children'].push(element)
 
-        });
-        
-    arr['children'].push(newArr)
-    arr['children'][arr['children'].length-1]['name']=item
-      })
-      return arr
+      });
+
+      arr['children'].push(newArr)
+      arr['children'][arr['children'].length - 1]['name'] = item
+    })
+    return arr
   }
   //进一步将数据转化为NzTreeNodeOptions
-  transformTreeNode(info){
-    let obj=[]
-    info.forEach(data=>{
-      let obj1=[]
-      if(data.file.constructor === Array){
-        data.forEach(item=>{
-          item.forEach(items=>{
-            
+  transformTreeNode(info) {
+    let obj = []
+    info.forEach(data => {
+      let obj1 = []
+      if (data.file.constructor === Array) {
+        data.forEach(item => {
+          item.forEach(items => {
+
           })
         })
-      }else{
+      } else {
         obj.push(data)
       }
     })

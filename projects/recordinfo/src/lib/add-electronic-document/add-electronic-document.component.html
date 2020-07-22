@@ -57,7 +57,7 @@
       nzBlockNode
       [nzBeforeDrop]="beforeDrop"
        [nzData]="volumeInfo.children" [nzExpandAll]="true"
-       (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
+       (nzClick)="getvolume($event)"  (nzDblClick)="openFolder($event)">
           <ng-template #nzTreeTemplate let-node>
                 <span class="file-name">{{ node.origin.name }}</span>
               <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
