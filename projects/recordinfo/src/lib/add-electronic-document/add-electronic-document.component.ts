@@ -239,6 +239,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     node.remove()
   }
   getvolume(e) {
+    if(!e.node.origin.url)return
     this.previewDoc(e.node.origin.url)
   }
   // 预览文件
