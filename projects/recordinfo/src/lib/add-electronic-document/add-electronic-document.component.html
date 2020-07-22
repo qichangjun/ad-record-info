@@ -50,7 +50,28 @@
             
             </span>
           </ng-template>
-      </nz-tree>       
+      </nz-tree>     
+      <nz-tree *ngIf="currentPolicy=='default'"
+      [nzDraggable]="true"
+      (nzOnDragEnd)="dragEnd($event)"
+      nzBlockNode
+      [nzBeforeDrop]="beforeDrop"
+       [nzData]="volumeInfo.children" [nzExpandAll]="true"
+       (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
+          <ng-template #nzTreeTemplate let-node>
+                <span class="file-name">{{ node.origin.name }}</span>
+              <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
+                
+                <ul class="file--list--box">
+                  <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
+                  
+                  <span (click)="deleteFile(node)" class="ti-trash"></span>
+
+                </ul>
+              </div>
+            
+          </ng-template>
+      </nz-tree>  
       <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
         <li *ngFor="let file of defaultFileLists;let i = index ">
             <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
