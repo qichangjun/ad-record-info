@@ -239,7 +239,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     node.remove()
   }
   getvolume(e) {
-    if(!e.node.origin.url)return
+    if (!e.node.origin.url) return
     this.previewDoc(e.node.origin.url)
   }
   // 预览文件
@@ -358,6 +358,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     // info.children = info.children ? _.castArray(info.children) : []
     console.log(info)
     this.volumeInfo.children = this.getInfoResult(info)
+    console.log(this.volumeInfo.children)
   }
   //处理info数组
   getInfoResult(info) {
@@ -388,12 +389,17 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           }
           newObj.push(a)
         } else {
+          data['children'] = []  
+          data['children'].push(data.file)
+          delete data.file
           newObj.push(data)
         }
       } else {
         newObj.push(data)
       }
     })
+    console.log(newObj)
+
     return newObj
   }
   //处理将obj变为数组形式
