@@ -239,7 +239,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     node.remove()
   }
   getvolume(e) {
-    if (!e.node.origin.url) return
+    if(!e.node.origin.url)return
     this.previewDoc(e.node.origin.url)
   }
   // 预览文件
@@ -389,8 +389,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           }
           newObj.push(a)
         } else {
-          data['children'] = []  
-          data['children'].push(data.file)
+          data['children']=[data.file]
           delete data.file
           newObj.push(data)
         }
