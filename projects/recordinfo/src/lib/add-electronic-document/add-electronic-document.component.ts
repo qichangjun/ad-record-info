@@ -110,7 +110,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.activedNode = undefined
     if (res) {
       let policyInfo = _.cloneDeep(res)
-      this.formatPoolicyInfo(policyInfo.policy, 0, false)
+      this.formatPoolicyInfo(policyInfo.policy, 0, true)
       this.policyInfo = policyInfo.policy
     } else {
       this.setToDefaultPolicy()
@@ -131,7 +131,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.defaultFileLists = files
     }
 
-    if (block[0] && block[0].value.block) {
+    if (block[0] && block[0].value.block && this.currentPolicy =='default') {
       this.formatVolumeInfo(block[0].value.block, 0, true)
     }
 
