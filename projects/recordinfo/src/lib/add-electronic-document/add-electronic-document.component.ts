@@ -73,6 +73,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() objectPath: string
   @Input() baseUrl: string
   @Input() ApiUrl: any
+  @Input() serverFiles: Array<any>;
   @Input() AuthenticationService: any
   @Input() metadataSchemeId: string
   @Input() jsonMetadataTemplate: any
@@ -123,7 +124,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   setToDefaultPolicy() {
     this.currentPolicy = 'default'
     this.defaultFileLists = []
-    this.policyInfo = { children: [] }
+    if (this.serverFiles){
+      this.defaultFileLists=this.serverFiles
+    }
+      this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     if (block[0] && block[0].value.file) {
       let files = block[0].value.file ? _.castArray(block[0].value.file) : []
@@ -131,7 +135,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.defaultFileLists = files
     }
 
-    if (block[0] && block[0].value.block && this.currentPolicy =='default') {
+    if (block[0] && block[0].value.block && this.currentPolicy == 'default') {
       this.formatVolumeInfo(block[0].value.block, 0, true)
     }
 
@@ -239,7 +243,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     node.remove()
   }
   getvolume(e) {
-    if(!e.node.origin.url)return
+    if (!e.node.origin.url) return
     this.previewDoc(e.node.origin.url)
   }
   // 预览文件
@@ -389,7 +393,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           }
           newObj.push(a)
         } else {
-          data['children']=[data.file]
+          data['children'] = [data.file]
           delete data.file
           newObj.push(data)
         }
