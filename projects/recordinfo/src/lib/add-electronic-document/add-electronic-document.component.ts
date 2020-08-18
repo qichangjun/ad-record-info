@@ -124,9 +124,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   setToDefaultPolicy() {
     this.currentPolicy = 'default'
     this.defaultFileLists = []
-    if (this.serverFiles){
-      this.defaultFileLists=this.serverFiles
-    }
       this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     if (block[0] && block[0].value.file) {
