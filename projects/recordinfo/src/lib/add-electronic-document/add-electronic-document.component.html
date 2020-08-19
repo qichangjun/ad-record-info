@@ -80,7 +80,7 @@
             <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
         </li>
       </ul>
-      <ul *ngIf="serverFiles.length>0" class="defalut--list--box">
+      <ul *ngIf="serverFiles" class="defalut--list--box">
         <li *ngFor="let file of serverFiles;let i = index ">
             <a class="file--name" (click)="previewDoc(file.url)">{{file.s_object_name}}</a>
             <span *ngIf="!disableEdit" (click)="serverFiles.splice(i,1)" class="ti-trash"></span>
