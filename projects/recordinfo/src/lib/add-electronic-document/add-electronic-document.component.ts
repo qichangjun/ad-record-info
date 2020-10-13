@@ -196,13 +196,13 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       file.type = 'file'
       file.isLeaf = true
       file.key = this.guid()
-      file.property = [
-        {
-          "name": "file_type",
-          "title": "材料名称",
-          "value": this.activedNode.origin.file_name
-        }
-      ]
+      // file.property = [
+      //   {
+      //     "name": "file_type",
+      //     "title": "材料名称",
+      //     "value": this.activedNode.origin.file_name
+      //   }
+      // ]
       this.activedNode.addChildren([file])
       this.activedNode.update()
     } else {
@@ -331,19 +331,19 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
               file.key = this.guid()
               file.type = 'file'
               file.isLeaf = true
-              if (!Array.isArray(file.property)) {
-                file.property = [
-                  {
-                    "name": "file_type",
-                    "title": "材料名称",
-                    "value": file.property['content']
-                  }
-                ]
-              }
+              // if (!Array.isArray(file.property)) {
+              //   file.property = [
+              //     {
+              //       "name": "file_type",
+              //       "title": "材料名称",
+              //       "value": file.property['content']
+              //     }
+              //   ]
+              // }
             })
-            c.children = children.filter(file => {
-              return file.property[0].value == c.file_name
-            })
+            // c.children = children.filter(file => {
+            //   return file.property[0].value == c.file_name
+            // })
           }
         }
       })
@@ -523,13 +523,13 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             delete file.key
             delete file.type
             delete file.children
-            file.property = [
-              {
-                "name": "file_type",
-                "title": "材料名称",
-                "value": child.file_name
-              }
-            ]
+            // file.property = [
+            //   {
+            //     "name": "file_type",
+            //     "title": "材料名称",
+            //     "value": child.file_name
+            //   }
+            // ]
           })
           info.file = info.file ? info.file.concat(file_lists) : file_lists
         }
