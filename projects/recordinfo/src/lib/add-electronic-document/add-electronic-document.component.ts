@@ -60,6 +60,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   activedNode: NzTreeNode;
   defaultFileLists: any[] = []
   policyInfo: PolicyInfo = { children: [] }
+  volumeInfo: volumeInfo = { children: [] }
+  oldVolumeInfo: any = [];
   currentPolicy: any = 'default'
   policyLists: any[] = []
   disableChangePolicy: boolean = false
@@ -71,6 +73,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() objectPath: string
   @Input() baseUrl: string
   @Input() ApiUrl: any
+  @Input() serverFiles: Array<any>;
   @Input() AuthenticationService: any
   @Input() metadataSchemeId: string
   @Input() jsonMetadataTemplate: any
@@ -108,7 +111,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.activedNode = undefined
     if (res) {
       let policyInfo = _.cloneDeep(res)
-      this.formatPoolicyInfo(policyInfo.policy, 0, false)
+      this.formatPoolicyInfo(policyInfo.policy, 0, true)
       this.policyInfo = policyInfo.policy
     } else {
       this.setToDefaultPolicy()
@@ -121,12 +124,18 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   setToDefaultPolicy() {
     this.currentPolicy = 'default'
     this.defaultFileLists = []
-    this.policyInfo = { children: [] }
+      this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     if (block[0] && block[0].value.file) {
       let files = block[0].value.file ? _.castArray(block[0].value.file) : []
+
       this.defaultFileLists = files
     }
+
+    if (block[0] && block[0].value.block && this.currentPolicy == 'default') {
+      this.formatVolumeInfo(block[0].value.block, 0, true)
+    }
+
   }
 
   // 初始化时调用一次
@@ -230,7 +239,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   deleteFile(node) {
     node.remove()
   }
-
+  getvolume(e) {
+    if (!e.node.origin.url) return
+    this.previewDoc(e.node.origin.url)
+  }
   // 预览文件
   async previewDoc(url) {
     if (!this.id) {
@@ -342,6 +354,85 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     });
   }
 
+  //把文件夹的json格式化成tree
+  formatVolumeInfo(info, level: number, needInitFile?: boolean, path = '/电子文件'): void {
+    // info.children = info.children ? _.castArray(info.children) : []
+    console.log(info)
+    this.volumeInfo.children = this.getInfoResult(info)
+    console.log(this.volumeInfo.children)
+  }
+  //处理info数组
+  getInfoResult(info) {
+    let nameList = null;
+    let newObj = []
+    info.forEach(data => {
+      let obj = [], obj1 = []
+      if (data.file) {
+        if (data.file.constructor === Array) {
+          data.file.forEach(element => {
+            nameList = element.url.split('/')
+            if (nameList.length >= 5) {
+              if (!obj[nameList[3]]) {
+                obj[nameList[3]] = new Array()
+                obj[nameList[3]].push(element)
+              } else {
+                obj[nameList[3]].push(element)
+              }
+
+            } else {
+              obj1.push(element)
+            }
+          });
+
+          let a = {
+            name: data.name,
+            children: [...this.objChangeArr(obj).children, ...obj1]
+          }
+          newObj.push(a)
+        } else {
+          data['children'] = [data.file]
+          delete data.file
+          newObj.push(data)
+        }
+      } else {
+        newObj.push(data)
+      }
+    })
+    console.log(newObj)
+
+    return newObj
+  }
+  //处理将obj变为数组形式
+  objChangeArr(obj) {
+    let arr = { children: [] }
+    Object.keys(obj).forEach(item => {
+      let newArr = { children: [] }
+      obj[item].forEach(element => {
+        newArr['children'].push(element)
+
+      });
+
+      arr['children'].push(newArr)
+      arr['children'][arr['children'].length - 1]['name'] = item
+    })
+    return arr
+  }
+  //进一步将数据转化为NzTreeNodeOptions
+  transformTreeNode(info) {
+    let obj = []
+    info.forEach(data => {
+      let obj1 = []
+      if (data.file.constructor === Array) {
+        data.forEach(item => {
+          item.forEach(items => {
+
+          })
+        })
+      } else {
+        obj.push(data)
+      }
+    })
+  }
   //根据block名和层级寻找block        
   //吧json里的file集合取出来放进对应的policy的json里    
   //返回block的文件集合  
@@ -477,10 +568,33 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     return path
   }
 
-
+  getVolumePath(): string {
+    let path = ''
+    let relativePath = ''
+    let parent = this.activedNode
+    while (parent.getParentNode()) {
+      parent = parent.getParentNode()
+      if (parent.isLeaf) {
+        relativePath = '/' + parent.origin.name + relativePath
+        path = path + '/' + parent.origin.file_name
+      } else {
+        relativePath = '/' + parent.origin.name + relativePath
+        path = path + '/' + parent.origin.name
+      }
+    }
+    this.relativePath = relativePath
+    path = path.split('/').reverse().join('\\')
+    return path
+  }
 }
 
+
 interface PolicyInfo {
+  version_no?: string;
+  code?: string;
+  children: Category[] | FileType[]
+}
+interface volumeInfo {
   version_no?: string;
   code?: string;
   children: Category[] | FileType[]

@@ -2,7 +2,9 @@
   <div class="add--ele--doc--radio--box">
     <div class="head">请选择文件清单</div>
     
-    <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
+    <!-- <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
+    (change)="changePolicy()"> -->
+    <mat-radio-group  aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
     (change)="changePolicy()">
       <mat-radio-button class="example-radio-button"
           [value]="'default'"
@@ -50,11 +52,38 @@
             
             </span>
           </ng-template>
-      </nz-tree>       
+      </nz-tree>     
+      <nz-tree *ngIf="currentPolicy=='default'"
+      [nzDraggable]="true"
+      (nzOnDragEnd)="dragEnd($event)"
+      nzBlockNode
+      [nzBeforeDrop]="beforeDrop"
+       [nzData]="volumeInfo.children" [nzExpandAll]="true"
+       (nzClick)="getvolume($event)"  (nzDblClick)="openFolder($event)">
+          <ng-template #nzTreeTemplate let-node>
+                <span class="file-name">{{ node.origin.name }}</span>
+              <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
+                
+                <ul class="file--list--box">
+                  <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
+                  
+                  <span (click)="deleteFile(node)" class="ti-trash"></span>
+
+                </ul>
+              </div>
+            
+          </ng-template>
+      </nz-tree>  
       <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
         <li *ngFor="let file of defaultFileLists;let i = index ">
             <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
             <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
+        </li>
+      </ul>
+      <ul *ngIf="serverFiles" class="defalut--list--box">
+        <li *ngFor="let file of serverFiles;let i = index ">
+            <a class="file--name" (click)="previewDoc(file.url)">{{file.s_object_name}}</a>
+            <span *ngIf="!disableEdit" (click)="serverFiles.splice(i,1)" class="ti-trash"></span>
         </li>
       </ul>
      
