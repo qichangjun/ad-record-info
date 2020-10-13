@@ -187,13 +187,13 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       file.type = 'file'
       file.isLeaf = true
       file.key = this.guid()
-      file.property = [
-        {
-          "name": "file_type",
-          "title": "材料名称",
-          "value": this.activedNode.origin.file_name
-        }
-      ]
+      // file.property = [
+      //   {
+      //     "name": "file_type",
+      //     "title": "材料名称",
+      //     "value": this.activedNode.origin.file_name
+      //   }
+      // ]
       this.activedNode.addChildren([file])
       this.activedNode.update()
     } else {
@@ -432,13 +432,13 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             delete file.key
             delete file.type
             delete file.children
-            file.property = [
-              {
-                "name": "file_type",
-                "title": "材料名称",
-                "value": child.file_name
-              }
-            ]
+            // file.property = [
+            //   {
+            //     "name": "file_type",
+            //     "title": "材料名称",
+            //     "value": child.file_name
+            //   }
+            // ]
           })
           info.file = info.file ? info.file.concat(file_lists) : file_lists
         }
