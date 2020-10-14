@@ -218,10 +218,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    * 否则调用formatServicePolicyInfo方法，生成对应的block
    */
   saveFileInfo(jsonMetadata) {
-    console.log(jsonMetadata)
-    if (jsonMetadata.record.block.name == '电子文件') {
-      jsonMetadata.record.block.file = this.defaultFileLists
-    } else {
+    // console.log(jsonMetadata)
+    // if (jsonMetadata.record.block.name == '电子文件') {
+    //   jsonMetadata.record.block.file = this.defaultFileLists
+    // } else {
       let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })
       // if(res.block.)
       if (!res || !res[0]) return
@@ -239,7 +239,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       delete res[0].value.block
       return
 
-    }
+    // }
   }
 
   // 删除文件
@@ -300,7 +300,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.metadataSchemeId && this.jsonMetadataTemplate) {
       this.disableChangePolicy = false
-      this.fileJsonPath = !Array.isArray(this.jsonMetadataTemplate.record.block) ? "$.record.block" :
+      this.fileJsonPath = (!Array.isArray(this.jsonMetadataTemplate.record.block) || this.jsonMetadataTemplate.record.block.length == 1) ? "$.record.block" :
         "$.record.block[?(@.name=='电子文件')]"
       let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
       if (!block || !block[0]) {
