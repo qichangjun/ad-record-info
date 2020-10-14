@@ -124,7 +124,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   setToDefaultPolicy() {
     this.currentPolicy = 'default'
     this.defaultFileLists = []
-      this.policyInfo = { children: [] }
+    this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     if (block[0] && block[0].value.file) {
       let files = block[0].value.file ? _.castArray(block[0].value.file) : []
@@ -218,21 +218,28 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
    * 否则调用formatServicePolicyInfo方法，生成对应的block
    */
   saveFileInfo(jsonMetadata) {
-    let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })
-    if (!res || !res[0]) return
-    if (this.currentPolicy != 'default') {
-      let clone_policyInfo = _.cloneDeep(this.policyInfo)
-      this.formatServicePolicyInfo(clone_policyInfo)
-      res[0].value.block = clone_policyInfo.block
-      res[0].value.policy = this.policyInfo.code
-      res[0].value.policy_version = this.policyInfo.version_no
-      delete res[0].value.file
+    console.log(jsonMetadata)
+    if (jsonMetadata.record.block.name == '电子文件') {
+      jsonMetadata.record.block.file = this.defaultFileLists
+    } else {
+      let res = JSONPath.JSONPath({ path: this.fileJsonPath, json: jsonMetadata, resultType: 'all' })
+      // if(res.block.)
+      if (!res || !res[0]) return
+      if (this.currentPolicy != 'default') {
+        let clone_policyInfo = _.cloneDeep(this.policyInfo)
+        this.formatServicePolicyInfo(clone_policyInfo)
+        res[0].value.block = clone_policyInfo.block
+        res[0].value.policy = this.policyInfo.code
+        res[0].value.policy_version = this.policyInfo.version_no
+        delete res[0].value.file
+        return
+
+      }
+      res[0].value.file = this.defaultFileLists
+      delete res[0].value.block
       return
 
     }
-    res[0].value.file = this.defaultFileLists
-    delete res[0].value.block
-    return
   }
 
   // 删除文件
