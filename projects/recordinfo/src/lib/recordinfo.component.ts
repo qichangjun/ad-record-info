@@ -259,6 +259,7 @@ export class RecordinfoComponent implements OnInit {
      * @param jsonData 
      */
     formatShowJson(jsonData) {
+        console.log(jsonData)
         if (jsonData.file) jsonData.file = _.castArray(jsonData.file)
         if (jsonData.property) {
             jsonData.property = _.castArray(jsonData.property)
