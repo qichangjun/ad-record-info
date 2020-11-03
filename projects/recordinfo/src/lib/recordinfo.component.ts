@@ -259,7 +259,6 @@ export class RecordinfoComponent implements OnInit {
      * @param jsonData 
      */
     formatShowJson(jsonData) {
-        console.log(jsonData)
         if (jsonData.file) jsonData.file = _.castArray(jsonData.file)
         if (jsonData.property) {
             jsonData.property = _.castArray(jsonData.property)
@@ -541,23 +540,39 @@ export class RecordinfoComponent implements OnInit {
         for (let key in this.saveEntity) {
             let path = key.replace('.file', '')
             let result = JSONPath.JSONPath({ path: path, json: jsonData, resultType: 'all' })
-            if (result[0]) {              
+            if (result[0]) {     
+                //没有找到匹配值         
                 if (!this.saveEntity[key]) {
                     result[0].parent[result[0].parentProperty] = this.saveEntity[key]
                     continue
                 }
+                //匹配值为空
                 if (this.saveEntity[key].length == 0) {
                     continue
                 }
+                //当是文件控件时
                 if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {                
                     continue
-                }
+                } 
+                let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
+                if (row){
+                    result[0].parent[result[0].parentProperty] = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")
+                    continue
+                }               
                 result[0].parent[result[0].parentProperty] = this.saveEntity[key]
             } else {
                 let path = key.replace('.content', '')
                 let result = JSONPath.JSONPath({ path: path, json: jsonData, resultType: 'all' })
                 if (result[0]) {
-                    result[0].value.content = this.saveEntity[key]
+                    //判断是否是时间控件
+                    let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
+                    if (row){
+                        //时间格式化
+                        result[0].value.content = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")
+                        continue
+                    }else{
+                        result[0].value.content = this.saveEntity[key]
+                    }                    
                 }
             }
         }

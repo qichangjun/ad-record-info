@@ -128,10 +128,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
     if (block[0] && block[0].value.file) {
       let files = block[0].value.file ? _.castArray(block[0].value.file) : []
-
       this.defaultFileLists = files
     }
-
     if (block[0] && block[0].value.block && this.currentPolicy == 'default') {
       this.formatVolumeInfo(block[0].value.block, 0, true)
     }
@@ -363,10 +361,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
   //把文件夹的json格式化成tree
   formatVolumeInfo(info, level: number, needInitFile?: boolean, path = '/电子文件'): void {
-    // info.children = info.children ? _.castArray(info.children) : []
-    console.log(info)
+    // info.children = info.children ? _.castArray(info.children) : []    
     this.volumeInfo.children = this.getInfoResult(info)
-    console.log(this.volumeInfo.children)
   }
   //处理info数组
   getInfoResult(info) {
@@ -405,8 +401,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         newObj.push(data)
       }
     })
-    console.log(newObj)
-
     return newObj
   }
   //处理将obj变为数组形式
