@@ -557,6 +557,7 @@ export class RecordinfoComponent implements OnInit {
                 //判断是否是时间控件
                 let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
                 if (row){
+                    //时间格式化
                     result[0].parent[result[0].parentProperty] = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")
                     continue
                 }               
