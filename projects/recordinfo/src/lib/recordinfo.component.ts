@@ -554,6 +554,7 @@ export class RecordinfoComponent implements OnInit {
                 if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {                
                     continue
                 } 
+                //判断是否是时间控件
                 let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
                 if (row){
                     result[0].parent[result[0].parentProperty] = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")
@@ -568,8 +569,7 @@ export class RecordinfoComponent implements OnInit {
                     let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
                     if (row){
                         //时间格式化
-                        result[0].value.content = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")
-                        continue
+                        result[0].value.content = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")                        
                     }else{
                         result[0].value.content = this.saveEntity[key]
                     }                    
