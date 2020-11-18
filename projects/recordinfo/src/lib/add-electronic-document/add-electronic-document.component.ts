@@ -126,14 +126,21 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.defaultFileLists = []
     this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-    if (block[0] && block[0].value.file) {
-      let files = block[0].value.file ? _.castArray(block[0].value.file) : []
+    // if (block[0] && block[0].value.file) {
+    if (block[0] && (block[0].value.file || block[0].value[0].file)) {
+      let files
+      // let files = block[0].value.file ? _.castArray(block[0].value.file) : []
+      // let files = block[0].value.file || block[0].value[0].file ? _.castArray(block[0].value.file)| _.castArray(block[0].value[0].file) : []
+      if (block[0].value.file) {
+        files = block[0].value.file ? _.castArray(block[0].value.file) : []
+      } else if (block[0].value[0].file) {
+        files = block[0].value[0].file ? _.castArray(block[0].value[0].file) : []
+      }
       this.defaultFileLists = files
     }
     if (block[0] && block[0].value.block && this.currentPolicy == 'default') {
       this.formatVolumeInfo(block[0].value.block, 0, true)
     }
-
   }
 
   // 初始化时调用一次
