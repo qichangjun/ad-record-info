@@ -190,7 +190,7 @@ export class RecordinfoComponent implements OnInit {
     @Input() jsonMetadataTemplate: any;
     @Input() info: any;
     @Input() emial: any;
-    @Input() formType?: 'create' | 'edit'
+    @Input() formType: 'create' | 'edit'
     @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<any>
     @Input() getDefaultValue: (defaultValue: DefaultValue) => string
 

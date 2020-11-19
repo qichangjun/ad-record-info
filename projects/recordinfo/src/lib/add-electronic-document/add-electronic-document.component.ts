@@ -194,13 +194,13 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       file.type = 'file'
       file.isLeaf = true
       file.key = this.guid()
-      // file.property = [
-      //   {
-      //     "name": "file_type",
-      //     "title": "材料名称",
-      //     "value": this.activedNode.origin.file_name
-      //   }
-      // ]
+      file.property = [
+        {
+          "name": "file_type",
+          "title": "材料名称",
+          "value": this.activedNode.origin.file_name
+        }
+      ]
       this.activedNode.addChildren([file])
       this.activedNode.update()
     } else {
