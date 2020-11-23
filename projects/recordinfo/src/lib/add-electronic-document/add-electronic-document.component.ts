@@ -340,6 +340,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           let children = this.findBlockByNameAndLevel(info.name, level, info.path)
           if (children) {
             children.forEach(file => {
+              console.log(file)
               file.key = this.guid()
               file.type = 'file'
               file.isLeaf = true
@@ -356,6 +357,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             c.children = children.filter(file => {
               return file.property[0].value == c.file_name
             })
+            console.log(c.children)
           }
         }
       })
@@ -525,19 +527,20 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         child.children = child.children ? _.castArray(child.children) : []
         if (child.children.length > 0) {
           let file_lists = _.cloneDeep(child.children)
-          file_lists.forEach((file) => {
+          file_lists.forEach((file,index) => {
+            file.seq = index + 1
             delete file.level
             delete file.isLeaf
             delete file.key
             delete file.type
             delete file.children
-            // file.property = [
-            //   {
-            //     "name": "file_type",
-            //     "title": "材料名称",
-            //     "value": child.file_name
-            //   }
-            // ]
+            file.property = [
+              {
+                "name": "file_type",
+                "title": "材料名称",
+                "value": child.file_name
+              }
+            ]
           })
           info.file = info.file ? info.file.concat(file_lists) : file_lists
         }

@@ -22,17 +22,22 @@ export class FormValidPassDirective implements OnInit, OnChanges {
                     this.validErrorMessage.innerText = '不能为空'
                 }
                 this.el.nativeElement.parentNode.append(this.validErrorMessage)
-            }else if (option.valueType  == 'int' && _.isNumber(value)){
+            }else if (option.valueType  == 'int' && !(_.isNumber(value*1))){
                 if(this.validErrorMessage.innerText!='必须为数字型'){
                     this.validErrorMessage.innerText = '必须为数字型'
                 }
                 // this.validErrorMessage.append('必须为数字型')
                 this.el.nativeElement.parentNode.append(this.validErrorMessage)
+            }else if (option.contentType == 'input-number' && !(/^([0-9]{1,2}|999)$/.test(value))){                
+                if(this.validErrorMessage.innerText!='必须为1-999的数字'){
+                    this.validErrorMessage.innerText = '必须为1-999的数字'
+                }
+                this.el.nativeElement.parentNode.append(this.validErrorMessage)
             }
         }  
     }
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-        if (!this.validPass) {
+        if (!this.validPass) {            
             this.checkValid(this.formValue, this.formValidOption)
         }else{
             this.validErrorMessage.remove()

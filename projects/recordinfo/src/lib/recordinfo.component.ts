@@ -57,6 +57,15 @@ declare var JSONPath: any;
                         [disabled]="disableEdit" class="form-control form--build--box--input" 
                         [(ngModel)]="entity[tile.options.attrName]">
                 </div>
+                <div *ngSwitchCase="'input-number'" class="form--build--box--input--box">
+                    <input [style.textAlign]="tile.getStyle('text-align')" type="number"
+                        formValidPass 
+                        [scene]="scene"
+                        [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
+                        [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" 
+                        [disabled]="disableEdit" class="form-control form--build--box--input" 
+                        [(ngModel)]="entity[tile.options.attrName]">
+                </div>
                 <div *ngSwitchCase="'radio-button'" class="radio--build--box">
                     <mat-radio-group [(ngModel)]="entity[tile.options.attrName]" [scene]="scene" formValidPass [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options">
                         <mat-radio-button [disabled]="disableEdit" class="single--radio--btn" *ngFor="let radioAttr of tile.options.radioBtnAttrs" [value]="radioAttr">{{radioAttr}}</mat-radio-button>
@@ -225,7 +234,6 @@ export class RecordinfoComponent implements OnInit {
     }
   
     async getTemplateModule() {
-        let allemial = []
         try {
             this.serverFiles = this.serverFiles || []
             let json = this.jsonMetadataTemplate
@@ -401,7 +409,7 @@ export class RecordinfoComponent implements OnInit {
         this.formatTableEntity(jsonData.record)
         // 重新转换回正确的服务端需要格式
         this.formatArrayItems(jsonData.record)
-        this.deleteEmptyFile(jsonData.record)
+        this.deleteEmptyFile(jsonData.record)        
         this.validPass = this.checkFormValidator()
         if (!this.validPass) {
             return false
@@ -417,16 +425,20 @@ export class RecordinfoComponent implements OnInit {
             if (!tile.options.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
-                } else if (tile.options.valueType == 'int' && _.isNumber(this.entity[tile.options.attrName])) {
+                } else if (tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {                                        
                     validPass = false
+                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,2}|999)$/.test(this.entity[tile.options.attrName]))){                    
+                    validPass = false 
                 }
                 return
             }
             if (tile.options.scene.indexOf(this.scene) != -1 || !this.scene || !tile.options.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
-                } else if (tile.options.valueType == 'int' && _.isNumber(this.entity[tile.options.attrName])) {
+                } else if (tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {
                     validPass = false
+                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,2}|999)$/.test(this.entity[tile.options.attrName]))){
+                    validPass = false 
                 }
             } else {
                 return
@@ -554,8 +566,9 @@ export class RecordinfoComponent implements OnInit {
                 if (isArray(this.saveEntity[key]) && this.saveEntity[key].length > 0 && this.saveEntity[key][0].url) {                
                     continue
                 } 
+                
                 //判断是否是时间控件
-                let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
+                let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == key)
                 if (row){
                     //时间格式化
                     result[0].parent[result[0].parentProperty] = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")
@@ -563,11 +576,12 @@ export class RecordinfoComponent implements OnInit {
                 }               
                 result[0].parent[result[0].parentProperty] = this.saveEntity[key]
             } else {
+                
                 let path = key.replace('.content', '')
                 let result = JSONPath.JSONPath({ path: path, json: jsonData, resultType: 'all' })
                 if (result[0]) {
-                    //判断是否是时间控件
-                    let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == this.saveEntity[key])
+                    //判断是否是时间控件                    
+                    let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == key)
                     if (row){
                         //时间格式化
                         result[0].value.content = moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss")                        
@@ -703,7 +717,7 @@ export class RecordinfoComponent implements OnInit {
         if (!this.baseUrl) console.warn(ErrorMessage.baseUrl)
         if (!this.AuthenticationService) console.warn(ErrorMessage.AuthenticationService)
         if (!this.objectPath) console.warn(ErrorMessage.ObjectPath)
-    }
+    }    
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         if (!this.showTemplateXml) {

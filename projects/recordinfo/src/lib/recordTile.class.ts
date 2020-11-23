@@ -212,7 +212,7 @@ export interface TileOptions {
     labelName?: string | Array<any>,
     cols?: number,
     rows?: number,
-    contentType?: 'label' | 'input' | 'radio-button' | 'check-box' | 'text-area' | 'select' | 'upload' | 'date' | 'process-list' | 'table' | 'logo' | 'other-component',
+    contentType?: 'label' | 'input' | 'input-number' | 'radio-button' | 'check-box' | 'text-area' | 'select' | 'upload' | 'date' | 'process-list' | 'table' | 'logo' | 'other-component',
     style?: {
         'text-align'?: 'left' | 'center' | 'right' | '',
         'fontColor'?: string,

@@ -37,12 +37,10 @@ export class AdRecordinfoComponent implements OnInit {
   async getRecordInfo() {
     // let res = await this._AppService.getRecordInfo()    
     let res = await this._AppService.getRecordJson()   
-    console.log(res)
     res.jsonMetadata = JSON.parse(res.jsonMetadata)        
     this.jsonMetadataTemplate = res.jsonMetadata
     this.metadataSchemeId = '1f31b264-48d5-4e4f-9abc-9cf7c8683a18'
-    this.showTemplateXml = res.showTemplateXml
-  
+    this.showTemplateXml = res.showTemplateXml  
   }
 
   async editRecord() {
@@ -53,8 +51,7 @@ export class AdRecordinfoComponent implements OnInit {
     }
     await this.elecDocument.saveFileInfo(this.info.jsonData)
     await this._AppService.createRecord(this.info.jsonData)
-
-    // let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
+    let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
   }
 
   get_dwClassManageServiceGetMetaSysClassList() {
