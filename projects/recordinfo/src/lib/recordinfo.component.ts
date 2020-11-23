@@ -427,7 +427,7 @@ export class RecordinfoComponent implements OnInit {
                     validPass = false
                 } else if (tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {                                        
                     validPass = false
-                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,2}|999)$/.test(this.entity[tile.options.attrName]))){                    
+                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){                    
                     validPass = false 
                 }
                 return
@@ -437,7 +437,7 @@ export class RecordinfoComponent implements OnInit {
                     validPass = false
                 } else if (tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {
                     validPass = false
-                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,2}|999)$/.test(this.entity[tile.options.attrName]))){
+                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){
                     validPass = false 
                 }
             } else {

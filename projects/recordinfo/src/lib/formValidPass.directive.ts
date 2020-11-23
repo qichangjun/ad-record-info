@@ -28,9 +28,9 @@ export class FormValidPassDirective implements OnInit, OnChanges {
                 }
                 // this.validErrorMessage.append('必须为数字型')
                 this.el.nativeElement.parentNode.append(this.validErrorMessage)
-            }else if (option.contentType == 'input-number' && !(/^([0-9]{1,2}|999)$/.test(value))){                
-                if(this.validErrorMessage.innerText!='必须为1-999的数字'){
-                    this.validErrorMessage.innerText = '必须为1-999的数字'
+            }else if (option.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(value))){                
+                if(this.validErrorMessage.innerText!='必须为0-999的数字'){
+                    this.validErrorMessage.innerText = '必须为0-999的数字'
                 }
                 this.el.nativeElement.parentNode.append(this.validErrorMessage)
             }
