@@ -17,10 +17,10 @@
     </mat-radio-group>
   </div>
   <div class="select--node--upload--box">
-    <!-- <div class="head">请选择节点上传附件</div>
-      <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
+    <div class="head">请选择节点上传附件</div>
+      <form-upload *ngIf="currentPolicy=='default'" [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
       [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
-      (uploadFinish)="uploadFinish($event)"></form-upload> -->
+      (uploadFinish)="uploadFinish($event)"></form-upload>
     <nz-tree *ngIf="currentPolicy!='default'" [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
       [nzBeforeDrop]="beforeDrop" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)">
@@ -32,7 +32,7 @@
           <div *ngIf="node.origin.type == 'file_type'">
             <span class="fa fa-paperclip"></span>
             <span class="file-name">{{ node.origin.file_name }}</span>
-            <form-upload (click)='$event.stopPropagation()'
+            <form-upload (click)='$event.stopPropagation()'*ngIf="activedNode?.key === node.key"
               [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}" [baseUrl]="baseUrl"
               [ApiUrl]="ApiUrl" [AuthenticationService]="AuthenticationService" [relativePath]="relativePath"
               [disableEdit]="disableEdit" (uploadFinish)="uploadFinish($event)"></form-upload>
