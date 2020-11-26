@@ -1,92 +1,85 @@
 <div class="add--ele--doc--wrap" [hidden]="hasNoFileBlock">
   <div class="add--ele--doc--radio--box">
     <div class="head">请选择文件清单</div>
-    
+
     <!-- <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
     (change)="changePolicy()"> -->
-    <mat-radio-group  aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
-    (change)="changePolicy()">
-      <mat-radio-button class="example-radio-button"
-          [value]="'default'"
-          >
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
+      (change)="changePolicy()">
+      <mat-radio-button class="example-radio-button" [value]="'default'">
         默认上传
       </mat-radio-button>
-        <mat-radio-button class="example-radio-button" *ngFor="let policy of policyLists; let i=index"
-            [value]="policy.policy.code"
-            >
-            {{policy.policy.name}}
-        </mat-radio-button>
-       
-    </mat-radio-group>  
+      <mat-radio-button class="example-radio-button" *ngFor="let policy of policyLists; let i=index"
+        [value]="policy.policy.code">
+        {{policy.policy.name}}
+      </mat-radio-button>
+
+    </mat-radio-group>
   </div>
   <div class="select--node--upload--box">
-      <div class="head">请选择节点上传附件</div>
+    <!-- <div class="head">请选择节点上传附件</div>
       <form-upload [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
       [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
-      (uploadFinish)="uploadFinish($event)"></form-upload>
-      <nz-tree *ngIf="currentPolicy!='default'"
-      [nzDraggable]="true"
-      (nzOnDragEnd)="dragEnd($event)"
-      nzBlockNode
-      [nzBeforeDrop]="beforeDrop"
-       [nzData]="policyInfo.children" [nzExpandAll]="true"
-       (nzClick)="activeNode($event)"  (nzDblClick)="openFolder($event)">
-          <ng-template #nzTreeTemplate let-node>
-            <span class="custom-node" [class.active]="activedNode?.key === node.key">
-              <span *ngIf="node.origin.type == 'category'" >                      
-                <span class="folder-name">{{ node.origin.name }}</span>
-              </span>
-              <div *ngIf="node.origin.type == 'file_type'" >                       
-                <span class="fa fa-paperclip"></span>
-                <span class="file-name">{{ node.origin.file_name }}</span>  
-              </div>
-              <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
-                
-                <ul class="file--list--box">
-                  <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
-                  
-                  <span (click)="deleteFile(node)" class="ti-trash"></span>
+      (uploadFinish)="uploadFinish($event)"></form-upload> -->
+    <nz-tree *ngIf="currentPolicy!='default'" [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
+      [nzBeforeDrop]="beforeDrop" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"
+      (nzDblClick)="openFolder($event)">
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node" [class.active]="activedNode?.key === node.key">
+          <span *ngIf="node.origin.type == 'category'">
+            <span class="folder-name">{{ node.origin.name }}</span>
+          </span>
+          <div *ngIf="node.origin.type == 'file_type'">
+            <span class="fa fa-paperclip"></span>
+            <span class="file-name">{{ node.origin.file_name }}</span>
+            <form-upload (click)='$event.stopPropagation()'
+              [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}" [baseUrl]="baseUrl"
+              [ApiUrl]="ApiUrl" [AuthenticationService]="AuthenticationService" [relativePath]="relativePath"
+              [disableEdit]="disableEdit" (uploadFinish)="uploadFinish($event)"></form-upload>
+          </div>
+          <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
 
-                </ul>
-              </div>
-            
-            </span>
-          </ng-template>
-      </nz-tree>     
-      <nz-tree *ngIf="currentPolicy=='default'"
-      [nzDraggable]="true"
-      (nzOnDragEnd)="dragEnd($event)"
-      nzBlockNode
-      [nzBeforeDrop]="beforeDrop"
-       [nzData]="volumeInfo.children" [nzExpandAll]="true"
-       (nzClick)="getvolume($event)"  (nzDblClick)="openFolder($event)">
-          <ng-template #nzTreeTemplate let-node>
-                <span class="file-name">{{ node.origin.name }}</span>
-              <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
-                
-                <ul class="file--list--box">
-                  <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
-                  
-                  <span (click)="deleteFile(node)" class="ti-trash"></span>
+            <ul class="file--list--box">
+              <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
 
-                </ul>
-              </div>
-            
-          </ng-template>
-      </nz-tree>  
-      <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
-        <li *ngFor="let file of defaultFileLists;let i = index ">
-            <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
-            <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
-        </li>
-      </ul>
-      <ul *ngIf="serverFiles" class="defalut--list--box">
-        <li *ngFor="let file of serverFiles;let i = index ">
-            <a class="file--name" (click)="previewDoc(file.url)">{{file.s_object_name}}</a>
-            <span *ngIf="!disableEdit" (click)="serverFiles.splice(i,1)" class="ti-trash"></span>
-        </li>
-      </ul>
-     
+              <span (click)="deleteFile(node)" class="ti-trash"></span>
+
+            </ul>
+          </div>
+
+        </span>
+      </ng-template>
+    </nz-tree>
+    <nz-tree *ngIf="currentPolicy=='default'" [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
+      [nzBeforeDrop]="beforeDrop" [nzData]="volumeInfo.children" [nzExpandAll]="true" (nzClick)="getvolume($event)"
+      (nzDblClick)="openFolder($event)">
+      <ng-template #nzTreeTemplate let-node>
+        <span class="file-name">{{ node.origin.name }}</span>
+        <div draggable="true" class="draggable ant-tree-node-content-wrapper" *ngIf="node.origin.type == 'file'">
+
+          <ul class="file--list--box">
+            <a (click)="previewDoc(node.origin.url)">{{node.origin.name}}</a>
+
+            <span (click)="deleteFile(node)" class="ti-trash"></span>
+
+          </ul>
+        </div>
+
+      </ng-template>
+    </nz-tree>
+    <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
+      <li *ngFor="let file of defaultFileLists;let i = index ">
+        <a class="file--name" (click)="previewDoc(file.url)">{{file.name}}</a>
+        <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
+      </li>
+    </ul>
+    <ul *ngIf="serverFiles" class="defalut--list--box">
+      <li *ngFor="let file of serverFiles;let i = index ">
+        <a class="file--name" (click)="previewDoc(file.url)">{{file.s_object_name}}</a>
+        <span *ngIf="!disableEdit" (click)="serverFiles.splice(i,1)" class="ti-trash"></span>
+      </li>
+    </ul>
+
   </div>
 
 </div>
