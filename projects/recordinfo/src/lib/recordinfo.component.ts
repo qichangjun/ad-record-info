@@ -42,11 +42,20 @@ declare var JSONPath: any;
                 [style.color]="tile.getStyle('fontColor')" [style.fontSize]="tile.getStyle('fontSize') + 'px'"
                 [style.background]="tile.getStyle('backgroundColor')">
                 <div *ngSwitchCase="'label'" class="label--wrap">
-                    <span *ngFor="let label of tile.options.labelName" class="label--box">
-                         <span class="text-danger" *ngIf="tile.options.required == 'true'">. </span>
+                    <ng-container    *ngIf="language == 'zh-CN'">
+                        <span *ngFor="let label of tile.options.labelName" class="label--box">
+                            <span class="text-danger" *ngIf="tile.options.required == 'true'">. </span>
+                                <span *ngIf="label.type == 'text'">{{label.value}}</span>
+                                <span *ngIf="label.type == 'attr'">{{entity[label.value]}}</span>
+                        </span>  
+                    </ng-container>
+                    <ng-container    *ngIf="language == 'en-US'">
+                    <span *ngFor="let label of tile.options.labelNameEn" class="label--box">
+                        <span class="text-danger" *ngIf="tile.options.required == 'true'">. </span>
                             <span *ngIf="label.type == 'text'">{{label.value}}</span>
                             <span *ngIf="label.type == 'attr'">{{entity[label.value]}}</span>
                     </span>  
+                </ng-container>
                 </div>
                 <div *ngSwitchCase="'input'" class="form--build--box--input--box">
                     <input [style.textAlign]="tile.getStyle('text-align')" type="text"
@@ -200,6 +209,7 @@ export class RecordinfoComponent implements OnInit {
     @Input() info: any;
     @Input() emial: any;
     @Input() formType: 'create' | 'edit'
+    @Input() language? : 'zh-CN' | 'en-US' = 'zh-CN'
     @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<any>
     @Input() getDefaultValue: (defaultValue: DefaultValue) => string
 

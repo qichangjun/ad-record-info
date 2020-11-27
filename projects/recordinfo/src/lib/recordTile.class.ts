@@ -5,6 +5,7 @@ export class Tile {
     defaultOptions: TileOptions = {
         required : 'false',
         labelName: '',
+        labelNameEn : '',
         contentType: 'label',
         cols: 3,
         rows: 5,
@@ -30,6 +31,13 @@ export class Tile {
                         this.options.labelName = [{type:'text',value:this.options.labelName,allowedValuesCode:''}]
                     }else{
                         this.options.labelName = [{type:this.options.labelName['type'],value:this.options.labelName['value'],allowedValuesCode:this.options.labelName['allowedValuesCode']}]
+                    }                    
+                }
+                if(!isArray(this.options.labelNameEn)){                                  
+                    if (typeof(this.options.labelNameEn) == 'string'){
+                        this.options.labelNameEn = [{type:'text',value:this.options.labelNameEn,allowedValuesCode:''}]
+                    }else{
+                        this.options.labelNameEn = [{type:this.options.labelNameEn['type'],value:this.options.labelNameEn['value'],allowedValuesCode:this.options.labelNameEn['allowedValuesCode']}]
                     }                    
                 }
                 break;
@@ -210,6 +218,7 @@ export interface TileOptions {
     typeFormat? : string,
     required ? : string,
     labelName?: string | Array<any>,
+    labelNameEn?: string | Array<any>,
     cols?: number,
     rows?: number,
     contentType?: 'label' | 'input' | 'input-number' | 'radio-button' | 'check-box' | 'text-area' | 'select' | 'upload' | 'date' | 'process-list' | 'table' | 'logo' | 'other-component',
