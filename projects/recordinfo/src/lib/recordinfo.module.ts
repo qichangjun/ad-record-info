@@ -1,3 +1,4 @@
+import { RecordInfoSelectUsersComponent } from './choose-user/choose-user.component';
 import { NgModule } from '@angular/core';
 import { RecordinfoComponent } from './recordinfo.component';
 import { MatListModule } from '@angular/material/list';
@@ -8,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { NzSelectModule } from 'ng-zorro-antd';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
@@ -30,15 +32,18 @@ import { Sizefilter } from './size.pipe';
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
 import {addElectronicDocumentComponent } from './add-electronic-document/add-electronic-document.component';
 import { NzUploadModule } from 'ng-zorro-antd';
+import { NzInputModule } from 'ng-zorro-antd';
 
 @NgModule({
-  declarations: [ShowProcessDetailDialog,Sizefilter,FormUploadComponent,chooseClassModuleContentComponent,
+  declarations: [RecordInfoSelectUsersComponent,ShowProcessDetailDialog,Sizefilter,FormUploadComponent,chooseClassModuleContentComponent,
     LoadingButtonControllerDirective,LoadingMessageComponent,RecordinfoComponent,InitTableValueDirective,
     fileNameToIconfilter,FormValidPassDirective,FormOtherCompComponent,FormSelectUserDialog,FormChooseCategoryDialog,addElectronicDocumentComponent],
   imports: [
     CommonModule,
+    NzInputModule,
     FileUploadModule,
     NzTreeSelectModule,
+    NzSelectModule,
     MatProgressSpinnerModule,
     MatDialogModule,
     MatListModule,

@@ -58,7 +58,9 @@ declare var JSONPath: any;
                 </ng-container>
                 </div>
                 <div *ngSwitchCase="'input'" class="form--build--box--input--box">
-                    <input [style.textAlign]="tile.getStyle('text-align')" type="text"
+                    <input 
+                    nz-input 
+                    [style.textAlign]="tile.getStyle('text-align')" type="text"
                         formValidPass 
                         [scene]="scene"
                         [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
@@ -67,9 +69,12 @@ declare var JSONPath: any;
                         [(ngModel)]="entity[tile.options.attrName]">
                 </div>
                 <div *ngSwitchCase="'input-number'" class="form--build--box--input--box">
-                    <input [style.textAlign]="tile.getStyle('text-align')" type="number"
+                    <input 
+                    nz-input 
+                    [style.textAlign]="tile.getStyle('text-align')" type="number"
                         formValidPass 
                         [scene]="scene"
+                        (change)="validNumberInput($event,tile.options.attrName)"
                         [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
                         [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" 
                         [disabled]="disableEdit" class="form-control form--build--box--input" 
@@ -90,10 +95,15 @@ declare var JSONPath: any;
                     </section>
                 </div>
                 <div *ngSwitchCase="'select'" class="form--build--box--input--box" >
-                    <select [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"  [disabled]="disableEdit" class="form-control form--build--box--input" [(ngModel)]="entity[tile.options.attrName]">
-                    <option [value]="''"></option>    
-                    <option *ngFor="let selectAttr of tile.options.selectAttrs" [value]="selectAttr.value">{{selectAttr.displayName}}</option>
-                    </select>
+                    <nz-select [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}"                    
+                     formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"  [disabled]="disableEdit" class="form-control form--build--box--input" [(ngModel)]="entity[tile.options.attrName]">
+                    <nz-option [nzValue]="''" [nzLabel]="'无'"></nz-option>    
+                    <nz-option 
+                    *ngFor="let selectAttr of tile.options.selectAttrs"
+                     [nzValue]="selectAttr.value"
+                     [nzLabel]="selectAttr.displayName"
+                     >{{selectAttr.displayName}}</nz-option>
+                    </nz-select>
                 </div>
                 <div *ngSwitchCase="'text-area'" class="form--build--box--input--box">
                     <textarea [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options" [disabled]="disableEdit" class="form-control form--build--box--input textarea--input" [(ngModel)]="entity[tile.options.attrName]"></textarea>
@@ -712,6 +722,15 @@ export class RecordinfoComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(res => {
         });
+    }
+
+    validNumberInput(event,value){
+        if(this.entity[value] <= 0){
+            this.entity[value] = 1
+        }
+        if(!(/^([0-9]{1,3}|999)$/.test(this.entity[value]))){
+            this.entity[value] = 1
+        }
     }
 
     checkNeedProperty() {

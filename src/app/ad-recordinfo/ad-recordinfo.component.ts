@@ -39,7 +39,7 @@ export class AdRecordinfoComponent implements OnInit {
     let res = await this._AppService.getRecordJson()   
     res.jsonMetadata = JSON.parse(res.jsonMetadataTemplate)        
     this.jsonMetadataTemplate = res.jsonMetadata
-    this.metadataSchemeId = '1f31b264-48d5-4e4f-9abc-9cf7c8683a18'
+    this.metadataSchemeId = '533bd9a6-6f64-40a9-a75c-84d23b49234b'
     this.showTemplateXml = res.showTemplateXml  
   }
 
@@ -49,6 +49,7 @@ export class AdRecordinfoComponent implements OnInit {
         this.loading = false
         return 
     }
+    console.log(111)
     await this.elecDocument.saveFileInfo(this.info.jsonData)
     await this._AppService.createRecord(this.info.jsonData)
     let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)

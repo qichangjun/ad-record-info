@@ -5,6 +5,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ng-zorro-antd/tree-select/style/index.min.css";
 @import "~ng-zorro-antd/tree/style/index.min.css";
+@import "~ng-zorro-antd/select/style/index.min.css";  /* 选择 */
+@import "~ng-zorro-antd/date-picker/style/index.min.css";  /* 进度条样式 */
+@import "~ng-zorro-antd/input/style/index.min.css";  /* 下拉 */
 .drag-over-gap-bottom{
     border-bottom:2px solid #1890ff;
 }
@@ -16,4 +19,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .drag-over{
     background:#eaeaea;
     // border: 1px dashed #eee;
+}
+
+.has-error-input{
+    border-color : red 
 }
