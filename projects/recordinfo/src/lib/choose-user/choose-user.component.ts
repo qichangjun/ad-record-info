@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
 
@@ -19,7 +19,8 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
   ]
 })
 export class RecordInfoSelectUsersComponent implements OnInit {
-  @Input() selectedUser : string;
+  @Input() selectedUser : string;  
+  @Output() changeUser : EventEmitter<any> = new EventEmitter();
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];  

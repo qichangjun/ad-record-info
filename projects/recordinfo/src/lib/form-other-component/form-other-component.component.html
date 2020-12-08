@@ -4,7 +4,9 @@
     </div>
  
     <div *ngSwitchCase="'2'">
-       <recordinfo-select-users></recordinfo-select-users>
+       <recordinfo-select-users [selectedUser]="entity[valueAttrName]"
+       (changeUser)="entity[valueAttrName] = $event"
+       ></recordinfo-select-users>
     </div>
 
     <div *ngSwitchDefault>请选择一个组件</div>

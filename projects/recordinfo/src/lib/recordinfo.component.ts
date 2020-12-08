@@ -96,7 +96,7 @@ declare var JSONPath: any;
                 </div>
                 <div *ngSwitchCase="'select'" class="form--build--box--input--box" >
                     <nz-select [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}"                    
-                     formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"  [disabled]="disableEdit" class="form-control form--build--box--input" [(ngModel)]="entity[tile.options.attrName]">
+                     formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"  [disabled]="disableEdit" class="form--build--box--input" [(ngModel)]="entity[tile.options.attrName]">
                     <nz-option [nzValue]="''" [nzLabel]="'无'"></nz-option>    
                     <nz-option 
                     *ngFor="let selectAttr of tile.options.selectAttrs"
@@ -184,8 +184,7 @@ declare var JSONPath: any;
                     [_dwClassManageServiceGetMetadataCategoryInfo]="_dwClassManageServiceGetMetadataCategoryInfo"
                     [_dwClassManageServiceGetMetaSysClassList]="_dwClassManageServiceGetMetaSysClassList"
                     [entity]="entity"
-                     [componentType]="tile.options.componentType"></form-other-component>
-                   
+                     [componentType]="tile.options.componentType"></form-other-component>                  
                 </div>
                 <div *ngSwitchDefault>请选择一个类型</div>
             </div>
