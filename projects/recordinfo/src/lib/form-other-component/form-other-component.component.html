@@ -4,7 +4,9 @@
     </div>
  
     <div *ngSwitchCase="'2'">
-       <recordinfo-select-users [selectedUser]="entity[valueAttrName]"
+       <recordinfo-select-users 
+       [disableEdit]="disableEdit"
+       [selectedUser]="entity[valueAttrName]"
        (changeUser)="entity[valueAttrName] = $event"
        ></recordinfo-select-users>
     </div>

@@ -20,6 +20,7 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
 })
 export class RecordInfoSelectUsersComponent implements OnInit {
   @Input() selectedUser : string;  
+  @Input() disableEdit : boolean = false;     
   @Output() changeUser : EventEmitter<any> = new EventEmitter();
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
