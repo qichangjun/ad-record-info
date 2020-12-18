@@ -3,6 +3,7 @@
   class="show--template--content--box" [id]="id" 
  [showTemplateXml]="showTemplateXml" [jsonMetadataTemplate]="jsonMetadataTemplate" 
 
+ [_SelectUserServiceGetList]="_AppService.getUserList"
  [getMulModifeProPertyValues]="_AppService.getMulModifeProPertyValuesFormatted"
  [_dwClassManageServiceGetMetadataCategoryInfo]="get_dwClassManageServiceGetMetaSysClassList"
  [_dwClassManageServiceGetMetaSysClassList]="_AppService.getClassLIst"

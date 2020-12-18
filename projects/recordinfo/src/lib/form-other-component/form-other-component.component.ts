@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material';
 import { FormChooseCategoryDialog } from './form-choose-category/form-choose-category.dialog';
 import { FormSelectUserDialog } from './form-select-user/form-select-user.dialog';
 import { ComponentType } from '../recordTile.class';
-
+import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'form-other-component',
   templateUrl: './form-other-component.component.html',
@@ -15,6 +15,7 @@ export class FormOtherCompComponent implements OnInit {
   @Input() keyAttrName : any;  
   @Input() entity : any
   @Input() disableEdit : boolean;
+  @Input() _SelectUserServiceGetList : () => Observable<any>
   @Input() _DepartmentManageServiceGetList : ()=> Promise<any>;
   @Input() _chooseUsersAccessServiceGetRoleList : ()=> Promise<any>;
   @Input() _chooseUsersAccessServiceGetUserByDept : (groupName:string) => Promise<any>;

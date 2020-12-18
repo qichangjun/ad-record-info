@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material';
 import * as _moment from 'moment';
 import { formatDate } from '@angular/common'
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
+import { BehaviorSubject, Observable } from 'rxjs';
 const moment = _moment;
 import {
     trigger,
@@ -180,6 +181,7 @@ declare var JSONPath: any;
                     [disableEdit]="disableEdit"
                     [keyAttrName]="tile.options.keyAttrName"
                     [valueAttrName]="tile.options.attrName"
+                    [_SelectUserServiceGetList]="_SelectUserServiceGetList"
                     [_DepartmentManageServiceGetList]="_DepartmentManageServiceGetList"
                     [_chooseUsersAccessServiceGetRoleList]="_chooseUsersAccessServiceGetRoleList"
                     [_chooseUsersAccessServiceGetUserByDept]="_chooseUsersAccessServiceGetUserByDept"
@@ -225,6 +227,7 @@ export class RecordinfoComponent implements OnInit {
     @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<any>
     @Input() getDefaultValue: (defaultValue: DefaultValue) => string
 
+    @Input() _SelectUserServiceGetList: () => Observable<any>
     @Input() _DepartmentManageServiceGetList: () => Promise<any>
     @Input() _chooseUsersAccessServiceGetRoleList: () => Promise<any>
     @Input() _chooseUsersAccessServiceGetUserByDept: (groupName: string) => Promise<any>

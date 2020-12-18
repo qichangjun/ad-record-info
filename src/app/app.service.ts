@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams } from '@angular/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +46,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return 'e4cb3d74620d6f4124afbb9842b5bd8e'
+    return 'fb1a90216b0c3dfc3d8e4c8d6a08725f'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {
@@ -120,6 +122,25 @@ export class AppService {
         .catch(error =>
           []
         );
+    }
+
+    getUserList=(parameter)=>{
+      let params = new URLSearchParams();
+      params.set('keyword', parameter.keywords)
+      let headers = new Headers()
+      headers.append('accessToken', this.getAccessToken())
+      return this.http.get(
+          '/ermsapi/user/get_matched_user_list'
+          , { headers: headers, params: params })
+          .pipe(map((res: any) => res.json()))
+          .pipe(map((res: any[]) => {
+            return res.map(c=>{
+              return {
+                displayName : c.displayName,
+                value : c.loginName
+              }
+            })
+          }))
     }
 
 

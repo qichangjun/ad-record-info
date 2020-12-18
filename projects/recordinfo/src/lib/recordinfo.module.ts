@@ -59,7 +59,12 @@ import { NzInputModule } from 'ng-zorro-antd';
     MatStepperModule,
     NzDatePickerModule
   ],
-  exports: [RecordinfoComponent,InitTableValueDirective,fileNameToIconfilter,FormValidPassDirective,addElectronicDocumentComponent],
+  exports: [RecordinfoComponent,
+    InitTableValueDirective,
+    fileNameToIconfilter,
+    FormValidPassDirective,
+    RecordInfoSelectUsersComponent,
+    addElectronicDocumentComponent],
   entryComponents:[FormSelectUserDialog,FormChooseCategoryDialog,ShowProcessDetailDialog]
 })
 export class RecordinfoModule { }

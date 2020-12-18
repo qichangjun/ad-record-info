@@ -49,7 +49,6 @@ export class AdRecordinfoComponent implements OnInit {
         this.loading = false
         return 
     }
-    console.log(111)
     await this.elecDocument.saveFileInfo(this.info.jsonData)
     await this._AppService.createRecord(this.info.jsonData)
     let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)

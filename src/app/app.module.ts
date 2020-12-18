@@ -14,6 +14,7 @@ import zh from '@angular/common/locales/zh';
 import { AdUiModule } from '../../projects/ad-ui/src/lib/ad-ui.module';
 import { AdUiTreeComponent } from './ad-ui-tree/ad-ui-tree.component';
 import { AdRecordinfoComponent } from './ad-recordinfo/ad-recordinfo.component';
+
 registerLocaleData(zh);
 @NgModule({
   declarations: [
