@@ -8,6 +8,7 @@ nzShowSearch
 [nzServerSearch]="true"
 (nzOnSearch)="onSearch($event)"
 (ngModelChange)="changeUser.emit(selectedUser)"
+(nzScrollToBottom)="scrollToBottom()"
 >
 <ng-container *ngFor="let o of optionList"> 
   

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams } from '@angular/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable , of} from 'rxjs';
+import { debounceTime, map, switchMap,catchError, } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +46,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return 'fb1a90216b0c3dfc3d8e4c8d6a08725f'
+    return '3f383728cf269ac29d02908e9259881f'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {
@@ -124,24 +124,36 @@ export class AppService {
         );
     }
 
-    getUserList=(parameter)=>{
+    getUserList=(info): Observable<any>=> {
       let params = new URLSearchParams();
-      params.set('keyword', parameter.keywords)
+      params.set('keyword', info.keywords)
       let headers = new Headers()
       headers.append('accessToken', this.getAccessToken())
-      return this.http.get(
-          '/ermsapi/user/get_matched_user_list'
-          , { headers: headers, params: params })
-          .pipe(map((res: any) => res.json()))
-          .pipe(map((res: any[]) => {
-            return res.map(c=>{
-              return {
-                displayName : c.displayName,
-                value : c.loginName
+      return this.http.post(
+          '/ermsapi/user/get_matched_user_list',{
+              columns : [],
+              pagingSort : {
+                  currentPage : info.currentPage,
+                  pageSize : info.pageSize
               }
-            })
-          }))
-    }
+          }
+          , { headers: headers, params: params })
+          .pipe(map((res: any) => res.json()),
+          catchError(this.handleObservablError('获取失败', []))
+          )  
+          .pipe(map((res: any) => {
+              let data = res.data.map(c=>{
+                return {
+                  displayName : c.displayName,
+                  value : c.loginName
+                }
+              })
+              return {
+                  data : data,
+                  pageInfo : res.pageInfo
+              }
+          }))         
+  }
 
 
     createRecord(create_info): Promise<any> {
@@ -164,6 +176,15 @@ export class AppService {
         .catch(error =>
           1
         );
+    }
+
+    public handleObservablError<T>(operation = 'operation', result?: T) {    
+      return (error: any): Observable<T> => {      
+        let errorData = error.json()
+        
+        
+        return of(result as T)
+      };
     }
 }
 export enum ActionType{
