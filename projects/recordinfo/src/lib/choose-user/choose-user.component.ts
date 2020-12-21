@@ -28,9 +28,13 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];  
   isLoading = false;
-
-  onSearch(value: any): void {   
+  totalCount = 0  
+  keywords : string = ''
+  onSearch(value: any): void {       
     this.isLoading = true;
+    this.optionList = []
+    this.currentPage = 1
+    this.keywords = value 
     this.searchChange$.next(value);
   }
 
@@ -62,14 +66,24 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
         );
       }     
     }            
-    const optionList$: Observable<any[]> = this.searchChange$
+    const optionList$: Observable<any> = this.searchChange$
         .asObservable()
         .pipe(debounceTime(500))
         .pipe(switchMap(getRandomNameList))            
-    optionList$.subscribe(data => {                     
-        this.optionList = data;
+    optionList$.subscribe(res => {                     
+        this.optionList = this.optionList.concat(res.data);
+        this.totalCount = res.pageInfo.totalCount
+        this.currentPage = res.pageInfo.currentPage
         this.isLoading = false;
     });          
+  }
+
+  scrollToBottom(){
+    if (this.optionList.length < this.totalCount){
+      this.isLoading = true;   
+      this.currentPage ++   
+      this.searchChange$.next(this.keywords);
+    }
   }
 
   ngOnChanges(){   
