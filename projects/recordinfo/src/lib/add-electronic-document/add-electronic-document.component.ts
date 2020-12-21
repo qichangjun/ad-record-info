@@ -264,6 +264,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     // let res = await this._RecordInfoService.getDocumentId(this.id, url)
     let objectId = this.objectPath + url
     objectId = objectId.replace(/\\/g, '/')
+    objectId=encodeURI(objectId)
     preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&objectPath=${this.objectPath}&recordId=${this.id}&scene=${this.scene}`
     // this.router.navigate(['/previewDoc'], { queryParams: { objectId: res } })
   }
