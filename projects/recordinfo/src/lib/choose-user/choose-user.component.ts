@@ -26,7 +26,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() getList : Function  
   currentPage : number = 1
   searchChange$ = new BehaviorSubject('');
-  optionList: string[] = [];  
+  optionList: any[] = [];  
   isLoading = false;
   totalCount = 0  
   keywords : string = ''
@@ -70,8 +70,12 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
         .asObservable()
         .pipe(debounceTime(500))
         .pipe(switchMap(getRandomNameList))            
-    optionList$.subscribe(res => {                     
-        this.optionList = this.optionList.concat(res.data);
+    optionList$.subscribe(res => {   
+        let datas = res.data.filter(c=>{
+          let row = this.optionList.find(option=>option.id == c.id)
+          return row ? false : true 
+        })
+        this.optionList = this.optionList.concat(datas);
         this.totalCount = res.pageInfo.totalCount
         this.currentPage = res.pageInfo.currentPage
         this.isLoading = false;
