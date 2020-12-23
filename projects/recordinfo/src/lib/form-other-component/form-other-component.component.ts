@@ -1,9 +1,11 @@
+import { Tile } from './../recordTile.class';
 import { Component, OnInit,Input,EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormChooseCategoryDialog } from './form-choose-category/form-choose-category.dialog';
 import { FormSelectUserDialog } from './form-select-user/form-select-user.dialog';
 import { ComponentType } from '../recordTile.class';
 import { BehaviorSubject, Observable } from 'rxjs';
+
 @Component({
   selector: 'form-other-component',
   templateUrl: './form-other-component.component.html',
@@ -12,6 +14,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class FormOtherCompComponent implements OnInit {
   @Input() componentType : ComponentType;
   @Input() valueAttrName : any;  
+  @Input() scene : any;  
+  @Input() tile : Tile;
+  @Input() validPass : boolean
   @Input() keyAttrName : any;  
   @Input() entity : any
   @Input() disableEdit : boolean;

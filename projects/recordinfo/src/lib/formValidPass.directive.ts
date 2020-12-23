@@ -16,7 +16,7 @@ export class FormValidPassDirective implements OnInit, OnChanges {
 
     checkValid(value, option: TileOptions) {
         this.el.nativeElement.classList.remove('has-error-input')        
-        if (option.scene.indexOf(this.scene) != -1 || !this.scene || !option.scene){            
+        if (!option.scene || option.scene.indexOf(this.scene) != -1 || !this.scene){            
             if (!value && option.isRequired == 'true') {                              
                 this.el.nativeElement.classList.add('has-error-input')                
                 this.el.nativeElement.placeholder = '必填'                                

@@ -75,6 +75,11 @@ export class Tile {
             default:
                 break;
         }
+        if(this.options.contentType == 'label'){
+            this.options.style.fontColor = this.options.style.fontColor || 'rgba(0,0,0, 0.65)'
+        }else{
+            this.options.style.fontColor = this.options.style.fontColor || 'rgba(0,0,0, 0.85)'
+        }
         this.options.defaultValue = this.options.defaultValue || {
             type : 'string',
             value : ''
@@ -160,11 +165,15 @@ export class Tile {
     }
 
     hasError() {
-        if (this.options.contentType !== 'process-list' && this.options.contentType !== 'logo' && this.options.contentType !== 'label' && !this.options.attrName){
+        if (this.options.contentType !== 'process-list'
+             && this.options.contentType !== 'logo' 
+             && this.options.contentType !== 'label' 
+             && this.options.contentType !== 'divider'
+             && !this.options.attrName){
             if (this.options.contentType == 'upload'){
                 return '请选择一个file类型，若没有，请先创建'
             }
-            return true
+            return '请选择一个正确的属性(点击列表中你要选择的属性)'
         }
         if (this.options.contentType == 'check-box'){                        
             return this.options.checkBoxAttrs.find((c)=> {
@@ -201,6 +210,14 @@ export class Tile {
         return false
     }
 
+    getDateFormat(){
+        if (this.options.typeFormat){            
+            let typeFormat = this.options.typeFormat.replace(/Y/g,'y').replace(/D/g,'d')
+            return typeFormat
+        }else{
+            return 'yyyy-MM-dd'
+        }
+    }
     toggleFontWeight(event){        
         this.options.style.fontWeight ? this.options.style.fontWeight = '' : this.options.style.fontWeight = 'bold'
     }
@@ -221,8 +238,9 @@ export interface TileOptions {
     labelNameEn?: string | Array<any>,
     cols?: number,
     rows?: number,
-    contentType?: 'label' | 'input' | 'input-number' | 'radio-button' | 'check-box' | 'text-area' | 'select' | 'upload' | 'date' | 'process-list' | 'table' | 'logo' | 'other-component',
+    contentType?: 'label' | 'input' | 'input-number' | 'radio-button' | 'check-box' | 'text-area' | 'select' | 'upload' | 'date' | 'process-list' | 'table' | 'logo' | 'divider' | 'other-component',
     style?: {
+        'borderColor'?:string,
         'text-align'?: 'left' | 'center' | 'right' | '',
         'fontColor'?: string,
         'backgroundColor'?: string,

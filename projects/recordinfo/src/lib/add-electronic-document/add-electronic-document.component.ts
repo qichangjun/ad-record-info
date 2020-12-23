@@ -341,7 +341,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           let children = this.findBlockByNameAndLevel(info.name, level, info.path)
           if (children) {
             children.forEach(file => {
-              console.log(file)
               file.key = this.guid()
               file.type = 'file'
               file.isLeaf = true

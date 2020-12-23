@@ -116,7 +116,7 @@ declare var JSONPath: any;
                      [ngClass]="{'showBorder' : tile.getStyle('inputBorder')  == 'show'}"  [(ngModel)]="entity[tile.options.attrName]" 
                     class="form-control form--build--box--input" 
                     [nzDisabled]="disableEdit"
-                    [nzFormat]="tile.options.typeFormat"></nz-date-picker>
+                    [nzFormat]="tile.getDateFormat()"></nz-date-picker>
                 </div>
                 <div *ngSwitchCase="'process-list'" class="form--build--box--input--box process--info--wrap">
                     <ul class="process--info--box clearfix">
@@ -179,6 +179,9 @@ declare var JSONPath: any;
                 <div *ngSwitchCase="'other-component'" class="form--build--box--input--box">                    
                     <form-other-component
                     [disableEdit]="disableEdit"
+                    [scene]="scene"
+                    [tile]="tile"
+                    [validPass]="validPass"
                     [keyAttrName]="tile.options.keyAttrName"
                     [valueAttrName]="tile.options.attrName"
                     [_SelectUserServiceGetList]="_SelectUserServiceGetList"

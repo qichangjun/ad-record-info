@@ -1,8 +1,8 @@
+import { Tile } from './../recordTile.class';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
-
 @Component({
   selector: 'recordinfo-select-users',
   templateUrl: './choose-user.component.html',
@@ -23,7 +23,10 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() selectedUser : string;  
   @Input() disableEdit : boolean = false;     
   @Output() changeUser : EventEmitter<any> = new EventEmitter();
-  @Input() getList : Function  
+  @Input() getList : Function
+  @Input() scene : string    
+  @Input() tile : Tile
+  @Input() validPass : boolean 
   currentPage : number = 1
   searchChange$ = new BehaviorSubject('');
   optionList: any[] = [];  
@@ -70,11 +73,11 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
         .asObservable()
         .pipe(debounceTime(500))
         .pipe(switchMap(getRandomNameList))            
-    optionList$.subscribe(res => {   
-        let datas = res.data.filter(c=>{
-          let row = this.optionList.find(option=>option.id == c.id)
+    optionList$.subscribe(res => {           
+        let datas = res.data.filter(c=>{          
+          let row = this.optionList.find(option=>option.value == c.value)
           return row ? false : true 
-        })
+        })        
         this.optionList = this.optionList.concat(datas);
         this.totalCount = res.pageInfo.totalCount
         this.currentPage = res.pageInfo.currentPage
