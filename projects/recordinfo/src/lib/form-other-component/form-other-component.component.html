@@ -6,6 +6,9 @@
     <div *ngSwitchCase="'2'">
        <recordinfo-select-users 
        [selectMode]="'default'"
+       [tile]="tile"
+       [scene]="scene"
+       [validPass]="validPass"
        [disableEdit]="disableEdit"
        [getList]="_SelectUserServiceGetList"
        [selectedUser]="entity[valueAttrName]"

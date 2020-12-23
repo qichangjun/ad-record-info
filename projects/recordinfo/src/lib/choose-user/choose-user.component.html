@@ -1,5 +1,7 @@
 <nz-select
 style="width: 100%;"
+formValidPass [validPass]="validPass"
+ [scene]="scene" [formValue]="selectedUser" [formValidOption]="tile?.options"
 [(ngModel)]="selectedUser"
 [disabled]="disableEdit"
 nzAllowClear
