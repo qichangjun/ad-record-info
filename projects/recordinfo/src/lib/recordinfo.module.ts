@@ -33,7 +33,9 @@ import { ShowProcessDetailDialog } from './show-process-detail/show-process-deta
 import {addElectronicDocumentComponent } from './add-electronic-document/add-electronic-document.component';
 import { NzUploadModule } from 'ng-zorro-antd';
 import { NzInputModule } from 'ng-zorro-antd';
-
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
 @NgModule({
   declarations: [RecordInfoSelectUsersComponent,ShowProcessDetailDialog,Sizefilter,FormUploadComponent,chooseClassModuleContentComponent,
     LoadingButtonControllerDirective,LoadingMessageComponent,RecordinfoComponent,InitTableValueDirective,
