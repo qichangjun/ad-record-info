@@ -1,3 +1,4 @@
+import { JSONPath } from 'jsonpath-plus';
 import { Component, forwardRef, Input, ViewChild, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import {AppService} from '../app.service';
 import { ApiUrl } from '../ApiUrl.enum';
@@ -37,9 +38,9 @@ export class AdRecordinfoComponent implements OnInit {
   async getRecordInfo() {
     // let res = await this._AppService.getRecordInfo()    
     let res = await this._AppService.getRecordJson()   
-    res.jsonMetadata = JSON.parse(res.jsonMetadataTemplate)        
+    res.jsonMetadata = JSON.parse(res.jsonMetadata)        
     this.jsonMetadataTemplate = res.jsonMetadata
-    this.metadataSchemeId = '533bd9a6-6f64-40a9-a75c-84d23b49234b'
+    this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
     this.showTemplateXml = res.showTemplateXml  
   }
 
@@ -49,9 +50,10 @@ export class AdRecordinfoComponent implements OnInit {
         this.loading = false
         return 
     }
-    await this.elecDocument.saveFileInfo(this.info.jsonData)
-    await this._AppService.createRecord(this.info.jsonData)
-    let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
+    console.log(this.info.jsonData)
+    // await this.elecDocument.saveFileInfo(this.info.jsonData)
+    // await this._AppService.createRecord(this.info.jsonData)
+    // let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
   }
 
   get_dwClassManageServiceGetMetaSysClassList() {

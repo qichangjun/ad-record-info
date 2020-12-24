@@ -360,6 +360,13 @@ export class RecordinfoComponent implements OnInit {
             }
             if (c.attrName) {
                 if (c.contentType != 'table' && c.contentType != 'upload') {
+                    //后台的时间格式为CST,在js这里转换后会多出14小时，所以这里手动减一下
+                    if(c.contentType == 'date' && jsonPath(this.jsonData, c.attrName)[0]){
+                        let hour = moment(jsonPath(this.jsonData, c.attrName)[0]).hour()
+                        let date = moment(jsonPath(this.jsonData, c.attrName)[0]).hour(hour - 14).format('YYYY-MM-DD HH:mm:ss')                                                
+                        this.entity[c.attrName]= date
+                        return 
+                    }
                     if (jsonPath(this.jsonData, c.attrName) !== false) {                                           
                         this.entity[c.attrName] = jsonPath(this.jsonData, c.attrName)[0]
                         return
@@ -598,7 +605,7 @@ export class RecordinfoComponent implements OnInit {
                 //判断是否是时间控件
                 let row = this.tiles.find((c:Tile)=>c.options.contentType == 'date' && c.options.attrName == key)
                 if (row){
-                    //时间格式化
+                    //时间格式化                    
                     result[0].parent[result[0].parentProperty] = this.saveEntity[key] ? moment(this.saveEntity[key]).format("YYYY-MM-DD HH:mm:ss") : ''
                     continue
                 }               
