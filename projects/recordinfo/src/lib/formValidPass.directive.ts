@@ -23,7 +23,7 @@ export class FormValidPassDirective implements OnInit, OnChanges {
             }else if (option.valueType  == 'int' && !(_.isNumber(value*1))){
                 this.el.nativeElement.classList.add('has-error-input')
                 this.el.nativeElement.placeholder = '必须为整数'
-            }else if (option.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(value))){                
+            }else if (option.isRequired == 'true' && option.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(value))){                
                 this.el.nativeElement.classList.add('has-error-input')
                 this.el.nativeElement.placeholder = '必须为0-999的整数'
             }

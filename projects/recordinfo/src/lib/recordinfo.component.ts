@@ -46,15 +46,15 @@ declare var JSONPath: any;
                     <ng-container    *ngIf="language == 'zh-CN'">
                         <span *ngFor="let label of tile.options.labelName" class="label--box">
                             <span class="text-danger" *ngIf="tile.options.required == 'true'">. </span>
-                                <span *ngIf="label.type == 'text'">{{label.value}}</span>
-                                <span *ngIf="label.type == 'attr'">{{entity[label.value]}}</span>
+                                <span [title]="label.value" *ngIf="label.type == 'text'">{{label.value}}</span>
+                                <span [title]="entity[label.value]" *ngIf="label.type == 'attr'">{{entity[label.value]}}</span>
                         </span>  
                     </ng-container>
                     <ng-container    *ngIf="language == 'en-US'">
                     <span *ngFor="let label of tile.options.labelNameEn" class="label--box">
                         <span class="text-danger" *ngIf="tile.options.required == 'true'">. </span>
-                            <span *ngIf="label.type == 'text'">{{label.value}}</span>
-                            <span *ngIf="label.type == 'attr'">{{entity[label.value]}}</span>
+                            <span [title]="label.value" *ngIf="label.type == 'text'">{{label.value}}</span>
+                            <span [title]="entity[label.value]" *ngIf="label.type == 'attr'">{{entity[label.value]}}</span>
                     </span>  
                 </ng-container>
                 </div>
@@ -64,6 +64,7 @@ declare var JSONPath: any;
                     [style.textAlign]="tile.getStyle('text-align')" type="text"
                         formValidPass 
                         [scene]="scene"
+                        [placeholder]="tile.options.placeholder"
                         [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
                         [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" 
                         [disabled]="disableEdit" class="form-control form--build--box--input" 
@@ -75,6 +76,7 @@ declare var JSONPath: any;
                     [style.textAlign]="tile.getStyle('text-align')" type="number"
                         formValidPass 
                         [scene]="scene"
+                        [placeholder]="tile.options.placeholder"
                         (change)="validNumberInput($event,tile.options.attrName)"
                         [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
                         [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}" 
@@ -96,8 +98,11 @@ declare var JSONPath: any;
                     </section>
                 </div>
                 <div *ngSwitchCase="'select'" class="form--build--box--input--box" >
-                    <nz-select [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}"                    
-                     formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"  [disabled]="disableEdit" class="form--build--box--input" [(ngModel)]="entity[tile.options.attrName]">
+                    <nz-select [ngClass]="{'showBorder' : tile.getStyle('inputBorder') == 'show'}"   
+                        [nzPlaceHolder]="tile.options.placeholder"
+                     formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]"
+                      [formValidOption]="tile.options"  [disabled]="disableEdit" class="form--build--box--input" 
+                      [(ngModel)]="entity[tile.options.attrName]">
                     <nz-option [nzValue]="''" [nzLabel]="'无'"></nz-option>    
                     <nz-option 
                     *ngFor="let selectAttr of tile.options.selectAttrs"
@@ -112,6 +117,7 @@ declare var JSONPath: any;
 
                 <div *ngSwitchCase="'date'" class="form--build--box--input--box">                    
                     <nz-date-picker
+                    nzShowTime
                     formValidPass [validPass]="validPass" [scene]="scene" [formValue]="entity[tile.options.attrName]" [formValidOption]="tile.options"
                      [ngClass]="{'showBorder' : tile.getStyle('inputBorder')  == 'show'}"  [(ngModel)]="entity[tile.options.attrName]" 
                     class="form-control form--build--box--input" 
@@ -456,13 +462,16 @@ export class RecordinfoComponent implements OnInit {
     checkFormValidator() {
         var validPass = true
         this.tiles.forEach((tile: Tile) => {
+            if (tile.options.contentType == 'label'){
+                return 
+            }
             tile.options.scene = tile.options.scene || ''
             if (!tile.options.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
-                } else if (tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {                                        
+                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {                                        
                     validPass = false
-                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){                    
+                }else if (tile.options.isRequired == 'true' && tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){                    
                     validPass = false 
                 }
                 return
@@ -470,9 +479,9 @@ export class RecordinfoComponent implements OnInit {
             if (tile.options.scene.indexOf(this.scene) != -1 || !this.scene || !tile.options.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
-                } else if (tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {
+                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {
                     validPass = false
-                }else if (tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){
+                }else if (tile.options.isRequired == 'true' && tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){
                     validPass = false 
                 }
             } else {

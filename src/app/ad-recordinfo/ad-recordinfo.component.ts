@@ -38,7 +38,7 @@ export class AdRecordinfoComponent implements OnInit {
   async getRecordInfo() {
     // let res = await this._AppService.getRecordInfo()    
     let res = await this._AppService.getRecordJson()   
-    res.jsonMetadata = JSON.parse(res.jsonMetadata)        
+    res.jsonMetadata = JSON.parse(res.jsonMetadataTemplate)        
     this.jsonMetadataTemplate = res.jsonMetadata
     this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
     this.showTemplateXml = res.showTemplateXml  
