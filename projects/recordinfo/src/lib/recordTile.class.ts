@@ -3,6 +3,7 @@ import { isArray } from 'util';
 export class Tile {
     RecordService : any
     defaultOptions: TileOptions = {
+        placeholder : '',
         required : 'false',
         labelName: '',
         labelNameEn : '',
@@ -47,7 +48,7 @@ export class Tile {
             case 'check-box':
                 this.options['checkBoxAttrs'] = this.options['checkBoxAttrs'] ? _.castArray(this.options['checkBoxAttrs']) : []
                 break;
-            case 'select':               
+            case 'select':                  
                 if (this.options['selectAttrs']){
                     let selectAttrs = []
                     this.options['selectAttrs'] = _.castArray(this.options['selectAttrs'])
@@ -266,6 +267,7 @@ export interface TileOptions {
     isRequired? : boolean | string
     valueType ? : string 
     scene ? : string 
+    placeholder? : string
 }
 
 export enum ComponentType {
