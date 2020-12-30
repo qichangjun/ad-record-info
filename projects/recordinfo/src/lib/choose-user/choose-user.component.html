@@ -19,7 +19,8 @@ nzShowSearch
   [nzLabel]="o.displayName"
   [nzValue]="o.value">
   <img 
-   src="http://hzent.amberdata.cn:9280/erms/assets/images/users/1.jpg"
+   src="{{o.imgUrl}}"
+   (error)="$event.target.src=o.defaultImg"
     style="height:24px;width: 24px;">
   {{o.displayName}}</nz-option>
 </ng-container>
