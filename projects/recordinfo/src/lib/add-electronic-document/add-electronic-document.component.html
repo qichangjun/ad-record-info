@@ -1,6 +1,6 @@
 <div class="add--ele--doc--wrap" [hidden]="hasNoFileBlock">
   <div class="add--ele--doc--radio--box">
-    <div class="head">请选择文件清单</div>
+    <div class="head">目录结构：</div>
 
     <!-- <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
     (change)="changePolicy()"> -->
@@ -17,7 +17,7 @@
     </mat-radio-group>
   </div>
   <div class="select--node--upload--box">
-    <div class="head">请选择节点上传附件</div>
+    <div class="head">电子文件：</div>
       <form-upload *ngIf="currentPolicy=='default'" [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
       [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
       (uploadFinish)="uploadFinish($event)"></form-upload>

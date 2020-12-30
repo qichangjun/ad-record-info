@@ -33,6 +33,9 @@ import { ShowProcessDetailDialog } from './show-process-detail/show-process-deta
 import {addElectronicDocumentComponent } from './add-electronic-document/add-electronic-document.component';
 import { NzUploadModule } from 'ng-zorro-antd';
 import { NzInputModule } from 'ng-zorro-antd';
+import { NzIconModule } from 'ng-zorro-antd';
+import { NzProgressModule } from 'ng-zorro-antd';
+
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
@@ -59,7 +62,9 @@ registerLocaleData(zh);
     MatSelectModule,
     MatCheckboxModule,
     MatStepperModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzIconModule,
+    NzProgressModule
   ],
   exports: [RecordinfoComponent,
     InitTableValueDirective,
