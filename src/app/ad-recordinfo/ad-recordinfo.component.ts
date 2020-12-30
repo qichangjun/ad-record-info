@@ -19,7 +19,53 @@ export class AdRecordinfoComponent implements OnInit {
   emial: any
   policys: any
   policynamelist: any
-  files = []
+  files = [{
+		"s_object_type": "da_document",
+		"title": null,
+		"da_submit_date": "2020-12-25 15:33:04",
+		"da_convert_format": null,
+		"exist_document": false,
+		"s_create_date": "2020-12-25 15:32:33",
+		"s_modifier": "erms_day_013",
+		"s_modify_date": "2020-12-25 15:34:21",
+		"da_submitter": "档案员131",
+		"da_owner": "八戒(erms_001)",
+		"da_md5": null,
+		"da_submit_status": 2,
+		"da_data_mode": "03",
+		"da_convert_status": 0,
+		"da_type": "电子文件",
+		"s_object_name": "合同（修改版02）.xls",
+		"da_secret_level": "L3",
+		"s_owner": "bu842468591403008",
+		"s_object_path": "/个人文件柜/bu842468591403008/文件归档/王阳专属文件夹/“电子”文件夹/合同（修改版02）.xls",
+		"s_creator": "erms_day_013",
+		"s_object_id": "bd000000180000f25",
+		"da_archives_dept": "支付宝事业部/项目实施部"
+	}, {
+		"s_object_type": "da_document",
+		"title": null,
+		"da_submit_date": "2020-12-25 15:33:05",
+		"da_convert_format": null,
+		"exist_document": false,
+		"s_create_date": "2020-12-25 15:32:37",
+		"s_modifier": "erms_day_013",
+		"s_modify_date": "2020-12-26 11:55:39",
+		"da_submitter": "档案员131",
+		"da_owner": "八戒(erms_001)",
+		"da_md5": null,
+		"da_submit_status": 2,
+		"da_data_mode": "03",
+		"da_convert_status": 0,
+		"da_type": "电子文件",
+		"s_object_name": "诉讼（修改版01）.xls",
+		"da_secret_level": "L3",
+		"s_owner": "bu842468591403008",
+		"s_object_path": "/个人文件柜/bu842468591403008/文件归档/王阳专属文件夹/“电子”文件夹/诉讼（修改版01）.xls",
+		"s_creator": "erms_day_013",
+		"s_object_id": "bd000000180000f26",
+		"da_archives_dept": "支付宝事业部/项目实施部"
+	}]
   changepolicyname: any
   list = []
   policycode: any
