@@ -72,7 +72,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   firstInitServerFilesFinished: boolean = false
   path:path
   @Input() id: string //record的id
-  @Input() current: boolean//是否打开新的界面预览
+  @Input() previewInCurrentWindow: boolean = false//是否打开新的界面预览
   @Input() environmentBaseUrl: string
   @Input() objectPath: string
   @Input() baseUrl: string
@@ -286,15 +286,21 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     if (!this.id) {
       return
     }
-    let objectId = this.objectPath + url
-    objectId = objectId.replace(/\\/g, '/')
-    objectId=encodeURIComponent(objectId)
-    if (!this.current) {
-      let preview_window = window.open('')
-      preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&objectPath=${this.objectPath}&recordId=${this.id}&scene=${this.scene}`
-    } else {
+    let objectId
+    //带有document://的，去掉这段且不需要拼objectPath
+    if(url.indexOf('document://')){      
+      objectId = url.replace('document://','')
+    }else{
+      objectId = this.objectPath + url
+      objectId = objectId.replace(/\\/g, '/')
+      objectId=encodeURIComponent(objectId)
+    }    
+    if (this.previewInCurrentWindow) {
       this.router.navigate(['/previewDoc'], { queryParams: { objectId: objectId } })
+      return  
     }
+    let preview_window = window.open('')
+    preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&objectPath=${this.objectPath}&recordId=${this.id}&scene=${this.scene}`
   }
 
   //拖拽事件开始前的校验
