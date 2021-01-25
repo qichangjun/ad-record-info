@@ -42,6 +42,7 @@ import {
 } from 'rxjs/operators';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import * as _moment from 'moment';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 
 import { NzFormatBeforeDropEvent } from 'ng-zorro-antd';
 import { of, Observable } from 'rxjs';
@@ -69,7 +70,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   relativePath: any//上传时候的relativePath
   hasNoFileBlock: boolean = false
   firstInitServerFilesFinished: boolean = false
+  path:path
   @Input() id: string //record的id
+  @Input() current: boolean//是否打开新的界面预览
   @Input() environmentBaseUrl: string
   @Input() objectPath: string
   @Input() baseUrl: string
@@ -92,7 +95,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+
+  ) { }
 
 
   ngOnInit() {
@@ -278,13 +285,15 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     if (!this.id) {
       return
     }
-    let preview_window = window.open('')
-    // let res = await this._RecordInfoService.getDocumentId(this.id, url)
     let objectId = this.objectPath + url
     objectId = objectId.replace(/\\/g, '/')
-    objectId = encodeURI(objectId)
-    preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&objectPath=${this.objectPath}&recordId=${this.id}&scene=${this.scene}`
-    // this.router.navigate(['/previewDoc'], { queryParams: { objectId: res } })
+    objectId=encodeURIComponent(objectId)
+    if (!this.current) {
+      let preview_window = window.open('')
+      preview_window.location.href = `${this.environmentBaseUrl}previewDoc?objectId=${objectId}&objectPath=${this.objectPath}&recordId=${this.id}&scene=${this.scene}`
+    } else {
+      this.router.navigate(['/previewDoc'], { queryParams: { objectId: objectId } })
+    }
   }
 
   //拖拽事件开始前的校验
@@ -688,4 +697,7 @@ interface Category {
   isLeaf: boolean
   key: string
   children: Category[] | FileType[]
+}
+interface path{
+  recordPath:string
 }

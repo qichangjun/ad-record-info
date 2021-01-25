@@ -46,7 +46,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return '543a0827d378b6ea4cdc75ef6acc9875'
+    return '19bdc5c7703fd3653c929991686ead0b'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {

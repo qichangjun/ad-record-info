@@ -19,6 +19,7 @@ export class AdRecordinfoComponent implements OnInit {
   emial: any
   policys: any
   policynamelist: any
+  objectPath:string
   files = [{
 		"s_object_type": "da_document",
 		"title": null,
@@ -84,9 +85,10 @@ export class AdRecordinfoComponent implements OnInit {
   async getRecordInfo() {
     // let res = await this._AppService.getRecordInfo()    
     let res = await this._AppService.getRecordJson()   
-    res.jsonMetadata = JSON.parse(res.jsonMetadataTemplate)        
+    res.jsonMetadata = JSON.parse(res.jsonMetadata)        
     this.jsonMetadataTemplate = res.jsonMetadata
-    this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
+    this.objectPath=res.objectPath
+    this.metadataSchemeId = '1f31b264-48d5-4e4f-9abc-9cf7c8683a18'
     this.showTemplateXml = res.showTemplateXml  
   }
 
