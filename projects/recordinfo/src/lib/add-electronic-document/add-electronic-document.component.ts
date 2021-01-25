@@ -141,20 +141,21 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.defaultFileLists = files
     }
     // 注入服务端文件
-    // else if (this.serverFiles && this.serverFiles.length > 0){
-    //   this.defaultFileLists = this.serverFiles.map(file=>{
-    //     return {
-    //       checksum_type: 'md5',
-    //       size: file.size,
-    //       name: file.s_object_name,
-    //       checksum: file.md5,
-    //       format: file.contentType,
-    //       'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-    //       'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-    //       'url': 'local:' + file.storagePath
-    //     }
-    //   })
-    // }
+    else if (this.serverFiles && this.serverFiles.length > 0){
+      this.defaultFileLists = this.serverFiles.map((file,index)=>{
+        return {
+          seq : index + 1,
+          checksum_type: 'md5',
+          size: file.size,
+          name: file.s_object_name,
+          checksum: file.da_md5,
+          format: file.contentType,
+          'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+          'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+          'url': 'repo-id:' + file.s_object_id
+        }
+      })
+    }
     if (block[0] && block[0].value.block && this.currentPolicy == 'default') {
       this.formatVolumeInfo(block[0].value.block, 0, true)
     }
@@ -376,31 +377,32 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
               return file.property[0].value == c.file_name
             })
           }
-          // if (!this.firstInitServerFilesFinished) {
-          //   c.children = c.children.concat(this.serverFiles.map(file => {
-          //     return {
-          //       key:this.guid(),
-          //       type : 'file',
-          //       isLeaf : true,
-          //       property : [
-          //         {
-          //           "name": "file_type",
-          //           "title": "材料名称",
-          //           "value": c.file_name 
-          //         }
-          //       ],
-          //       checksum_type: 'md5',
-          //       size: file.size,
-          //       name: file.s_object_name,
-          //       checksum: file.md5,
-          //       format: file.contentType,
-          //       'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-          //       'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
-          //       'url': 'local:' + file.storagePath
-          //     }
-          //   }))
-          //   this.firstInitServerFilesFinished = true
-          // }
+          //注入服务器文件
+          if (!this.firstInitServerFilesFinished && this.serverFiles && this.serverFiles.length > 0) {
+            c.children = c.children.concat(this.serverFiles.map(file => {
+              return {
+                key:this.guid(),
+                type : 'file',
+                isLeaf : true,
+                property : [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": c.file_name 
+                  }
+                ],
+                checksum_type: 'md5',
+                size: file.size,
+                name: file.s_object_name,
+                checksum: file.da_md5,
+                format: file.contentType,
+                'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                'url': 'repo-id:' + file.s_object_id
+              }
+            }))
+            this.firstInitServerFilesFinished = true
+          }
         }
       })
       info.children = info.children.concat(info.file_type)
@@ -576,6 +578,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             delete file.key
             delete file.type
             delete file.children
+            delete file.expanded
             file.property = [
               {
                 "name": "file_type",
