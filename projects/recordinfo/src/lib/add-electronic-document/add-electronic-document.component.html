@@ -9,7 +9,7 @@
       <mat-radio-button class="example-radio-button" [value]="'default'">
         默认上传
       </mat-radio-button>
-      <ng-container *ngIf="!serverFiles || serverFiles.length == 0">
+      <ng-container >
         <mat-radio-button class="example-radio-button" *ngFor="let policy of policyLists; let i=index"
         [value]="policy.policy.code">
         {{policy.policy.name}}
@@ -57,12 +57,12 @@
         <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
       </li>
     </ul>
-    <ul *ngIf="serverFiles" class="defalut--list--box">
+    <!-- <ul *ngIf="serverFiles" class="defalut--list--box">
       <li *ngFor="let file of serverFiles;let i = index ">
         <a class="file--name" title="{{file.s_object_name}}" (click)="previewDoc(file.url)">{{file.s_object_name}}</a>
         <span *ngIf="!disableEdit" (click)="serverFiles.splice(i,1)" class="ti-trash"></span>
       </li>
-    </ul>
+    </ul> -->
 
   </div>
 

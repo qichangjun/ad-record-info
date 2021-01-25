@@ -92,12 +92,13 @@ export class AdRecordinfoComponent implements OnInit {
 
   async editRecord() {
     let validPass = await this.appRecord.editRecord()//公用
-    if (!validPass){
-        this.loading = false
-        return 
-    }
+    // if (!validPass){
+    //     this.loading = false
+    //     return 
+    // }
+    
+    await this.elecDocument.saveFileInfo(this.info.jsonData)
     console.log(this.info.jsonData)
-    // await this.elecDocument.saveFileInfo(this.info.jsonData)
     // await this._AppService.createRecord(this.info.jsonData)
     // let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)
   }
