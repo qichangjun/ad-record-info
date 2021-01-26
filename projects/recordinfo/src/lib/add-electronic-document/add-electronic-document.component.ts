@@ -283,9 +283,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
   // 预览文件
   async previewDoc(url) {
-    if (!this.id) {
-      return
-    }
+    // if (!this.id) {
+    //   return
+    // }
     let objectId
     //带有document://的，去掉这段且不需要拼objectPath
     if(url.indexOf('document://')){      
@@ -293,8 +293,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }else{
       objectId = this.objectPath + url
       objectId = objectId.replace(/\\/g, '/')
-      objectId=encodeURIComponent(objectId)
     }    
+    objectId=encodeURIComponent(objectId)
     if (this.previewInCurrentWindow) {
       this.router.navigate(['/previewDoc'], { queryParams: { objectId: objectId } })
       return  
