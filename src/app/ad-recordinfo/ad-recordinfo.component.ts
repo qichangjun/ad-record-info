@@ -88,7 +88,7 @@ export class AdRecordinfoComponent implements OnInit {
     res.jsonMetadata = JSON.parse(res.jsonMetadata)        
     this.jsonMetadataTemplate = res.jsonMetadata
     this.objectPath=res.objectPath
-    this.metadataSchemeId = '1f31b264-48d5-4e4f-9abc-9cf7c8683a18'
+    this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
     this.showTemplateXml = res.showTemplateXml  
   }
 
