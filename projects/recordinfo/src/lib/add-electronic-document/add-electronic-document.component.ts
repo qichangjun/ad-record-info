@@ -83,7 +83,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() jsonMetadataTemplate: any
   @Input() disableEdit: boolean;
   @Input() scene?: string
+  @Input() customPreviewHandle : boolean = false //是否自定义预览事件
   @Input() getPolicyInfoPomise: (metadataId: string) => Promise<any>
+  @Output() previewDocHandle: EventEmitter<any> = new EventEmitter(); //触发预览点击事件
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     if (data instanceof NzTreeNode) {
       data.isExpanded = !data.isExpanded;
@@ -288,13 +290,18 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     // }
     let objectId
     //带有document://的，去掉这段且不需要拼objectPath
-    if(url.indexOf('document://')){      
+    if(url.indexOf('document://')!=-1){      
       objectId = url.replace('document://','')
     }else{
       objectId = this.objectPath + url
       objectId = objectId.replace(/\\/g, '/')
     }    
     objectId=encodeURIComponent(objectId)
+    if (this.customPreviewHandle){
+      this.previewDocHandle.emit({
+        objectId: objectId
+      })
+    }
     if (this.previewInCurrentWindow) {
       this.router.navigate(['/previewDoc'], { queryParams: { objectId: objectId } })
       return  
