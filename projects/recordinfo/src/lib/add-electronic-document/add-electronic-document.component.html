@@ -12,7 +12,7 @@
         默认上传
       </mat-radio-button>
       <ng-container *ngFor="let policy of policyLists; let i=index">
-        <mat-radio-button *ngIf="!disableEdit || currentPolicy == 'policy.policy.code'" class="example-radio-button" 
+        <mat-radio-button *ngIf="!disableEdit || currentPolicy == policy.policy.code" class="example-radio-button" 
         [value]="policy.policy.code">
         {{policy.policy.name}}
         </mat-radio-button>
@@ -45,7 +45,7 @@
             <ul class="file--list--box">
               <a (click)="previewDoc(node.origin.url)" title="{{node.origin.name}}">{{node.origin.name}}</a>
 
-              <span (click)="deleteFile(node)" class="ti-trash"></span>
+              <span *ngIf="!disableEdit" (click)="deleteFile(node)" class="ti-trash"></span>
 
             </ul>
           </div>
