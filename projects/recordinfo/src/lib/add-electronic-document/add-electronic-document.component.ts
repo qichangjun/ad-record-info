@@ -285,9 +285,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
   // 预览文件
   async previewDoc(url) {
-    // if (!this.id) {
-    //   return
-    // }
+    if (!this.objectPath){
+      return 
+    }   
     let objectId
     //带有document://的，去掉这段且不需要拼objectPath
     if(url.indexOf('document://')!=-1){      
