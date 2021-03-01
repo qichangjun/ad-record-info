@@ -43,7 +43,6 @@ import {
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import * as _moment from 'moment';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-
 import { NzFormatBeforeDropEvent } from 'ng-zorro-antd';
 import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -100,7 +99,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-
+    private notification: NzNotificationService,    
   ) { }
 
 
@@ -323,7 +322,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       //  || (arg.node.parentNode && arg.node.parentNode.origin.type == 'file_type'))  {
       return of(true)
     } else {
-      alert('只能将文件放入附件节点')
+      this.notification.create(
+        'info',
+        '提示',
+        '只能将文件放入附件节点'
+      );
       return of(false)
     }
   }
