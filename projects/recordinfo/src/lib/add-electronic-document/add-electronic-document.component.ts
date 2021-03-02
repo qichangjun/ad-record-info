@@ -104,7 +104,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
-
   }
   //不是file_type类型不能选中
   activeNode(data: NzFormatEmitEvent): void {
@@ -313,7 +312,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   //拖拽事件开始前的校验
   //只能拖拽到file节点的上下级和file_type节点内
   // po=0 为节点内，-1,1分别是下级和上级
-  beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
+  beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean>=> {
     // if insert node into another node, wait 1s   
     if (arg.node.origin.type == 'file' && (arg.pos == 1 || arg.pos == -1)) {
       return of(true)
