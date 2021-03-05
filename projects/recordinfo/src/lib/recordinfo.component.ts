@@ -102,8 +102,7 @@ declare var JSONPath: any;
                         [nzPlaceHolder]="tile.options.placeholder"
                      formValidPass [scene]="scene" [validPass]="validPass" [formValue]="entity[tile.options.attrName]"
                       [formValidOption]="tile.options"  [disabled]="disableEdit" class="form--build--box--input" 
-                      [(ngModel)]="entity[tile.options.attrName]">
-                    <nz-option [nzValue]="''" [nzLabel]="'无'"></nz-option>    
+                      [(ngModel)]="entity[tile.options.attrName]">                    
                     <nz-option 
                     *ngFor="let selectAttr of tile.options.selectAttrs"
                      [nzValue]="selectAttr.value"
