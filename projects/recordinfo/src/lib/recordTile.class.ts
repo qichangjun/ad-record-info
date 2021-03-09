@@ -91,14 +91,7 @@ export class Tile {
                 console.warn('你没有注入获取多选值的service中的http方法，这将导致下拉值无法显示')
                 return 
             }
-            this.options.selectAttrs = await this.options.getMulModifeProPertyValues(this.options.allowedValuesCode)
-            // let res = await this._RecordService.getMulModifeProPertyValues(this.options.allowedValuesCode)                      
-            // this.options.selectAttrs = res.map(c=>{
-            //     return {
-            //       displayName : c.name,
-            //       value : c.value 
-            //     }
-            // })            
+            this.options.selectAttrs = await this.options.getMulModifeProPertyValues(this.options.allowedValuesCode)            
         }
     }
 
@@ -218,6 +211,16 @@ export class Tile {
         }else{
             return 'yyyy-MM-dd'
         }
+    }
+
+    enableSelectTime():boolean{
+        if(this.options.typeFormat){
+            let typeFormat = this.options.typeFormat.toLowerCase()
+            if(typeFormat.indexOf('h')!= -1){
+                return true 
+            }
+        }
+        return false 
     }
     toggleFontWeight(event){        
         this.options.style.fontWeight ? this.options.style.fontWeight = '' : this.options.style.fontWeight = 'bold'
