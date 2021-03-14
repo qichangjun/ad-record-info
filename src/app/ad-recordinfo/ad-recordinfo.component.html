@@ -10,7 +10,7 @@
  [serverFiles] ="files"
  [info]="info" >
 </amberdata-recordinfo>
-<add-electronic-document #elecDocument 
+<!-- <add-electronic-document #elecDocument 
 [jsonMetadataTemplate]="jsonMetadataTemplate"
 [metadataSchemeId]="metadataSchemeId" 
 [AuthenticationService]="_AppService"
@@ -19,5 +19,15 @@
 [ApiUrl]="_ApiUrl"
 [objectPath]="objectPath"
 [getPolicyInfoPomise]="_AppService.getRecordemial">
-</add-electronic-document >
+</add-electronic-document > -->
 <button (click)="editRecord()">保存</button>
+
+<recordinfo-select-users 
+       [selectMode]="'default'"
+       [tile]="tile"
+       [scene]="scene"
+       [getList]="_AppService.getUserList"
+       [selectedUser]="selectedUser"
+       [optionList]="optionList"
+       (changeUser)="entity[valueAttrName] = $event"
+></recordinfo-select-users>

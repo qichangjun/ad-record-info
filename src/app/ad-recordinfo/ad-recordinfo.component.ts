@@ -73,6 +73,12 @@ export class AdRecordinfoComponent implements OnInit {
   seq: any
   emiallist=[]
   _ApiUrl = ApiUrl
+  selectedUser = '审计员_01(qxcs_sjy_1403)'
+  optionList = [{
+    displayName : '审计员_01(qxcs_sjy_1403)',
+    value : '审计员_01(qxcs_sjy_1403)',
+    defaultImg : 'http://hzent.amberdata.cn:9280/metadata/assets/images/default-user.png'
+  }]
   constructor(
     public _AppService: AppService,
   ) {
