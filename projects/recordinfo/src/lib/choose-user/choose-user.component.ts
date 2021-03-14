@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { NullViewportScroller } from '@angular/common/src/viewport_scroller';
 @Component({
   selector: 'recordinfo-select-users',
   templateUrl: './choose-user.component.html',
@@ -29,12 +30,14 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() validPass : boolean 
   currentPage : number = 1
   searchChange$ = new BehaviorSubject('');
-  optionList: any[] = [];  
+  @Input() optionList: any[] = [];  
   isLoading = false;
   totalCount = 0  
   keywords : string = ''
+  enableGetSearch : boolean = false 
   onSearch(value: any): void {       
     this.isLoading = true;
+    this.enableGetSearch = true
     this.optionList = []
     this.currentPage = 1
     this.keywords = value 
@@ -44,36 +47,27 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // tslint:disable-next-line:no-any
     const getRandomNameList = (name: string) => {
       let parameter = {
         pageSize : 20,
         currentPage : this.currentPage,
         keywords : name
       }
-      if ( this.getList ){
+      if ( this.getList && (this.enableGetSearch || !this.selectedUser)){
         return this.getList(parameter)
-      } else{
-        return this.http
-        .get(`https://api.randomuser.me/?results=5`)
-        .pipe(map((res: any) => res.results))
-        .pipe(
-          map((list: any) => {
-            return list.map((item: any) => {
-              return {
-                displayName : `${item.name.first} ${name}`,
-                value : `${item.name.first} ${name}`
-              }
-            });
-          })
-        );
-      }     
+      }else{
+        return new Promise((resolve)=>resolve(null))
+      }   
     }            
     const optionList$: Observable<any> = this.searchChange$
         .asObservable()
-        .pipe(debounceTime(500))
+        .pipe(debounceTime(500))        
         .pipe(switchMap(getRandomNameList))            
-    optionList$.subscribe(res => {           
+    optionList$.subscribe(res => {   
+        if(!res){
+          this.isLoading = false;
+          return 
+        }
         let datas = res.data.filter(c=>{          
           let row = this.optionList.find(option=>option.value == c.value)
           return row ? false : true 

@@ -467,7 +467,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 
           let a = {
             name: data.name,
-            children: [...this.objChangeArr(obj).children, ...obj1]
+            children: Object.assign([],this.objChangeArr(obj).children,obj1)
           }
           newObj.push(a)
         } else {
@@ -482,7 +482,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     return newObj
   }
   //处理将obj变为数组形式
-  objChangeArr(obj) {
+  objChangeArr(obj):{ children: any[] } {
     let arr = { children: [] }
     Object.keys(obj).forEach(item => {
       let newArr = { children: [] }

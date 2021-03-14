@@ -46,7 +46,7 @@ export class AppService {
   }
 
   getAccessToken = ()=>{
-    return '6e315ad5c5328daee71eb8883486dd38'
+    return 'b19981d68ed266f56f3fa2d11c0c1eb3'
   }
 
   getClassLIst = (parentId: string): Promise<any> => {
@@ -144,8 +144,8 @@ export class AppService {
           .pipe(map((res: any) => {
               let data = res.data.map(c=>{
                 return {
-                  displayName : c.displayName,
-                  value : c.loginName,
+                  displayName : c.name,
+                  value : c.name,
                   defaultImg : 'http://hzent.amberdata.cn:9280/metadata/assets/images/default-user.png'
                 }
               })
