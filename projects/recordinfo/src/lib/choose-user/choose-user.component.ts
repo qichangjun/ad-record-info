@@ -28,13 +28,15 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() scene : string    
   @Input() tile : Tile
   @Input() validPass : boolean 
+  @Input() dontLoadInit : boolean 
+  @Input() optionList: any[] = [];  
   currentPage : number = 1
   searchChange$ = new BehaviorSubject('');
-  @Input() optionList: any[] = [];  
   isLoading = false;
   totalCount = 0  
   keywords : string = ''
   enableGetSearch : boolean = false 
+
   onSearch(value: any): void {       
     this.isLoading = true;
     this.enableGetSearch = true
@@ -53,7 +55,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
         currentPage : this.currentPage,
         keywords : name
       }
-      if ( this.getList && (this.enableGetSearch || !this.selectedUser)){
+      if ( this.getList && (this.enableGetSearch || !this.selectedUser || !this.dontLoadInit)){
         return this.getList(parameter)
       }else{
         return new Promise((resolve)=>resolve(null))

@@ -1,9 +1,12 @@
-<div class="add--ele--doc--wrap" [hidden]="hasNoFileBlock">
+<div class="add--ele--doc--wrap" [hidden]="hasNoFileBlock" [ngClass]="{notInEdit:disableEdit}">
+  <div *ngIf="currentPolicy=='default' && defaultFileLists.length == 0">
+    <div class="show-no-data"></div>
+  </div>
+  <div *ngIf="currentPolicy!='default' && policyInfo.children.length == 0">
+    <div class="show-no-data"></div>
+  </div>
   <div class="add--ele--doc--radio--box">
     <div class="head">目录结构：</div>
-
-    <!-- <mat-radio-group [disabled]="disableChangePolicy" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
-    (change)="changePolicy()"> -->
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
       (change)="changePolicy()">
       <mat-radio-button
@@ -59,13 +62,6 @@
         <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
       </li>
     </ul>
-    <!-- <ul *ngIf="serverFiles" class="defalut--list--box">
-      <li *ngFor="let file of serverFiles;let i = index ">
-        <a class="file--name" title="{{file.s_object_name}}" (click)="previewDoc(file.url)">{{file.s_object_name}}</a>
-        <span *ngIf="!disableEdit" (click)="serverFiles.splice(i,1)" class="ti-trash"></span>
-      </li>
-    </ul> -->
-
   </div>
 
 </div>
