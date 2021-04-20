@@ -46,6 +46,7 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { NzFormatBeforeDropEvent } from 'ng-zorro-antd';
 import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { NonNullAssert } from '@angular/compiler';
 // import {JSONPath} from 'jsonpath-plus';
 
 const moment = _moment;
@@ -69,7 +70,11 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   relativePath: any//上传时候的relativePath
   hasNoFileBlock: boolean = false
   firstInitServerFilesFinished: boolean = false
+  currentFile : string = ''
   path:path
+  @ViewChild('fileTree') fileTree : any
+  @Input() needSelectFirstFileInit? : boolean = false
+  @Input() acceptFiles? : string = '*'
   @Input() id: string //record的id
   @Input() previewInCurrentWindow: boolean = false//是否打开新的界面预览
   @Input() environmentBaseUrl: string
@@ -107,10 +112,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
   //不是file_type类型不能选中
   activeNode(data: NzFormatEmitEvent): void {
-    if (data.node.origin.type == 'file_type') {
-      this.activedNode = data.node;
-      this.getWholePath()
-    }
+    // if (data.node.origin.type == 'file_type') {
+    //   this.activedNode = data.node;
+    //   this.getWholePath()
+    // }
+    this.activedNode = data.node;
+    this.getWholePath()
   }
 
   //切换文件策略，次方法不会根据jsonData中的文件，吧文件初始化进policy的json里           
@@ -166,6 +173,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     if (block[0] && block[0].value.block && this.currentPolicy == 'default') {
       this.formatVolumeInfo(block[0].value.block, 0, true)
     }
+    if(this.needSelectFirstFileInit){
+      if(this.defaultFileLists.length > 0){
+        this.previewDoc(this.defaultFileLists[0].url)
+        this.currentFile = this.defaultFileLists[0].url
+      }
+    }    
   }
 
   // 初始化时调用一次
@@ -191,6 +204,16 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         this.currentPolicy = policyInfo.policy.code
         this.formatPoolicyInfo(policyInfo.policy, 0, true)
         this.policyInfo = policyInfo.policy
+        if(this.needSelectFirstFileInit){
+          setTimeout(()=>{
+            let node = this.getFirstFileNode(this.fileTree.getTreeNodes())
+            if(node){
+              this.previewDoc(node.origin.url)
+              this.activedNode = node;
+              this.getWholePath()
+            }
+          })
+        }        
       } else {
         this.setToDefaultPolicy()
       }
@@ -495,23 +518,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       arr['children'][arr['children'].length - 1]['name'] = item
     })
     return arr
-  }
-  //进一步将数据转化为NzTreeNodeOptions
-  transformTreeNode(info) {
-    let obj = []
-    info.forEach(data => {
-      let obj1 = []
-      if (data.file.constructor === Array) {
-        data.forEach(item => {
-          item.forEach(items => {
-
-          })
-        })
-      } else {
-        obj.push(data)
-      }
-    })
-  }
+  }  
   //根据block名和层级寻找block        
   //吧json里的file集合取出来放进对应的policy的json里    
   //返回block的文件集合  
@@ -548,6 +555,18 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
   }
 
+  getFirstFileNode(nodes:NzTreeNode[]):NzTreeNode{
+    // let nodes : NzTreeNode[] = this.fileTree.getTreeNodes()
+    for(let i = 0;i<=nodes.length;i++){
+      if(nodes[i].origin.type == 'file'){
+        return nodes[i]
+      }
+      let node = this.getFirstFileNode(nodes[i].getChildren())
+      if(node){
+        return node
+      }
+    } 
+  }
 
   /**
    * 根据key找到文件资料节点

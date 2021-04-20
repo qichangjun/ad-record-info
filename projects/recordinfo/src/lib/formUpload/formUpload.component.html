@@ -1,6 +1,8 @@
 <a  *ngIf="!disableEdit" mat-stroked-button class="btn btn-default fileinput-button">
     <span >上传</span>
-    <input [disabled]="disabledUpload" class="mat-menu-item__button" type="file" multiple ng2FileSelect [uploader]="uploader" />
+    <input [disabled]="disabledUpload"
+    accept="{{acceptFiles}}"
+     class="mat-menu-item__button" type="file" multiple ng2FileSelect [uploader]="uploader" />
 </a>
 
 <table class="table table-hover home--upload--table--box" *ngIf="uploader && uploader?.queue.length > 0">

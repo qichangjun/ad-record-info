@@ -36,3 +36,116 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width: calc(100% - 40px);
 }
 }
+
+.show--template--content--wrap{
+    .add--ele--doc--radio--box{
+      .head{
+        margin-bottom: 0 !important;
+        display: inline-block;
+        width: 75px;
+        vertical-align: middle;
+        margin-right: 16px;
+      }
+    }
+    .select--node--upload--box{
+      .head{
+        margin-bottom: 0 !important;
+        display: inline-block;
+        width: 75px;
+        vertical-align: top;
+        margin-right: 16px;
+        padding-top: 7px;
+      }
+      form-upload{
+        margin-top: 0 !important;
+        vertical-align: top;
+        width: calc(100% - 91px);
+        .fileinput-button{
+          // margin-bottom: 8px;
+        }
+        .home--upload--table--box{
+          margin-top: 8px;
+        }
+        .file--name--box{
+          width: 100%;
+          .file--name{
+            max-width: 400px !important;
+          }
+        }
+      }
+      nz-tree{
+        display: inline-block;
+        vertical-align: top;
+        padding-top: 1px;
+        width: calc(100% - 91px);
+        .custom-node{
+          form-upload{
+            .fileinput-button{
+              margin-left: 8px !important;
+              height: 24px;
+              line-height: normal;
+              padding: 2px 4px;
+              min-width: 46px;
+            }
+          }
+        }
+    }
+  
+    }
+  }
+  .defalut--list--box{
+    margin-bottom: 8px;
+    margin-left: 91px;
+    width: calc(100% - 91px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 16px;
+    &:nth-of-type(1){
+      // margin-top: 20px;
+      // margin-bottom: 0;
+    }
+    li{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      line-height: 1.2;
+      .da_annex--icon{
+        width: 15px;
+        margin-right: 6px;
+      }
+      .file--name{
+        width: calc(100% - 36px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: rgba(0, 0, 0, .85);
+        &::before{
+          content: '';
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          margin-right: 6px;
+          background: url(assets/images/icon/da_annex.svg) no-repeat;
+          background-size: 15px;
+          vertical-align: middle;
+        }
+      }
+      .ti-trash{
+        cursor: pointer;
+      }
+      &:hover{
+        background: #e6f7ff;;
+      }
+    }
+    &:last-of-type{   
+      li{
+        // margin-bottom: 0;
+      }
+    }
+  }
+
+.fileActive {
+  background: #e6f7ff;
+}

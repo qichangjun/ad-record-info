@@ -6,7 +6,7 @@
     <div class="show-no-data"></div>
   </div>
   <div class="add--ele--doc--radio--box">
-    <div class="head">目录结构：</div>
+    <div >目录结构：</div>
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
       (change)="changePolicy()">
       <mat-radio-button
@@ -23,11 +23,14 @@
     </mat-radio-group>
   </div>
   <div class="select--node--upload--box">
-    <div class="head">电子文件：</div>
-      <form-upload *ngIf="currentPolicy=='default'" [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
+    <div [ngClass]="{hasData : ((currentPolicy=='default' && defaultFileLists.length > 0) || (currentPolicy!='default' && policyInfo.children.length>0))}"
+    class="head" class="head">电子文件：</div>
+      <form-upload *ngIf="currentPolicy=='default'"
+      [acceptFiles]="acceptFiles"
+       [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
       [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
       (uploadFinish)="uploadFinish($event)"></form-upload>
-    <nz-tree *ngIf="currentPolicy!='default'" [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
+    <nz-tree *ngIf="currentPolicy!='default'" #fileTree [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
       [nzBeforeDrop]="beforeDrop" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)">
       <ng-template #nzTreeTemplate let-node>
@@ -39,6 +42,7 @@
             <span class="fa fa-paperclip"></span>
             <span class="file-name" title="{{ node.origin.file_name }}">{{ node.origin.file_name }}</span>
             <form-upload (click)='$event.stopPropagation()'*ngIf="activedNode?.key === node.key"
+            [acceptFiles]="acceptFiles"
               [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}" [baseUrl]="baseUrl"
               [ApiUrl]="ApiUrl" [AuthenticationService]="AuthenticationService" [relativePath]="relativePath"
               [disableEdit]="disableEdit" (uploadFinish)="uploadFinish($event)"></form-upload>
@@ -57,8 +61,8 @@
       </ng-template>
     </nz-tree>   
     <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
-      <li *ngFor="let file of defaultFileLists;let i = index ">        
-        <a class="file--name" title="{{file.name}}" (click)="previewDoc(file.url)">{{file.name}}</a>
+      <li *ngFor="let file of defaultFileLists;let i = index " [ngClass]="{fileActive:currentFile == file.url}">        
+        <a class="file--name" title="{{file.name}}" (click)="previewDoc(file.url);currentFile = file.url">{{file.name}}</a>
         <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
       </li>
     </ul>
