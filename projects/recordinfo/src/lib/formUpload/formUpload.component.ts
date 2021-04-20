@@ -19,7 +19,7 @@ export class FormUploadComponent implements OnInit, OnChanges {
     @Input() AuthenticationService: any
     @Input() disableEdit:any
     @Output() uploadFinish: EventEmitter<any> = new EventEmitter();
-
+    @Input() acceptFiles? : string = '*'
     constructor(
         private notification: NzNotificationService,
     ) {
@@ -47,6 +47,19 @@ export class FormUploadComponent implements OnInit, OnChanges {
                 ]
                 , additionalParameter: {
                 },
+                filters:[{
+                    name:'minSize',
+                    fn:(file)=>{
+                    if(file.size == 0){
+                        this.notification.blank(
+                            `${file.name} 文件上传失败，文件不能为空`,
+                            ''
+                        );
+                        return false 
+                    }
+                    return true 
+                    }
+                }]
             })
             this.uploader.onBeforeUploadItem = (item) => {
                 for (let key in this.additionalParams) {

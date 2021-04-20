@@ -22,6 +22,7 @@ import { NullViewportScroller } from '@angular/common/src/viewport_scroller';
 export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() selectMode? : 'multiple' | 'defulat' = 'multiple'  
   @Input() selectedUser : string;  
+  @Input() placeHolderWords? : string = ''
   @Input() disableEdit : boolean = false;     
   @Output() changeUser : EventEmitter<any> = new EventEmitter();
   @Input() getList : Function
