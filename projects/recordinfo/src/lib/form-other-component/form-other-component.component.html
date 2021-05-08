@@ -1,6 +1,7 @@
 <ng-container [ngSwitch]="componentType">
     <div *ngSwitchCase="'1'">
-        <button mat-stroked-button [disabled]="disableEdit" class="mat-stroked-button" (click)="chooseCategory()">选择门类</button>
+        <button *ngIf="!entity[valueAttrName]" mat-stroked-button [disabled]="disableEdit" class="mat-stroked-button" (click)="chooseCategory()">选择门类</button>
+        <a *ngIf="entity[valueAttrName]" (click)="chooseCategory()">{{entity[this.keyAttrName]}}</a>
     </div>
  
     <div *ngSwitchCase="'2'">

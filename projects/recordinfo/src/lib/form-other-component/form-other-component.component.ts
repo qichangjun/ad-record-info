@@ -37,6 +37,9 @@ export class FormOtherCompComponent implements OnInit {
   }
 
   chooseCategory(){
+    if(this.disableEdit){
+      return  
+    }
     if (!this._dwClassManageServiceGetMetadataCategoryInfo || !this._dwClassManageServiceGetMetaSysClassList) return 
     let dialogRef = this.dialog.open(FormChooseCategoryDialog, {
       width: '',

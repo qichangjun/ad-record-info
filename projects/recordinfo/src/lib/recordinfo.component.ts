@@ -487,6 +487,7 @@ export class RecordinfoComponent implements OnInit {
             } else {
                 return
             }
+
         })
         return validPass
     }
