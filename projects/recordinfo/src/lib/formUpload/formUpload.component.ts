@@ -59,6 +59,14 @@ export class FormUploadComponent implements OnInit, OnChanges {
                     }
                     return true 
                     }
+                },{
+                    name:'editingFile',
+                    fn:(file)=>{
+                      if(file.name.indexOf('~$') == 0){
+                        return false 
+                        }
+                      return true 
+                    }
                 }]
             })
             this.uploader.onBeforeUploadItem = (item) => {
