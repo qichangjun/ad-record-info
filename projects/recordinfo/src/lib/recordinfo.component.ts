@@ -469,7 +469,7 @@ export class RecordinfoComponent implements OnInit {
             if (!tile.options.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
-                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {                                        
+                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && Number.isNaN(Number(this.entity[tile.options.attrName]))) { // 123，"123"可通过，"abc"不行                                 
                     validPass = false
                 }else if (tile.options.isRequired == 'true' && tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){                    
                     validPass = false 
@@ -479,7 +479,7 @@ export class RecordinfoComponent implements OnInit {
             if (tile.options.scene.indexOf(this.scene) != -1 || !this.scene || !tile.options.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
                     validPass = false
-                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && !(_.isNumber(this.entity[tile.options.attrName]*1))) {
+                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && Number.isNaN(Number(this.entity[tile.options.attrName]))) {
                     validPass = false
                 }else if (tile.options.isRequired == 'true' && tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))){
                     validPass = false 
