@@ -54,10 +54,10 @@ export class AdRecordinfoComponent implements OnInit {
 
   async editRecord() {
     let validPass = await this.appRecord.editRecord()//公用
-    // if (!validPass){
-    //     this.loading = false
-    //     return 
-    // }
+    if (!validPass){
+        this.loading = false
+        return 
+    }
     
     await this.elecDocument.saveFileInfo(this.info.jsonData)
     console.log(this.info.jsonData)
