@@ -1,6 +1,11 @@
 import * as _ from 'lodash';
+import { GridsterConfig, GridsterItem }  from 'angular-gridster2';
 import { isArray } from 'util';
-export class Tile {
+export class Tile implements GridsterItem{
+    x : number
+    y:number 
+    rows:number 
+    cols:number
     RecordService : any
     defaultOptions: TileOptions = {
         placeholder : '',
@@ -21,6 +26,10 @@ export class Tile {
         public options?: TileOptions
     ) {                
         this.options = _.merge(this.defaultOptions, this.options || {})
+        this.cols = this.options.cols*1
+        this.rows = this.options.rows*1
+        this.x = this.options.x * 1
+        this.y = this.options.y * 1
         this.init()
     }
 
@@ -240,6 +249,8 @@ export interface TileOptions {
     required ? : string,
     labelName?: string | Array<any>,
     labelNameEn?: string | Array<any>,
+    x?:number,
+    y?:number
     cols?: number,
     rows?: number,
     contentType?: 'label' | 'input' | 'input-number' | 'radio-button' | 'check-box' | 'text-area' | 'select' | 'upload' | 'date' | 'process-list' | 'table' | 'logo' | 'divider' | 'other-component',

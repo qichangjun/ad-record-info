@@ -1,6 +1,6 @@
 {
   "name": "recordinfo",
-  "version": "1.4.209",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/qichangjun/ad-record-info"
@@ -19,6 +19,7 @@
     "jsonpath-plus": "^4.0.0",
     "ng2-file-upload": "^1.2.1",
     "ng-zorro-antd": "^7.5.0",
+    "angular-gridster2": "^11.1.5",
     "moment": "^2.24.0"
   }
 }
