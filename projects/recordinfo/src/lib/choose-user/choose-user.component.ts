@@ -31,6 +31,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() validPass : boolean 
   @Input() dontLoadInit : boolean 
   @Input() optionList: any[] = [];  
+  @Input() otherParams: {[key:string]:any} = {}
   currentPage : number = 1
   searchChange$ = new BehaviorSubject('');
   isLoading = false;
@@ -56,6 +57,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
         currentPage : this.currentPage,
         keywords : name
       }
+      parameter = Object.assign(this.otherParams,parameter)
       if ( this.getList && (this.enableGetSearch || !this.selectedUser || !this.dontLoadInit)){
         return this.getList(parameter)
       }else{
