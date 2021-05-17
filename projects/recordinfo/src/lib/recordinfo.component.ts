@@ -241,7 +241,7 @@ export class RecordinfoComponent implements OnInit {
     ngOnInit() {
         this.options = {
             margin: 0,
-            gridType: GridType.Fit,
+            gridType: GridType.ScrollVertical,
             displayGrid: DisplayGrid.OnDragAndResize,
             pushItems: true,
             //列20-100
