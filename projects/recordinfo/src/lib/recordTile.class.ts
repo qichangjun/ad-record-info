@@ -249,6 +249,7 @@ export interface TileOptions {
     required ? : string,
     labelName?: string | Array<any>,
     labelNameEn?: string | Array<any>,
+    title? : string,
     x?:number,
     y?:number
     cols?: number,

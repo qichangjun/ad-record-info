@@ -48,18 +48,17 @@ export class AdRecordinfoComponent implements OnInit {
     res.jsonMetadata = JSON.parse(res.jsonMetadataTemplate)        
     this.jsonMetadataTemplate = res.jsonMetadata
     this.objectPath=res.objectPath
-    this.metadataSchemeId = '0b0bf668-a388-4fc0-8e90-414eac81b986'
+    this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
     this.showTemplateXml = res.showTemplateXml  
   }
 
   async editRecord() {
-    let validPass = await this.appRecord.editRecord()//公用
-    if (!validPass){
-        this.loading = false
-        return 
-    }
-    
-    await this.elecDocument.saveFileInfo(this.info.jsonData)
+    let validPass = await this.appRecord.editRecord()//公用    
+    // if (validPass.length > 0){
+    //     this.loading = false
+    //     return 
+    // }    
+    await this.elecDocument.saveFileInfo(this.info.jsonData)    
     console.log(this.info.jsonData)
     // await this._AppService.createRecord(this.info.jsonData)
     // let res = await this._AppService.uodataRecordemial('bf834182988693504', '1', this.jsonMetadataTemplate)

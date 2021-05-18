@@ -1,3 +1,4 @@
+import { InValidateValue } from './recordinfo.interface';
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -205,7 +206,7 @@ export class RecordinfoComponent implements OnInit {
     entity: {[key:string]:any} = {};
     formWidth: number = 700
     progressNodes: any[] = []
-    validPass: boolean = true        
+    validPass: InValidateValue[] = []      
     @Input() id: string;
     @Input() objectPath: string;
     @Input() disableEdit: boolean;
@@ -244,12 +245,12 @@ export class RecordinfoComponent implements OnInit {
             gridType: GridType.ScrollVertical,
             displayGrid: DisplayGrid.OnDragAndResize,
             pushItems: true,
-            //列20-100
-            minCols: 20,
-            maxCols: 100,
-            //行10-100
-            minRows: 20,
-            maxRows: 100,
+            //列50-150
+            minCols: 50,
+            maxCols: 150,
+            //行50-150
+            minRows: 50,
+            maxRows: 250,
 
             //每列最大 100
             maxItemCols: 100,
@@ -427,7 +428,6 @@ export class RecordinfoComponent implements OnInit {
                 }
             }
         })
-        console.log(this.tiles)
     }
 
     addTableList(jsonPath) {
@@ -436,7 +436,7 @@ export class RecordinfoComponent implements OnInit {
         }
         this.tableEntitys[jsonPath].push({})
     }
-    async editRecord() {
+    async editRecord():Promise<InValidateValue[]>{
         let tableEntitys = _.cloneDeep(this.tableEntitys)
         this.saveEntity = _.cloneDeep(this.entity)
         for (let key in tableEntitys) {
@@ -462,44 +462,41 @@ export class RecordinfoComponent implements OnInit {
         this.formatArrayItems(jsonData.record)
         this.deleteEmptyFile(jsonData.record)
         this.validPass = this.checkFormValidator()
-        if (!this.validPass) {
-            return false
-        }
+        // if (this.validPass.length > 0) {
+        //     return this.validPass
+        // }
         this.info.jsonData = jsonData
-        return true
+        return this.validPass
     }
 
-    checkFormValidator() {
-        var validPass = true
-        this.tiles.forEach((tile: Tile) => {
+    checkFormValidator():InValidateValue[]{
+        let inValidValue : InValidateValue[] = []
+        this.tiles.forEach((tile: Tile) => {            
             if (tile.options.contentType == 'label') {
                 return
             }
             tile.options.scene = tile.options.scene || ''
-            if (!tile.options.scene) {
+            if (!tile.options.scene || tile.options.scene.indexOf(this.scene) != -1 || !this.scene) {
                 if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
-                    validPass = false
+                    inValidValue.push({
+                        title : tile.options.title,
+                        errorMessage : '必填'
+                    })
                 } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && Number.isNaN(Number(this.entity[tile.options.attrName]))) { // 123，"123"可通过，"abc"不行                                 
-                    validPass = false
+                    inValidValue.push({
+                        title : tile.options.title,
+                        errorMessage : '应为数字'
+                    })
                 } else if (tile.options.isRequired == 'true' && tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))) {
-                    validPass = false
+                    inValidValue.push({
+                        title : tile.options.title,
+                        errorMessage : '应为0-999的整数'
+                    })
                 }
                 return
-            }
-            if (tile.options.scene.indexOf(this.scene) != -1 || !this.scene || !tile.options.scene) {
-                if (tile.options.isRequired == 'true' && !this.entity[tile.options.attrName]) {
-                    validPass = false
-                } else if (tile.options.isRequired == 'true' && tile.options.valueType == 'int' && Number.isNaN(Number(this.entity[tile.options.attrName]))) {
-                    validPass = false
-                } else if (tile.options.isRequired == 'true' && tile.options.contentType == 'input-number' && !(/^([0-9]{1,3}|999)$/.test(this.entity[tile.options.attrName]))) {
-                    validPass = false
-                }
-            } else {
-                return
-            }
-
+            }           
         })
-        return validPass
+        return inValidValue
     }
 
     formatObjTOArray(jsonData) {
