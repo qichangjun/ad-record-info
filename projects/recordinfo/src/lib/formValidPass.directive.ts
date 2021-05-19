@@ -1,10 +1,12 @@
+import { InValidateValue } from './recordinfo.interface';
 import { style } from '@angular/animations';
 import { Directive, ElementRef, Input, HostListener, OnInit, OnChanges, SimpleChange } from '@angular/core';
 import * as _ from 'lodash';
 import { TileOptions } from './recordTile.class';
+
 @Directive({ selector: '[formValidPass]' })
 export class FormValidPassDirective implements OnInit, OnChanges {
-    @Input() validPass: boolean;
+    @Input() validPass: InValidateValue[] = [];
     @Input() formValidOption: TileOptions
     @Input() formValue: any
     @Input() scene : string
@@ -32,7 +34,7 @@ export class FormValidPassDirective implements OnInit, OnChanges {
 
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-        if (!this.validPass && this.formValidOption) {            
+        if (this.validPass.length > 0 && this.formValidOption) {            
             this.checkValid(this.formValue, this.formValidOption)
         }else{
             this.validErrorMessage.remove()

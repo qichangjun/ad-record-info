@@ -253,14 +253,14 @@ export class RecordinfoComponent implements OnInit {
             maxRows: 250,
 
             //每列最大 100
-            maxItemCols: 100,
+            maxItemCols: 150,
             //每列最小1
             minItemCols: 1,
 
-            maxItemRows: 100,
+            maxItemRows: 250,
             minItemRows: 1,
 
-            maxItemArea: 10000,
+            maxItemArea: 37500,
             minItemArea: 1,
             defaultItemCols: 5,
             defaultItemRows: 1,
