@@ -462,9 +462,9 @@ export class RecordinfoComponent implements OnInit {
         this.formatArrayItems(jsonData.record)
         this.deleteEmptyFile(jsonData.record)
         this.validPass = this.checkFormValidator()
-        // if (this.validPass.length > 0) {
-        //     return this.validPass
-        // }
+        if (this.validPass.length > 0) {
+            return this.validPass
+        }
         this.info.jsonData = jsonData
         return this.validPass
     }
