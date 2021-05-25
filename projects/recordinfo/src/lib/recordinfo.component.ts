@@ -367,7 +367,7 @@ export class RecordinfoComponent implements OnInit {
                 if (c.contentType != 'table' && c.contentType != 'upload') {
                     //后台的时间格式为CST,在js这里转换后会多出14小时，所以这里手动减一下
                     if(c.contentType == 'date' && jsonPath(this.jsonData, c.attrName)[0]){
-                        let deviation = jsonPath(this.jsonData, c.attrName)[0].indexOf('CST') ? 14 : 0
+                        let deviation = jsonPath(this.jsonData, c.attrName)[0].indexOf('CST') != -1 ? 14 : 0
                         let hour = moment(jsonPath(this.jsonData, c.attrName)[0]).hour()
                         let date = moment(jsonPath(this.jsonData, c.attrName)[0]).hour(hour - deviation).format('YYYY/MM/DD HH:mm:ss')                                                
                         this.entity[c.attrName]= date
