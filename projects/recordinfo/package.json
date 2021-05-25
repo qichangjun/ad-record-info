@@ -1,6 +1,10 @@
 {
   "name": "recordinfo",
+<<<<<<< HEAD
   "version": "2.0.4",
+=======
+  "version": "1.4.212",
+>>>>>>> 5574954... fix(recordinfo):日期偏差8小时问题
   "repository": {
     "type": "git",
     "url": "https://github.com/qichangjun/ad-record-info"
