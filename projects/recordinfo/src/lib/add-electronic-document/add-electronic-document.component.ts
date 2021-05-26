@@ -325,7 +325,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       return 
     }
     if (this.previewInCurrentWindow) {
-      this.router.navigate(['/previewDoc'], { queryParams: { objectId: objectId } })
+      this.router.navigate(['/previewDoc'], { queryParams: { objectId: objectId,objectPath:this.objectPath,recordId:this.id,scene:this.scene } })
       return  
     }
     let preview_window = window.open('')
