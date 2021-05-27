@@ -1,9 +1,11 @@
+import { InValidateValue } from './../recordinfo.interface';
 import { Tile } from './../recordTile.class';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
 import { NullViewportScroller } from '@angular/common/src/viewport_scroller';
+
 @Component({
   selector: 'recordinfo-select-users',
   templateUrl: './choose-user.component.html',
@@ -28,7 +30,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   @Input() getList : Function
   @Input() scene : string    
   @Input() tile : Tile
-  @Input() validPass : boolean 
+  @Input() validPass : InValidateValue[] = []       
   @Input() dontLoadInit : boolean 
   @Input() optionList: any[] = [];  
   @Input() otherParams: {[key:string]:any} = {}
