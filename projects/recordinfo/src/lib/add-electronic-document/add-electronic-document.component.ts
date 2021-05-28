@@ -69,10 +69,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   fileJsonPath: string = ''
   relativePath: any//上传时候的relativePath
   hasNoFileBlock: boolean = false
-  firstInitServerFilesFinished: boolean = false
-  currentFile : string = ''
+  firstInitServerFilesFinished: boolean = false  
   path:path
   @ViewChild('fileTree') fileTree : any
+  @Input() currentFile : string = ''
   @Input() needSelectFirstFileInit? : boolean = false
   @Input() acceptFiles? : string = '*'
   @Input() id: string //record的id
