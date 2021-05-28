@@ -52,7 +52,7 @@
             <ul class="file--list--box">
               <a (click)="previewDoc(node.origin.url)" title="{{node.origin.name}}">{{node.origin.name}}</a>
 
-              <span *ngIf="!disableEdit" (click)="deleteFile(node)" class="ti-trash"></span>
+              <span *ngIf="!disableEdit" (click)="deleteFile(node);removeDocumentIds(node.url)"  class="ti-trash"></span>
 
             </ul>
           </div>
@@ -62,7 +62,7 @@
     </nz-tree>   
     <ul *ngIf="currentPolicy=='default'" class="defalut--list--box">
       <li *ngFor="let file of defaultFileLists;let i = index " [ngClass]="{fileActive:currentFile == file.url}">        
-        <a class="file--name" title="{{file.name}}" (click)="previewDoc(file.url);currentFile = file.url">{{file.name}}</a>
+        <a class="file--name" title="{{file.name}}" (click)="previewDoc(file.url);currentFile = file.url;removeDocumentIds(file.url)">{{file.name}}</a>
         <span *ngIf="!disableEdit" (click)="defaultFileLists.splice(i,1)" class="ti-trash"></span>
       </li>
     </ul>
