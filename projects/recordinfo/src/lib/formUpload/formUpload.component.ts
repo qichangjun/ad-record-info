@@ -67,6 +67,14 @@ export class FormUploadComponent implements OnInit, OnChanges {
                         }
                       return true 
                     }
+                },{
+                    name:'unKnownFile',
+                    fn:(file)=>{
+                      if(!file.type){
+                        return false 
+                      }
+                      return true 
+                    }
                 }]
             })
             this.uploader.onBeforeUploadItem = (item) => {
