@@ -459,7 +459,15 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           }
         }
       })
-      info.children = info.children.concat(info.file_type)
+      if(this.disableEdit){
+        let fileLists = []
+        info.file_type.forEach(c=>{
+          fileLists = fileLists.concat(c.children)
+        })
+        info.children = info.children.concat(fileLists)
+      }else{
+        info.children = info.children.concat(info.file_type)
+      }
     }
     info.children.forEach(child => {
       this.formatPoolicyInfo(child, level + 1, needInitFile, child.path)

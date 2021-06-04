@@ -10,6 +10,7 @@ import { ApiUrl } from '../ApiUrl.enum';
 export class AdRecordinfoComponent implements OnInit {
   @ViewChild('appRecord') appRecord: any;
   @ViewChild('elecDocument') elecDocument : any 
+  disableEdit : boolean = true 
   info: any = {}
   metadataSchemeId : string 
   editStatus: boolean = false;
@@ -45,10 +46,10 @@ export class AdRecordinfoComponent implements OnInit {
   async getRecordInfo() {
     // let res = await this._AppService.getRecordInfo()    
     let res = await this._AppService.getRecordJson()   
-    res.jsonMetadata = JSON.parse(res.jsonMetadataTemplate)        
+    res.jsonMetadata = JSON.parse(res.jsonMetadata)        
     this.jsonMetadataTemplate = res.jsonMetadata
     this.objectPath=res.objectPath
-    this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
+    this.metadataSchemeId = '83045bbb-1baf-4b98-88ad-173448ba02ef'
     this.showTemplateXml = res.showTemplateXml  
   }
 
