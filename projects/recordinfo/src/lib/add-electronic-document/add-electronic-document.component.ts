@@ -258,9 +258,31 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
           "value": this.activedNode.origin.file_name
         }
       ]
+      let exisit_file_name = this.activedNode.getChildren().find(c=>{
+        return c.origin.name == e.name 
+      })
+      if(exisit_file_name){
+        this.notification.create(
+          'info',
+          '提示',
+          '电子附件名称必须唯一'
+        );
+        return 
+      }
       this.activedNode.addChildren([file])
       this.activedNode.update()
     } else {
+      let exisit_file_name = this.defaultFileLists.find(c=>{
+        return c.name == e.name 
+      })
+      if(exisit_file_name){
+        this.notification.create(
+          'info',
+          '提示',
+          '电子附件名称必须唯一'
+        );
+        return 
+      }
       file.seq = this.defaultFileLists.length + 1
       this.defaultFileLists.push(file)
     }

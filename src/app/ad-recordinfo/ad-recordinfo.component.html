@@ -1,4 +1,4 @@
-<amberdata-recordinfo #appRecord [disableEdit]="false" 
+<!-- <amberdata-recordinfo #appRecord [disableEdit]="false" 
 [scene]="'erms_zljh'" 
   class="show--template--content--box" [id]="id" 
  [showTemplateXml]="showTemplateXml" [jsonMetadataTemplate]="jsonMetadataTemplate" 
@@ -9,9 +9,9 @@
  [_dwClassManageServiceGetMetaSysClassList]="_AppService.getClassLIst"
  [serverFiles] ="files"
  [info]="info" >
-</amberdata-recordinfo>
+</amberdata-recordinfo> -->
 <div class="show--template--content--wrap">
-  <!-- <add-electronic-document #elecDocument 
+  <add-electronic-document #elecDocument 
   [jsonMetadataTemplate]="jsonMetadataTemplate"
   [metadataSchemeId]="metadataSchemeId" 
   [AuthenticationService]="_AppService"
@@ -21,7 +21,7 @@
   [ApiUrl]="_ApiUrl"
   [objectPath]="objectPath"
   [getPolicyInfoPomise]="_AppService.getRecordemial">
-  </add-electronic-document > -->
+  </add-electronic-document >
 </div>
 
 <button (click)="editRecord()">保存</button>
