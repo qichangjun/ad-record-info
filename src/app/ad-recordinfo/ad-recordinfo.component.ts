@@ -10,6 +10,7 @@ import { ApiUrl } from '../ApiUrl.enum';
 export class AdRecordinfoComponent implements OnInit {
   @ViewChild('appRecord') appRecord: any;
   @ViewChild('elecDocument') elecDocument : any 
+  disableEdit : boolean = true 
   info: any = {}
   metadataSchemeId : string 
   editStatus: boolean = false;
@@ -48,16 +49,16 @@ export class AdRecordinfoComponent implements OnInit {
     res.jsonMetadata = JSON.parse(res.jsonMetadata)        
     this.jsonMetadataTemplate = res.jsonMetadata
     this.objectPath=res.objectPath
-    this.metadataSchemeId = '533bd9a6-6f64-40a9-a75c-84d23b49234b'
+    this.metadataSchemeId = '5a228aca-3d76-478b-b009-8643ab0d3338'
     this.showTemplateXml = res.showTemplateXml  
   }
 
   async editRecord() {
-    let validPass = await this.appRecord.editRecord()//公用
-    if (!validPass){
-        this.loading = false
-        return 
-    }
+    // let validPass = await this.appRecord.editRecord()//公用
+    // if (!validPass){
+    //     this.loading = false
+    //     return 
+    // }
     
     await this.elecDocument.saveFileInfo(this.info.jsonData)
     console.log(this.info.jsonData)
