@@ -33,20 +33,12 @@
  *   setWholePathForEachBlock  --  给电子文件节点开始的block下面所有block添加path路径                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-import { Component, forwardRef, Input, Output, ViewChild, OnInit, OnChanges, EventEmitter, SimpleChanges } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { NzNotificationService } from 'ng-zorro-antd';
-import {
-  debounceTime, distinctUntilChanged, switchMap
-} from 'rxjs/operators';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import * as _moment from 'moment';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { NzFormatBeforeDropEvent } from 'ng-zorro-antd';
-import { of, Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { NonNullAssert } from '@angular/compiler';
+import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzNotificationService, NzTreeNode } from 'ng-zorro-antd';
+import { Observable, of } from 'rxjs';
 // import {JSONPath} from 'jsonpath-plus';
 
 const moment = _moment;
@@ -159,7 +151,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     else if (this.serverFiles && this.serverFiles.length > 0){
       this.defaultFileLists = this.serverFiles.map((file,index)=>{
         return {
-          seq : index + 1,
+          seq : (index + 1).toString(),
           checksum_type: 'md5',
           size: file.size,
           name: file.s_object_name,
@@ -247,7 +239,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
     if (this.currentPolicy != 'default') {
       // let fileType: FileType = this.findFileType()  
-      file.seq = this.activedNode.getChildren().length + 1
+      file.seq = (this.activedNode.getChildren().length + 1).toString()
       file.type = 'file'
       file.isLeaf = true
       file.key = this.guid()
@@ -261,7 +253,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.activedNode.addChildren([file])
       this.activedNode.update()
     } else {
-      file.seq = this.defaultFileLists.length + 1
+      file.seq = (this.defaultFileLists.length + 1).toString()
       this.defaultFileLists.push(file)
     }
   }
@@ -630,7 +622,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         if (child.children.length > 0) {
           let file_lists = _.cloneDeep(child.children)
           file_lists.forEach((file, index) => {
-            file.seq = index + 1
+            file.seq = (index + 1).toString()
             delete file.level
             delete file.isLeaf
             delete file.key
