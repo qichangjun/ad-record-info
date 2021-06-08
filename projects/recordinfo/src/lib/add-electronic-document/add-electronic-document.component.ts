@@ -34,16 +34,14 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import * as _moment from 'moment';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzNotificationService, NzTreeNode } from 'ng-zorro-antd';
 import { Observable, of } from 'rxjs';
-// import {JSONPath} from 'jsonpath-plus';
 
 const moment = _moment;
 declare var JSONPath: any;
-declare var jsonPath: any;
 @Component({
   selector: 'add-electronic-document',
   templateUrl: './add-electronic-document.component.html',
@@ -95,7 +93,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private notification: NzNotificationService,    
   ) { }
@@ -135,11 +132,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.defaultFileLists = []
     this.policyInfo = { children: [] }
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-    // if (block[0] && block[0].value.file) {
     if (block[0] && (block[0].value.file || (block[0].value[0] && block[0].value[0].file))) {
-      let files
-      // let files = block[0].value.file ? _.castArray(block[0].value.file) : []
-      // let files = block[0].value.file || block[0].value[0].file ? _.castArray(block[0].value.file)| _.castArray(block[0].value[0].file) : []
+      let files     
       if (block[0].value.file) {
         files = block[0].value.file ? _.castArray(block[0].value.file) : []
       } else if (block[0].value[0].file) {
