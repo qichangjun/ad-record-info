@@ -146,7 +146,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     else if (this.serverFiles && this.serverFiles.length > 0){
       this.defaultFileLists = this.serverFiles.map((file,index)=>{
         return {
-          seq : index + 1,
+          seq : (index + 1).toString(),
           checksum_type: 'md5',
           size: file.size,
           name: file.s_object_name,
@@ -234,7 +234,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     }
     if (this.currentPolicy != 'default') {
       // let fileType: FileType = this.findFileType()  
-      file.seq = this.activedNode.getChildren().length + 1
+      file.seq = (this.activedNode.getChildren().length + 1).toString()
       file.type = 'file'
       file.isLeaf = true
       file.key = this.guid()
@@ -270,7 +270,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         );
         return 
       }
-      file.seq = this.defaultFileLists.length + 1
+      file.seq = (this.defaultFileLists.length + 1).toString()
       this.defaultFileLists.push(file)
     }
   }
@@ -639,7 +639,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         if (child.children.length > 0) {
           let file_lists = _.cloneDeep(child.children)
           file_lists.forEach((file, index) => {
-            file.seq = index + 1
+            file.seq = (index + 1).toString()
             delete file.level
             delete file.isLeaf
             delete file.key
