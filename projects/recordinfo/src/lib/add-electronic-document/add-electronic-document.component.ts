@@ -80,6 +80,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() customPreviewHandle : boolean = false //是否自定义预览事件  
   @Input() getPolicyInfoPomise: (metadataId: string) => Promise<any>
   @Output() removeDocumentIdsEvent: EventEmitter<any> = new EventEmitter(); //删除线上电子文件事件（要删掉对应的id）
+  @Output() uploadFinishEvent: EventEmitter<any> = new EventEmitter(); //上传完电子文件事件
   @Output() previewDocHandle: EventEmitter<any> = new EventEmitter(); //触发预览点击事件
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     if (data instanceof NzTreeNode) {
@@ -250,6 +251,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       file.seq = (this.defaultFileLists.length + 1).toString()
       this.defaultFileLists.push(file)
     }
+    this.uploadFinishEvent.emit(e)
   }
   /**
    * 保存文件信息
