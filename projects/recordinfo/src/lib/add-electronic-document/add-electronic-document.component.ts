@@ -278,6 +278,8 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       return
 
     }
+    delete res[0].value.policy_version
+    delete res[0].value.policy
     res[0].value.file = this.defaultFileLists
     delete res[0].value.block
     return
