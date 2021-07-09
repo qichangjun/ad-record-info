@@ -52,9 +52,9 @@
   },
   "/ermsapi": {
     "target": {
-      "host": "hzent.amberdata.cn",
+      "host": "192.168.10.54",
       "protocol": "http",
-      "port": "82"
+      "port": "80"
     },
     "secure": false,
     "changeOrigin": true,

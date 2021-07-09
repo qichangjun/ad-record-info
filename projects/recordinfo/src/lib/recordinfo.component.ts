@@ -61,6 +61,7 @@ declare var JSONPath: any;
                 <div *ngSwitchCase="'input'" class="form--build--box--input--box">
                     <input 
                     nz-input 
+                    [title]="entity[tile.options.attrName]"
                     [style.textAlign]="tile.getStyle('text-align')" type="text"
                         formValidPass 
                         [scene]="scene"
@@ -73,6 +74,7 @@ declare var JSONPath: any;
                 <div *ngSwitchCase="'input-number'" class="form--build--box--input--box">
                     <input 
                     nz-input 
+                    [title]="entity[tile.options.attrName]"
                     [style.textAlign]="tile.getStyle('text-align')" type="number"
                         formValidPass 
                         [scene]="scene"

@@ -187,11 +187,17 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       let res = this.policyLists.find(policy => {
         return policy.policy.code == policy_code && policy_version == policy.policy.version_no
       })
-      if (res) {
-        policyInfo = _.cloneDeep(res)
-        this.currentPolicy = policyInfo.policy.code
-        this.formatPoolicyInfo(policyInfo.policy, 0, true)
-        this.policyInfo = policyInfo.policy
+      if (res) {        
+        // policyInfo = _.cloneDeep(res)        
+        // this.currentPolicy = policyInfo.policy.code        
+        // this.formatPoolicyInfo(policyInfo.policy, 0, true)
+        // this.policyInfo = policyInfo.policy
+
+        policyInfo = _.cloneDeep(block[0].value)
+        this.currentPolicy = policyInfo.policy
+        this.formatXmlInfoToTree(policyInfo, 0, true)
+        this.policyInfo = policyInfo
+
         if(this.needSelectFirstFileInit){
           setTimeout(()=>{
             let node = this.getFirstFileNode(this.fileTree.getTreeNodes())
@@ -210,9 +216,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     else {
       this.setToDefaultPolicy()
     }
-
   }
 
+  
   /**
    * formupload上传完成时的回调
    * @param e {size,name,data}
@@ -297,8 +303,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       res[0].value.policy_version = this.policyInfo.version_no
       delete res[0].value.file
       return
-
     }
+    delete res[0].value.policy_version
+    delete res[0].value.policy
     res[0].value.file = this.defaultFileLists
     delete res[0].value.block
     return
@@ -401,6 +408,103 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
 
   //---------------------util方法------------
+
+  formatXmlInfoToTree(info, level: number, needInitFile?: boolean, path = '/电子文件'): void {
+    info.children = info.children ? _.castArray(info.children) : []
+    if (info.block) {
+      info.block = info.block ? _.castArray(info.block) : []
+      info.block.forEach(c => {
+        c.path = path + '/' + c.name
+        c.type = 'category'
+        c.key = this.guid()
+      })
+      info.children = info.children.concat(info.block)
+    }
+    let fileProperty = []
+    if(info.file){
+      info.file = info.file ? _.castArray(info.file) : []
+      info.file.forEach(file=>{
+        file.property = file.property ? _.castArray(file.property) : []
+        let fileTypeProperty = file.property.find(c=>c.name == "file_type")
+        if(!fileTypeProperty){
+          return 
+        }
+        let existProperty = fileProperty.find(c=>c.content == fileTypeProperty.content)
+        if(!existProperty) fileProperty.push(fileTypeProperty)
+      })
+    }
+    info.file_type = _.cloneDeep(fileProperty)
+    if (info.file_type) {
+      info.file_type = info.file_type ? _.castArray(info.file_type) : []
+      info.file_type.forEach(c => {
+        c.file_name = c.content
+        c.type = 'file_type'
+        // c.isLeaf = false
+        c.key = this.guid()
+        if (needInitFile) {
+          let children = this.findBlockByNameAndLevel(info.name, level, info.path)
+          if (children) {            
+            children.forEach(file => {
+              file.key = this.guid()
+              file.type = 'file'
+              file.isLeaf = true
+              if (!Array.isArray(file.property)) {
+                file.property = [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": file.property['content']
+                  }
+                ]
+              }
+            })
+            c.children = children.filter(file => {
+              return file.property[0].value == c.content
+            })
+          }
+          //注入服务器文件
+          if (!this.firstInitServerFilesFinished && this.serverFiles && this.serverFiles.length > 0) {
+            c.children = c.children.concat(this.serverFiles.map(file => {
+              return {
+                key:this.guid(),
+                type : 'file',
+                isLeaf : true,
+                property : [
+                  {
+                    "name": "file_type",
+                    "title": "材料名称",
+                    "value": c.file_name 
+                  }
+                ],
+                checksum_type: 'md5',
+                size: file.size,
+                name: file.s_object_name,
+                checksum: file.da_md5,
+                format: file.contentType,
+                'creation_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                'modify_date': moment(new Date()).format(moment.HTML5_FMT.DATETIME_LOCAL),
+                'url': 'repo-id:' + file.s_object_id
+              }
+            }))
+            this.firstInitServerFilesFinished = true
+          }
+        }
+      })
+      if(this.disableEdit){
+        let fileLists = []
+        info.file_type.forEach(c=>{
+          fileLists = fileLists.concat(c.children)
+        })
+        info.children = info.children.concat(fileLists)
+      }else{
+        info.children = info.children.concat(info.file_type)
+      }
+    }
+    info.children.forEach(child => {
+      this.formatXmlInfoToTree(child, level + 1, needInitFile, child.path)
+    });
+  }
+  
   //吧policy的json格式化成tree
   formatPoolicyInfo(info, level: number, needInitFile?: boolean, path = '/电子文件'): void {
     info.children = info.children ? _.castArray(info.children) : []
