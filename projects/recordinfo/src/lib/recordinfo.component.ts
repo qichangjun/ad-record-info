@@ -1,15 +1,14 @@
-import { InValidateValue } from './recordinfo.interface';
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
-import { isArray } from 'util';
-import { Tile, DefaultValue } from './recordTile.class';
-import { ErrorMessage } from './message.enum';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { DisplayGrid, GridsterConfig, GridType } from 'angular-gridster2';
+import * as _ from 'lodash';
 import * as _moment from 'moment';
+import { Observable } from 'rxjs';
+import { isArray } from 'util';
+import { ErrorMessage } from './message.enum';
+import { InValidateValue } from './recordinfo.interface';
+import { DefaultValue, Tile } from './recordTile.class';
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { GridsterConfig, GridsterItem, GridType, DisplayGrid, GridsterItemComponentInterface } from 'angular-gridster2';
 const moment = _moment;
 declare var XML: any;
 declare var $: any;
@@ -242,7 +241,7 @@ export class RecordinfoComponent implements OnInit {
     ngOnInit() {
         this.options = {
             margin: 0,
-            gridType: GridType.ScrollVertical,
+            gridType: GridType.ScrollVertical,          
             displayGrid: DisplayGrid.OnDragAndResize,
             pushItems: true,
             //列50-150
