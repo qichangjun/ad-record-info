@@ -141,6 +141,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         files = block[0].value[0].file ? _.castArray(block[0].value[0].file) : []
       }
       this.defaultFileLists = files
+      if(this.defaultFileLists.length > 0 ){
+        this.disableChangePolicy = true
+      }
     }
     // 注入服务端文件
     else if (this.serverFiles && this.serverFiles.length > 0){
