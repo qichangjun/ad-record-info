@@ -1,15 +1,15 @@
-<!-- <amberdata-recordinfo #appRecord [disableEdit]="false" 
+<amberdata-recordinfo #appRecord [disableEdit]="false" 
 [scene]="'erms_zljh'" 
   class="show--template--content--box" [id]="id" 
  [showTemplateXml]="showTemplateXml" [jsonMetadataTemplate]="jsonMetadataTemplate" 
-
+ [disableEdit]="disableEdit"
  [_SelectUserServiceGetList]="_AppService.getUserList"
  [getMulModifeProPertyValues]="_AppService.getMulModifeProPertyValuesFormatted"
  [_dwClassManageServiceGetMetadataCategoryInfo]="get_dwClassManageServiceGetMetaSysClassList"
  [_dwClassManageServiceGetMetaSysClassList]="_AppService.getClassLIst"
  [serverFiles] ="files"
  [info]="info" >
-</amberdata-recordinfo> -->
+</amberdata-recordinfo>
 <div class="show--template--content--wrap">
   <add-electronic-document #elecDocument 
   [jsonMetadataTemplate]="jsonMetadataTemplate"
