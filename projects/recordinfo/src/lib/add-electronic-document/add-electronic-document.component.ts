@@ -61,6 +61,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   hasNoFileBlock: boolean = false
   firstInitServerFilesFinished: boolean = false  
   path:path
+  hideEmptyNode : boolean =  true
   @ViewChild('fileTree') fileTree : any
   @Input() currentFile : string = ''
   @Input() needSelectFirstFileInit? : boolean = false
@@ -141,6 +142,9 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         files = block[0].value[0].file ? _.castArray(block[0].value[0].file) : []
       }
       this.defaultFileLists = files
+      if(this.defaultFileLists.length > 0 ){
+        this.disableChangePolicy = true
+      }
     }
     // 注入服务端文件
     else if (this.serverFiles && this.serverFiles.length > 0){
@@ -179,7 +183,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.firstInitServerFilesFinished = false
     this.policyLists = await this.getPolicyInfoPomise(this.metadataSchemeId)
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-    //如果json里保存了文件策略     
+    //如果json里保存了文件策略    
     if (block[0] && block[0].value.policy) {
       this.disableChangePolicy = true
       let policy_version = block[0].value.policy_version
@@ -201,7 +205,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
               this.getWholePath()
             }
           })
-        }        
+        }    
+        setTimeout(()=>{
+          this.toggleShowType()
+        })    
       } else {
         this.setToDefaultPolicy()
       }
@@ -390,7 +397,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       info.category.forEach(c => {
         c.path = path + '/' + c.name
         c.type = 'category'
-        c.key = this.guid()
+        c.key = this.guid()      
       })
       info.children = info.children.concat(info.category)
     }
@@ -689,6 +696,38 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.relativePath = relativePath
     path = path.split('/').reverse().join('\\')
     return path
+  }
+
+  toggleShowType(e?){   
+    this.fileTree.nzNodes.forEach((node:NzTreeNode)=>{
+      this.toggleNodeDisplay(node)
+    })      
+  }
+
+  toggleNodeDisplay(node){
+    let result = this.checkHasFileNode(node)
+    if(!result){
+      node.component.elRef.nativeElement.style.display = 
+        node.component.elRef.nativeElement.style.display == 'none' ?  '' : 'none'
+    }
+    node.getChildren().forEach(child=>{
+      this.toggleNodeDisplay(child)
+    })
+  }
+
+  checkHasFileNode(node:NzTreeNode):boolean{
+    let hasFileNode : boolean = false 
+    function checkChildren(child:NzTreeNode){
+      if(child.origin.type == 'file'){
+        hasFileNode = true 
+        return  
+      }    
+      child.getChildren().forEach(s_children => {
+        checkChildren(s_children)
+      });
+    }   
+    checkChildren(node) 
+    return hasFileNode 
   }
 }
 

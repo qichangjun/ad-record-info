@@ -35,6 +35,8 @@ import { NzUploadModule } from 'ng-zorro-antd';
 import { NzInputModule } from 'ng-zorro-antd';
 import { NzIconModule } from 'ng-zorro-antd';
 import { NzProgressModule } from 'ng-zorro-antd';
+import { NzSwitchModule } from 'ng-zorro-antd';
+
 import { GridsterModule } from 'angular-gridster2';
 
 import { registerLocaleData } from '@angular/common';
@@ -53,6 +55,7 @@ registerLocaleData(zh);
     NzSelectModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    NzSwitchModule,
     MatListModule,
     NzTreeModule,
     FormsModule,

@@ -24,6 +24,11 @@
     </mat-radio-group>
   </div>
   <div class="select--node--upload--box">
+    <nz-switch 
+    *ngIf="currentPolicy!='default'"
+    nzCheckedChildren="隐藏空节点" nzUnCheckedChildren="显示空节点"
+    [(ngModel)]="hideEmptyNode" (ngModelChange)="toggleShowType($event)"></nz-switch>
+    
     <div [ngClass]="{hasData : ((currentPolicy=='default' && defaultFileLists.length > 0) || (currentPolicy!='default' && policyInfo.children.length>0))}"
     class="head" class="head">电子文件：</div>
       <form-upload *ngIf="currentPolicy=='default'"
@@ -33,9 +38,10 @@
       (uploadFinish)="uploadFinish($event)"></form-upload>
     <nz-tree *ngIf="currentPolicy!='default'" #fileTree [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
       [nzBeforeDrop]="beforeDrop" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"
+      [nzHideUnMatched]="true"
       (nzDblClick)="openFolder($event)">
       <ng-template #nzTreeTemplate let-node>
-        <span class="custom-node" [class.active]="activedNode?.key === node.key">
+        <span  class="custom-node" [class.active]="activedNode?.key === node.key">
           <span *ngIf="node.origin.type == 'category'">
             <span class="folder-name" title="{{ node.origin.name }}">{{ node.origin.name }}</span>
           </span>

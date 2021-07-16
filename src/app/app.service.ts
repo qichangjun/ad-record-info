@@ -71,8 +71,8 @@ export class AppService {
       let headers = new Headers()
       headers.append('accessToken',this.getAccessToken())         
       params.set('metadataSchemeId',metadataSchemeId)  
-      // return this.http.get('/assets/policy.json',{ headers:headers,search: params })
-      return this.http.get('./ermsapi/metadata/get_record_policy_details',{ headers:headers,search: params })
+      return this.http.get('/assets/policy.json',{ headers:headers,search: params })
+      // return this.http.get('./ermsapi/metadata/get_record_policy_details',{ headers:headers,search: params })
                       .toPromise()
                       .then(res =>{                         
                           let body = res.json();                                                    
