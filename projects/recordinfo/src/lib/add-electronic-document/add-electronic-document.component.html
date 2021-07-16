@@ -9,12 +9,14 @@
     <div>目录结构：</div>
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
       (change)="changePolicy()">
-      <mat-radio-button *ngIf="!disableEdit || currentPolicy == 'default'" class="example-radio-button"
+      <mat-radio-button *ngIf="
+      !disableEdit && (currentPolicy == 'default' || !disableChangePolicy)
+      " class="example-radio-button"
         [value]="'default'">
         默认上传
       </mat-radio-button>
       <ng-container *ngFor="let policy of policyLists; let i=index">
-        <mat-radio-button *ngIf="!disableEdit || currentPolicy == policy.policy.code" class="example-radio-button"
+        <mat-radio-button *ngIf="!disableEdit && (currentPolicy == policy.policy.code || !disableChangePolicy)" class="example-radio-button"
           [value]="policy.policy.code">
           {{policy.policy.name}}
         </mat-radio-button>
