@@ -328,6 +328,7 @@ export class RecordinfoComponent implements OnInit {
                 if (copyBlock.can_repeat == 'true') {
                     let blocks = copy_jsonData_blocks.filter(c => c.name == copyBlock.name)
                     _.remove(jsonData.block, (n) => n['name'] == copyBlock.name)
+                    copyBlock.property = copyBlock.property || []
                     copyBlock.property.forEach(property => {
                         property.content = []
                         blocks.forEach(repeat_block => {

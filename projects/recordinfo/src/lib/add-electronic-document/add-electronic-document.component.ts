@@ -182,7 +182,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
     this.firstInitServerFilesFinished = false
     this.policyLists = await this.getPolicyInfoPomise(this.metadataSchemeId)
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
-    //如果json里保存了文件策略     
+    //如果json里保存了文件策略    
     if (block[0] && block[0].value.policy) {
       this.disableChangePolicy = true
       let policy_version = block[0].value.policy_version
@@ -191,15 +191,16 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         return policy.policy.code == policy_code && policy_version == policy.policy.version_no
       })
       if (res) {        
-        // policyInfo = _.cloneDeep(res)        
-        // this.currentPolicy = policyInfo.policy.code        
-        // this.formatPoolicyInfo(policyInfo.policy, 0, true)
-        // this.policyInfo = policyInfo.policy
+        policyInfo = _.cloneDeep(res)        
+        this.currentPolicy = policyInfo.policy.code        
+        this.formatPoolicyInfo(policyInfo.policy, 0, true)
+        this.policyInfo = policyInfo.policy
 
-        policyInfo = _.cloneDeep(block[0].value)
-        this.currentPolicy = policyInfo.policy
-        this.formatXmlInfoToTree(policyInfo, 0, true)
-        this.policyInfo = policyInfo
+        // policyInfo = _.cloneDeep(block[0].value)
+        // this.currentPolicy = policyInfo.policy
+        // this.formatXmlInfoToTree(policyInfo, 0, true)
+        // this.policyInfo = policyInfo
+        // console.log(policyInfo,_.cloneDeep(res).policy)
 
         if(this.needSelectFirstFileInit){
           setTimeout(()=>{
@@ -822,6 +823,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
 interface PolicyInfo {
   version_no?: string;
   code?: string;
+  policy? : string;
   children: Category[] | FileType[]
 }
 interface volumeInfo {

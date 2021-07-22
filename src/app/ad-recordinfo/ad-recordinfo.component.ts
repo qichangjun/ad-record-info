@@ -54,7 +54,7 @@ export class AdRecordinfoComponent implements OnInit {
   }
 
   async editRecord() {
-    // let validPass = await this.appRecord.editRecord()//公用
+    let validPass = await this.appRecord.editRecord()//公用
     // if (!validPass){
     //     this.loading = false
     //     return 

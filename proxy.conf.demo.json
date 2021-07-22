@@ -22,7 +22,7 @@
   },
   "/metadataapi": {
     "target": {
-      "host": "demo.docworks.cn",
+      "host": "192.168.10.52",
       "protocol": "http",
       "port": "80"
     },
@@ -52,7 +52,7 @@
   },
   "/ermsapi": {
     "target": {
-      "host": "192.168.10.54",
+      "host": "192.168.10.52",
       "protocol": "http",
       "port": "80"
     },
