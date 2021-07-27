@@ -61,7 +61,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   hasNoFileBlock: boolean = false
   firstInitServerFilesFinished: boolean = false  
   path:path
-  hideEmptyNode : boolean =  true
+  showEmptyNode : boolean =  false 
   @ViewChild('fileTree') fileTree : any
   @Input() currentFile : string = ''
   @Input() needSelectFirstFileInit? : boolean = false

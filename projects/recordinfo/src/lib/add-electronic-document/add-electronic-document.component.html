@@ -6,7 +6,17 @@
     <div class="show-no-data"></div>
   </div>
   <div class="add--ele--doc--radio--box">
-    <div >目录结构：</div>
+    <div >目录结构：
+
+      <div *ngIf="currentPolicy!='default'">
+        显示空节点
+        <nz-switch 
+        
+        nzCheckedChildren="关" nzUnCheckedChildren="开"
+        [(ngModel)]="showEmptyNode" (ngModelChange)="toggleShowType($event)"></nz-switch>
+      </div>
+      
+    </div>
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentPolicy"
       (change)="changePolicy()">
       <mat-radio-button
@@ -24,10 +34,7 @@
     </mat-radio-group>
   </div>
   <div class="select--node--upload--box">
-    <nz-switch 
-    *ngIf="currentPolicy!='default'"
-    nzCheckedChildren="隐藏空节点" nzUnCheckedChildren="显示空节点"
-    [(ngModel)]="hideEmptyNode" (ngModelChange)="toggleShowType($event)"></nz-switch>
+    
     
     <div [ngClass]="{hasData : ((currentPolicy=='default' && defaultFileLists.length > 0) || (currentPolicy!='default' && policyInfo.children.length>0))}"
     class="head" class="head">电子文件：</div>
