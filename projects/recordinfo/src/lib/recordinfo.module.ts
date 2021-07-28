@@ -37,6 +37,7 @@ import { NzIconModule } from 'ng-zorro-antd';
 import { NzProgressModule } from 'ng-zorro-antd';
 import { NzPopoverModule } from 'ng-zorro-antd';
 
+import { NzSwitchModule } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
@@ -49,6 +50,7 @@ registerLocaleData(zh);
     NzInputModule,
     FileUploadModule,
     NzTreeSelectModule,
+    NzSwitchModule,
     NzSelectModule,
     MatProgressSpinnerModule,
     MatDialogModule,

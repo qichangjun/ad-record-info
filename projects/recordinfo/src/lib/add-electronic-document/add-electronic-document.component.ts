@@ -61,6 +61,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   relativePath: any//上传时候的relativePath
   hasNoFileBlock: boolean = false
   firstInitServerFilesFinished: boolean = false
+  hideEmptyNode : boolean = true
   currentFile : string = ''
   path:path
   @ViewChild('fileTree') fileTree : any
@@ -179,6 +180,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   // 若有，则调用formatPoolicyInfo方法,把jsonData中的文件集合初始化到policy的json中
   async getPolicyInfo() {
     let policyInfo
+    this.hideEmptyNode = true
     this.firstInitServerFilesFinished = false
     this.policyLists = await this.getPolicyInfoPomise(this.metadataSchemeId)
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
@@ -697,6 +699,38 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         return node
       }
     } 
+  }
+
+  toggleShowType(e?){   
+    this.fileTree.nzNodes.forEach((node:NzTreeNode)=>{
+      this.toggleNodeDisplay(node)
+    })      
+  }
+
+  toggleNodeDisplay(node){
+    let result = this.checkHasFileNode(node)
+    if(!result){
+      node.component.elRef.nativeElement.style.display = 
+        node.component.elRef.nativeElement.style.display == 'none' ?  '' : 'none'
+    }
+    node.getChildren().forEach(child=>{
+      this.toggleNodeDisplay(child)
+    })
+  }
+
+  checkHasFileNode(node:NzTreeNode):boolean{
+    let hasFileNode : boolean = false 
+    function checkChildren(child:NzTreeNode){
+      if(child.origin.type == 'file'){
+        hasFileNode = true 
+        return  
+      }    
+      child.getChildren().forEach(s_children => {
+        checkChildren(s_children)
+      });
+    }   
+    checkChildren(node) 
+    return hasFileNode 
   }
 
   /**
