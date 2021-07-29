@@ -61,7 +61,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   hasNoFileBlock: boolean = false
   firstInitServerFilesFinished: boolean = false  
   path:path
-  showEmptyNode : boolean =  false 
+  hideEmptyNode : boolean =  true 
   @ViewChild('fileTree') fileTree : any
   @Input() currentFile : string = ''
   @Input() needSelectFirstFileInit? : boolean = false
@@ -180,6 +180,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   // 若有，则调用formatPoolicyInfo方法,把jsonData中的文件集合初始化到policy的json中
   async getPolicyInfo() {
     let policyInfo
+    this.hideEmptyNode = true
     this.firstInitServerFilesFinished = false
     this.policyLists = await this.getPolicyInfoPomise(this.metadataSchemeId)
     let block = JSONPath.JSONPath({ path: this.fileJsonPath, json: this.jsonMetadataTemplate, resultType: 'all' })
