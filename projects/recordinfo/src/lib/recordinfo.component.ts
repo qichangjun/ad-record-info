@@ -1,24 +1,13 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import { Router } from '@angular/router';
-import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
-import { isArray } from 'util';
-import { Tile, DefaultValue } from './recordTile.class';
-import { ErrorMessage } from './message.enum';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import * as _ from 'lodash';
 import * as _moment from 'moment';
-import { formatDate } from '@angular/common'
+import { Observable, Subscription } from 'rxjs';
+import { isArray } from 'util';
+import { ErrorMessage } from './message.enum';
+import { DefaultValue, Tile } from './recordTile.class';
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
-import { BehaviorSubject, Observable } from 'rxjs';
 const moment = _moment;
-import {
-    trigger,
-    state,
-    style,
-    animate,
-    transition,
-    // ...
-} from '@angular/animations';
 declare var XML: any;
 declare var $: any;
 declare var jsonPath: any;
@@ -217,13 +206,11 @@ export class RecordinfoComponent implements OnInit {
     loading: boolean = false;
     saveEntity: any = {};
     tableEntitys: any = {};
-    entity: any = {};
+    entity: {[key:string]:any} = {};
     formWidth: number = 700
-    progressNodes: any[] = []
+    progressNodes: Array<{[key:string]:any}> = []
     validPass: boolean = true
     policys: Array<any> = []
-    policynames: Array<any> = []
-    name: any
     @Input() id: string;
     @Input() objectPath: string;
     @Input() disableEdit: boolean;
