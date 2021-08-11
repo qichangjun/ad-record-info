@@ -2,7 +2,7 @@ import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import * as _ from 'lodash';
 import * as _moment from 'moment';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { isArray } from 'util';
 import { ErrorMessage } from './message.enum';
 import { DefaultValue, Tile } from './recordTile.class';
@@ -15,7 +15,6 @@ declare var JSONPath: any;
 
 @Component({
     selector: 'amberdata-recordinfo',
-
     template: `
     <div class="record--info--wrap" [style.width]="formWidth + 'px'">
     <mat-grid-list [gutterSize]="'0px'" #container cols="18" rowHeight="10px">
@@ -197,31 +196,56 @@ declare var JSONPath: any;
   `,
     styleUrls: ['./recordinfo.component.scss']
 })
-export class RecordinfoComponent implements OnInit {
-    deletePath: Array<any> = [];
-    subs = new Subscription();
+export class RecordinfoComponent implements OnInit {    
+    /**
+     * 显示模版单元格实例的集合
+     */
     tiles: Array<Tile> = [];
+    /**
+     * string转xml对象工具实例
+     */
     xotree = new XML.ObjTree();
-    jsonData: any;
-    loading: boolean = false;
-    saveEntity: any = {};
-    tableEntitys: any = {};
+    /**
+     * 元数据信息的map
+     */
+    jsonData: {[key:string]:any};
+    /**
+     * 保存record表单信息的map副本
+     */
+    saveEntity: {[key:string]:any} = {};
+    /**
+     * 保存table单元格的表单信息
+     */
+    tableEntitys: {[key:string]:any} = {};
+    /**
+     * 原record表单信息的map
+     */
     entity: {[key:string]:any} = {};
+    /**
+     * 表单宽度
+     */
     formWidth: number = 700
+    /**
+     * 过程信息集合
+     */
     progressNodes: Array<{[key:string]:any}> = []
+    /**
+     * 校验是否通过
+     */
     validPass: boolean = true
-    policys: Array<any> = []
     @Input() id: string;
     @Input() objectPath: string;
     @Input() disableEdit: boolean;
     @Input() serverFiles: Array<any>;
-    @Input() showTemplateXml: any;
-    @Input() jsonMetadataTemplate: any;
-    @Input() info: any;
-    @Input() emial: any;
+    @Input() showTemplateXml: string;
+    @Input() jsonMetadataTemplate: {[key:string]:any};
+    @Input() info: {[key:string]:any};
     @Input() formType: 'create' | 'edit'
     @Input() language? : 'zh-CN' | 'en-US' = 'zh-CN'
-    @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<any>
+    @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<{
+        value : string,
+        displayName : string
+    }[]>
     @Input() getDefaultValue: (defaultValue: DefaultValue) => string
 
     @Input() _SelectUserServiceGetList: () => Observable<any>
@@ -276,10 +300,8 @@ export class RecordinfoComponent implements OnInit {
             //先把服务器挂接附件功能去掉
             this.serverFiles = []         
             this.initProcess()            
-            this.loading = false
         } catch (err) {
             console.error(err)
-            this.loading = false
             return
         }
     }
@@ -661,16 +683,7 @@ export class RecordinfoComponent implements OnInit {
             this.entity[tile.options.attrName].splice(this.entity[tile.options.attrName].indexOf(attr), 1)
         }
         this.entity[tile.options.attrName] = this.entity[tile.options.attrName].join(',')
-    }
-
-    deleteFile(tile, file, i) {
-        let serverFile = this.serverFiles.find(c => c.s_md5 == file.checksum)
-        if (serverFile) {
-            serverFile.isChoosed = false
-        }
-        this.entity[tile.options.attrName].splice(i, 1)
-        this.deletePath.push(file['url'])
-    }
+    }   
 
     async previewDoc(url) {
         let preview_window = window.open('')
@@ -768,7 +781,6 @@ export class RecordinfoComponent implements OnInit {
             return
         }
         if (this.jsonMetadataTemplate && changes.jsonMetadataTemplate) {
-            this.deletePath = []
             this.tiles = []
             this.entity = {}
             this.checkNeedProperty()

@@ -51,7 +51,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    const getRandomNameList = (name: string) => {
+    const getUserList = (name: string) => {
       let parameter = {
         pageSize : 20,
         currentPage : this.currentPage,
@@ -67,7 +67,7 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
     const optionList$: Observable<any> = this.searchChange$
         .asObservable()
         .pipe(debounceTime(500))        
-        .pipe(switchMap(getRandomNameList))            
+        .pipe(switchMap(getUserList))            
     optionList$.subscribe(res => {   
         if(!res){
           this.isLoading = false;

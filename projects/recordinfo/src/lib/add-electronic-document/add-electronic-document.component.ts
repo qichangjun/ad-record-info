@@ -53,7 +53,6 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   defaultFileLists: any[] = []
   policyInfo: PolicyInfo = { children: [] }
   volumeInfo: volumeInfo = { children: [] }
-  oldVolumeInfo: any = [];
   currentPolicy: any = 'default'
   policyLists: any[] = []
   disableChangePolicy: boolean = false
