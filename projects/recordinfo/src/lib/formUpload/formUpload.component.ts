@@ -20,6 +20,8 @@ export class FormUploadComponent implements OnInit, OnChanges {
     @Input() disableEdit:any
     @Output() uploadFinish: EventEmitter<any> = new EventEmitter();
     @Input() acceptFiles? : string = '*'
+    @Input() uploadedFileList: any[]
+    @Input() currentPolicy: any 
     constructor(
         private notification: NzNotificationService,
     ) {
@@ -63,6 +65,18 @@ export class FormUploadComponent implements OnInit, OnChanges {
                     name:'editingFile',
                     fn:(file)=>{
                       if(file.name.indexOf('~$') == 0){
+                        return false 
+                        }
+                      return true 
+                    }
+                },{
+                    name:'sameFile',
+                    fn:(file)=>{
+                      if(this.currentPolicy == 'default' && this.uploadedFileList.some(c => c.name == file.name)){
+                        this.notification.blank(
+                            `${file.name} 上传失败，同名文件已上传`,
+                            ''
+                        );
                         return false 
                         }
                       return true 
