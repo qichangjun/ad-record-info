@@ -39,10 +39,10 @@
     <div [ngClass]="{hasData : ((currentPolicy=='default' && defaultFileLists.length > 0) || (currentPolicy!='default' && policyInfo.children.length>0))}"
     class="head" class="head">电子文件：</div>
       <form-upload *ngIf="currentPolicy=='default'"
-      [acceptFiles]="acceptFiles"
+      [acceptFiles]="acceptFiles" [currentPolicy]="currentPolicy"
        [ngClass]="{'hide_upload': (!activedNode && currentPolicy != 'default')}"  [baseUrl]="baseUrl" [ApiUrl]="ApiUrl"
       [AuthenticationService]="AuthenticationService" [relativePath]="relativePath" [disableEdit]="disableEdit" 
-      (uploadFinish)="uploadFinish($event)"></form-upload>
+      (uploadFinish)="uploadFinish($event)" [uploadedFileList] = "defaultFileLists"></form-upload>
     <nz-tree *ngIf="currentPolicy!='default'" #fileTree [nzDraggable]="true" (nzOnDragEnd)="dragEnd($event)" nzBlockNode
       [nzBeforeDrop]="beforeDrop" [nzData]="policyInfo.children" [nzExpandAll]="true" (nzClick)="activeNode($event)"
       [nzHideUnMatched]="true"
