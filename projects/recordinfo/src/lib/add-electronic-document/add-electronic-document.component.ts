@@ -546,6 +546,10 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
               }
             })
             c.children = children.filter(file => {
+              let file_type_node = file.property.find(property=>property.name == 'file_type')
+              if (file_type_node){
+                return file_type_node.content == c.file_name 
+              }
               return file.property[0].value == c.file_name
             })
           }
@@ -889,9 +893,10 @@ interface FileType_File {
   isLeaf?: boolean
 }
 interface File_Property {
-  name: "file_type"
-  title: "材料名称"
-  value: string
+  name: string 
+  content? : string 
+  title: string 
+  value?: string
 }
 //---------------------------category类型--------------------------
 interface Category {
