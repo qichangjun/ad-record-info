@@ -448,7 +448,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
         c.key = this.guid()
         if (needInitFile) {
           let children = this.findBlockByNameAndLevel(info.name, level, info.path)
-          if (children) {            
+          if (children) {   
             children.forEach(file => {
               file.key = this.guid()
               file.type = 'file'
@@ -548,7 +548,12 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
             c.children = children.filter(file => {
               let file_type_node = file.property.find(property=>property.name == 'file_type')
               if (file_type_node){
-                return file_type_node.content == c.file_name 
+                //有些数据包file的property字段存的是content,有些是value
+                if(file_type_node.content){
+                  return file_type_node.content == c.file_name 
+                }else{
+                  return file_type_node.value == c.file_name 
+                }                
               }
               return file.property[0].value == c.file_name
             })

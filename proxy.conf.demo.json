@@ -52,7 +52,7 @@
   },
   "/ermsapi": {
     "target": {
-      "host": "192.168.10.52",
+      "host": "192.168.10.92",
       "protocol": "http",
       "port": "80"
     },
