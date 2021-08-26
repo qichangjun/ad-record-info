@@ -256,14 +256,18 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       this.activedNode.addChildren([file])
       this.activedNode.update()
       // 非默认策略下，上传完毕自动点击最新文件预览
-      this.activedNode = this.activedNode.children[this.activedNode.children.length-1]
-      this.previewDoc(this.activedNode.origin.url)
+      if(this.customPreviewHandle){
+        this.activedNode = this.activedNode.children[this.activedNode.children.length-1]
+        this.previewDoc(this.activedNode.origin.url)
+      }      
     } else {
       file.seq = (this.defaultFileLists.length + 1).toString()
       this.defaultFileLists.push(file)
       // 默认策略下，上传完毕自动点击最新文件预览
-      this.previewDoc(file.url)
-      this.currentFile = file.url
+      if(this.customPreviewHandle){
+        this.previewDoc(file.url)
+        this.currentFile = file.url
+      }      
     }
     this.uploadFinishEvent.emit(e)
   }
