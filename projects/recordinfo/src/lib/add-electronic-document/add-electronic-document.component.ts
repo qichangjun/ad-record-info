@@ -255,9 +255,15 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
       ]
       this.activedNode.addChildren([file])
       this.activedNode.update()
+      // 非默认策略下，上传完毕自动点击最新文件预览
+      this.activedNode = this.activedNode.children[this.activedNode.children.length-1]
+      this.previewDoc(this.activedNode.origin.url)
     } else {
       file.seq = (this.defaultFileLists.length + 1).toString()
       this.defaultFileLists.push(file)
+      // 默认策略下，上传完毕自动点击最新文件预览
+      this.previewDoc(file.url)
+      this.currentFile = file.url
     }
     this.uploadFinishEvent.emit(e)
   }
@@ -298,9 +304,30 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   // 删除文件
   deleteFile(node) {
     node.remove()
+    // 防止删除节点时，会自动选择父文件夹
+    let tmp = this.activedNode
+    setTimeout(() => {
+      this.activedNode = tmp
+    });
   }
 
-  removeDocumentIds(url:string){
+  removeDocumentIds(indexOrNode,url:string){
+    // console.log(indexOrNode);
+    if(this.currentPolicy == 'default'){
+      // 默认策略下，删除文件的判断
+      if(this.currentFile == url){
+        this.notification.blank('删除失败','当前正在预览该文件，无法删除')
+      }else{
+        this.defaultFileLists.splice(indexOrNode,1);
+      }
+    }else{
+      // 非默认策略下，删除文件的判断
+      if(this.activedNode == indexOrNode){
+        this.notification.blank('删除失败','当前正在预览该文件，无法删除')
+      }else{
+        this.deleteFile(indexOrNode);
+      }
+    }
     this.removeDocumentIdsEvent.emit(url)
   }
   
@@ -310,6 +337,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   }
   // 预览文件
   async previewDoc(url) {
+    // console.log('预览文件');
     if (!this.objectPath){
       return 
     }   
