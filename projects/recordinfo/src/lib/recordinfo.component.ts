@@ -6,7 +6,7 @@ import * as _moment from 'moment';
 import { Observable } from 'rxjs';
 import { isArray } from 'util';
 import { ErrorMessage } from './message.enum';
-import { InValidateValue } from './recordinfo.interface';
+import { InValidateValue,ProcessNode } from './recordinfo.interface';
 import { DefaultValue, Tile } from './recordTile.class';
 import { ShowProcessDetailDialog } from './show-process-detail/show-process-detail.dialog';
 const moment = _moment;
@@ -199,12 +199,14 @@ export class RecordinfoComponent implements OnInit {
     options: GridsterConfig;
     tiles: Array<Tile> = [];
     xotree = new XML.ObjTree();
-    jsonData: {[key:string]:any};
+    jsonData: {
+        [key:string]:any
+    };
     saveEntity: {[key:string]:any} = {};
     tableEntitys: {[key:string]:any} = {};
     entity: {[key:string]:any} = {};
     formWidth: number = 700
-    progressNodes: any[] = []
+    progressNodes: ProcessNode[] = []
     validPass: InValidateValue[] = []      
     @Input() id: string;
     @Input() objectPath: string;
