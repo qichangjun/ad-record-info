@@ -83,12 +83,19 @@
 - `option` - (`add-electronic-document`) - add-electronic-document object. 
 
     ***@Input()*** currentFile? : string                                 ```当前选中的文件的url```
+
     ***@Input()*** needSelectFirstFileInit? : boolean                    ```是否需要初始化后直接自动预览第一个文件```
-  ***@Input()*** acceptFiles? : string                                  ```允许上传的文件类型```
+
+    ***@Input()*** acceptFiles? : string                                  ```允许上传的文件类型```
+
     ***@Input()*** id? : string                                         ```当前的recordId```
+
     ***@Input()*** previewInCurrentWindow : boolean                     ```是否不打开新窗口，而是路由跳转到预览页```
+
     ***@Input()*** environmentBaseUrl : string                          ```当前的应用路径(用于打开新的预览窗口)```
+
     ***@Input()*** objectPath : string                                  ```当前的record的path，用于和文件id拼接生成预览id```
+
     ***@Input()*** baseUrl : string                                     ```后台的根路径比如/erms,/tdr```
 
     ***@Input()*** ApiUrl : enum                                        ```接口枚举类，用于上传```
@@ -100,7 +107,6 @@
     ***@Input()*** metadataSchemeId :string                                     ```元数据id```
 
     ***@Input()*** jsonMetadataTemplate : {record:{[key:string]:any}}           ```元数据数据xml转化的json```
-
 
     ***@Input()*** disableEdit : boolean                                        ```是否允许修改```
 
