@@ -19,24 +19,24 @@ export class AdTreeComponent implements OnInit,OnChanges {
   @Output() clickTree: EventEmitter<any> = new EventEmitter();
   @Output() checkBoxChange: EventEmitter<any> = new EventEmitter();
   @Input() nzTreeTemplateDiy?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;  
-  defaultOptions : Options 
+  // defaultOptions : Options 
   public activedNode: NzTreeNode;
 
   constructor(
     public _AdTreeService : AdTreeService
   ){}
   ngOnInit(): void {
-    this.defaultOptions= {
-      url : '',
-      rootId : 0,
-      formatDataFn:this.formatData.bind(this),
-      ajaxFilterFn : this.ajaxFilter.bind(this),
-      beforeGetChildrenFn : this.beforeGetChildren.bind(this),
-      api : this.nzTreeComponent,
-      data : [],
-      enableCheck : false,
-      autoParameter : ['parentId=id']
-    }
+    // this.defaultOptions= {
+    //   url : '',
+    //   rootId : 0,
+    //   formatDataFn:this.formatData.bind(this),
+    //   ajaxFilterFn : this.ajaxFilter.bind(this),
+    //   beforeGetChildrenFn : this.beforeGetChildren.bind(this),
+    //   api : this.nzTreeComponent,
+    //   data : [],
+    //   enableCheck : false,
+    //   autoParameter : ['parentId=id']
+    // }
   }
 
   ngAfterViewInit(): void {
@@ -147,7 +147,17 @@ export class AdTreeComponent implements OnInit,OnChanges {
   }
 
   private async initTree() {
-    this.option = _.merge(this.defaultOptions, this.option)   
+    this.option = _.merge({
+      url : '',
+      rootId : 0,
+      formatDataFn:this.formatData.bind(this),
+      ajaxFilterFn : this.ajaxFilter.bind(this),
+      beforeGetChildrenFn : this.beforeGetChildren.bind(this),
+      api : this.nzTreeComponent,
+      data : [],
+      enableCheck : false,
+      autoParameter : ['parentId=id']
+    }, this.option)   
     let res = await this._AdTreeService.getTreeDataPaths(
       this.option.url,
       this.option.headers,
@@ -185,7 +195,9 @@ export class AdTreeComponent implements OnInit,OnChanges {
         console.error(`${param}的格式不正确，应该以=隔空，例如:parentId=id`)
         return 
       }
-      additionParams[param[0]] = node.origin[param[1]]
+      if(param[0] && param[1]){
+        additionParams[param[0]] = node.origin[param[1]]
+      }
     })
     let res = await this._AdTreeService.getTreeChildren(
       this.option.url,

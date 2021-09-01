@@ -211,11 +211,10 @@ export class RecordinfoComponent implements OnInit {
     @Input() id: string;
     @Input() objectPath: string;
     @Input() disableEdit: boolean;
-    @Input() serverFiles: Array<any>;
-    @Input() showTemplateXml: any;
-    @Input() jsonMetadataTemplate: any;
-    @Input() info: any;
-    @Input() emial: any;
+    @Input() serverFiles?: Array<any>;
+    @Input() showTemplateXml: string;
+    @Input() jsonMetadataTemplate: {record:{[key:string]:any}};
+    @Input() info: {[key:string]:any};
     @Input() formType: 'create' | 'edit'
     @Input() language?: 'zh-CN' | 'en-US' = 'zh-CN'
     @Input() getMulModifeProPertyValues: (allowedValuesCode: string) => Promise<any>
@@ -281,7 +280,6 @@ export class RecordinfoComponent implements OnInit {
 
     async getTemplateModule() {
         try {
-            this.serverFiles = this.serverFiles || []
             let json = this.jsonMetadataTemplate
             this.jsonData = json
             this.getShowTemplate()
@@ -298,7 +296,6 @@ export class RecordinfoComponent implements OnInit {
             }
             if (!this.entity[filePathName]) this.entity[filePathName] = []
             //先把服务器挂接附件功能去掉
-            this.serverFiles = []
             this.initProcess()
         } catch (err) {
             console.error(err)

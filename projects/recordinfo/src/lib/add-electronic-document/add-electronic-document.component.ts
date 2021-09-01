@@ -75,7 +75,7 @@ export class addElectronicDocumentComponent implements OnInit, OnChanges {
   @Input() serverFiles: Array<any>;
   @Input() AuthenticationService: any
   @Input() metadataSchemeId: string
-  @Input() jsonMetadataTemplate: any
+  @Input() jsonMetadataTemplate: {record:{[key:string]:any}}
   @Input() disableEdit: boolean;
   @Input() scene?: string
   @Input() customPreviewHandle : boolean = false //是否自定义预览事件  
