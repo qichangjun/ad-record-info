@@ -1,23 +1,17 @@
 
-# AD-UI [![npm version](https://badge.fury.io/js/ng2-file-upload.svg)](http://badge.fury.io/js/ng2-file-upload) [![npm downloads](https://img.shields.io/npm/dm/ng2-file-upload.svg)](https://npmjs.org/ng2-file-upload)
+# AD-UI [![npm version](https://badge.fury.io/js/ng-ad-ui.svg)](http://badge.fury.io/js/ng-ad-ui) [![npm downloads](https://img.shields.io/npm/dm/ng-ad-ui.svg)](https://npmjs.org/ng-ad-ui)
 
-Easy to use Angular2 directives for files upload ([demo](http://valor-software.github.io/ng2-file-upload/))
+Easy to use Angular2 directives for files upload ([demo](http://valor-software.github.io/ng-ad-ui/))
 
 [![Angular 2 Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://github.com/mgechev/angular2-style-guide)
 
 
 ## Quick start
 
-1. A recommended way to install ***ad-ui*** is through [npm](https://www.npmjs.com/search?q=ad-ui) package manager using the following command:
+1. A recommended way to install ***ad-ui*** is through [npm](https://www.npmjs.com/search?q=ng-ad-ui) package manager using the following command:
 
   `npm i ng-ad-ui --save`
 
-  Alternatively, you can [download it in a ZIP file](https://github.com/qichangjun/ad-ui/archive/master.zip).
-
-
-2. More information regarding using of ***ad-ui*** is located in
-  [demo](http://valor-software.github.io/ng2-file-upload/) and [demo sources](https://github.com/valor-software/ng2-file-upload/tree/master/demo).
-  
 
 ## Using ***ad-ui*** in a project
 
