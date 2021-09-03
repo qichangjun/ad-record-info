@@ -31,8 +31,8 @@ Easy to use Angular2 directives for files upload ([demo](http://valor-software.g
     ```imports: [ ... AdUiModule, ... ]```
 
 ## adTree
-[链接地址](https://github.com/qichangjun/ad-record-info/tree/master/projects/ad-ui/src/lib/ad-scroll-box)
+[链接地址](/tree/master/projects/ad-ui/src/lib/ad-scroll-box)
 
 
 ## adScrollBox
-[链接地址](https://github.com/qichangjun/ad-record-info/tree/master/projects/ad-ui/src/lib/ad-tree)
+[链接地址](/tree/master/projects/ad-ui/src/lib/ad-tree)

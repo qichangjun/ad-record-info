@@ -2,8 +2,8 @@
 公司常用组件集合
 
 ## recordinfo
-[链接地址](https://github.com/qichangjun/ad-record-info/tree/master/projects/recordinfo)
+[链接地址](/tree/master/projects/recordinfo)
 
 
 ## ad-ui
-[链接地址](https://github.com/qichangjun/ad-record-info/tree/master/projects/ad-ui)
+[链接地址](/tree/master/projects/ad-ui)
