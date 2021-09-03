@@ -15,6 +15,7 @@ import { AdUiModule } from '../../projects/ad-ui/src/lib/ad-ui.module';
 import { AdUiTreeComponent } from './ad-ui-tree/ad-ui-tree.component';
 import { AdRecordinfoComponent } from './ad-recordinfo/ad-recordinfo.component';
 import { AdFullTextComponent } from './ad-full-text/ad-full-text.component';
+import { AdUiScrollBoxComponent } from './ad-ui-scroll-box/ad-ui-scroll-box.component';
 
 registerLocaleData(zh);
 @NgModule({
@@ -22,7 +23,8 @@ registerLocaleData(zh);
     AppComponent,
     AdUiTreeComponent,
     AdRecordinfoComponent,
-    AdFullTextComponent
+    AdFullTextComponent,
+    AdUiScrollBoxComponent
   ],
   imports: [
     BrowserModule,

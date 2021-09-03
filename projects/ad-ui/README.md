@@ -56,3 +56,17 @@ Easy to use Angular2 directives for files upload ([demo](http://valor-software.g
     data? : any[]                                       ```树节点数据```
 
     enableCheck? : boolean                              ```是否显示checkbox```
+
+
+
+## API for `AdScrollBoxComponent`
+
+### Properties
+
+- `option` 
+
+    ***@Input()*** datas : any[];                                                ```数据集合```
+
+    ***@Input()*** scrollBoxTemplateDiy? : TemplateRef<{ $implicit: any}>;      ```自定义模版```
+
+    ***@Output()*** clickBoxEvent : EventEmitter<any>;                          ```点击节点事件```
