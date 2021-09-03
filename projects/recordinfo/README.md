@@ -6,7 +6,7 @@
 ## 快速上手
 
 1. 安装 ***recordinfo*** 命令如下:
-  `npm i ng-ad-ui --save`
+  `npm i recordinfo --save`
 
 
 2. 更多 ***recordinfo*** 使用信息请看下面介绍
