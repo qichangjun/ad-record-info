@@ -23,50 +23,16 @@ Easy to use Angular2 directives for files upload ([demo](http://valor-software.g
 
    you can also import the component you need from the specify module ***like this***:
 
-    ``` import { AdUiTreeComponent } from 'ad-ui'; ```
+    ``` import { AdTreeModule } from 'ad-ui'; ```
 
 
 3. Add it to `[imports]` under `@NgModule`:
 
     ```imports: [ ... AdUiModule, ... ]```
 
-
-## API for `AdUiTreeComponent`
-
-### Properties
-
-- `option` - (`AdTreeOption`) - AdTreeOption object. 
-
-    url : string;                          ```后台接口地址```
-
-    headers? : {[key: string]: any;}       ```传给后台的header```
-
-    additionParams? : {[key: string]: any;} ```额外传给后台的参数```
-
-    ajaxFilterFn? : (data:any[])=>NzTreeNodeOptions[]   ```异步加载子节点后格式数据的方法```
-
-    additionRootData? : any[]                           ```额外添加跟节点数据```
-
-    rootId? : string | number                           ```根节点id    ```
-
-    formatDataFn? : (data:any)=>NzTreeNodeOptions[]     ```初始化后台返回的数据的方法```
-
-    api? : any                                          ```映射的treecomonent里的方法 ```
-
-    data? : any[]                                       ```树节点数据```
-
-    enableCheck? : boolean                              ```是否显示checkbox```
+## adTree
+[链接地址](https://github.com/qichangjun/ad-record-info/tree/master/projects/ad-ui/src/lib/ad-scroll-box)
 
 
-
-## API for `AdScrollBoxComponent`
-
-### Properties
-
-- `option` 
-
-    ***@Input()*** datas : any[];                                                ```数据集合```
-
-    ***@Input()*** scrollBoxTemplateDiy? : TemplateRef<{ $implicit: any}>;      ```自定义模版```
-
-    ***@Output()*** clickBoxEvent : EventEmitter<any>;                          ```点击节点事件```
+## adScrollBox
+[链接地址](https://github.com/qichangjun/ad-record-info/tree/master/projects/ad-ui/src/lib/ad-tree)
