@@ -9,7 +9,7 @@ import { MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { HttpClientModule } from "@angular/common/http";
 import { registerLocaleData } from '@angular/common';
-
+import { AdUiScrollBoxComponent } from './ad-ui-scroll-box/ad-ui-scroll-box.component';
 import zh from '@angular/common/locales/zh';
 import { AdUiModule } from '../../projects/ad-ui/src/lib/ad-ui.module';
 import { AdUiTreeComponent } from './ad-ui-tree/ad-ui-tree.component';
@@ -20,7 +20,8 @@ registerLocaleData(zh);
   declarations: [
     AppComponent,
     AdUiTreeComponent,
-    AdRecordinfoComponent
+    AdRecordinfoComponent,
+    AdUiScrollBoxComponent
   ],
   imports: [
     BrowserModule,

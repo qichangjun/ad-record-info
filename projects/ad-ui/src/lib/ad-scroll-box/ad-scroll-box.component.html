@@ -1,0 +1,30 @@
+<div class="doc-preview-show">
+<i scrollBoxBtn [direction]="'left'" [containerEl]="scrollBox" class="fa fa-chevron-left" aria-hidden="true"></i>
+<i scrollBoxBtn [direction]="'right'" [containerEl]="scrollBox" class="fa fa-chevron-right" aria-hidden="true"></i>
+<div class="preview--show_file--list--box">
+    <div class="preview--show_file--list" #scrollBox>
+        <ul style="-webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        white-space: nowrap;">
+            <ng-container *ngFor="let row of datas;let i = index">
+               <li (click)="clickBox(row)">
+
+                <ng-container *ngIf="scrollBoxTemplateDiy">
+                    <ng-template [ngTemplateOutlet]="scrollBoxTemplateDiy" 
+                        [ngTemplateOutletContext]="{ $implicit: row}">
+                    </ng-template>
+                </ng-container>
+
+                <ng-container *ngIf="!scrollBoxTemplateDiy">                    
+                    <img class="file--type--icon"
+                    src="" alt="" />
+                    <a class="file--name" title="{{row}}">{{row}}</a>
+                </ng-container>                                  
+               </li>
+            </ng-container>
+        </ul>
+    </div>
+</div>
+</div>

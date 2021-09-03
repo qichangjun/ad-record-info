@@ -1,0 +1,12 @@
+.file--type--icon{
+    width: 36px;
+    margin-right: 4px;
+}
+.file--name{
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 36px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
