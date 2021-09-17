@@ -86,6 +86,9 @@ export class RecordInfoSelectUsersComponent implements OnInit,OnChanges {
 
   scrollToBottom(){
     if (this.optionList.length < this.totalCount){
+      if(this.isLoading){
+        return 
+      }
       this.isLoading = true;   
       this.currentPage ++   
       this.searchChange$.next(this.keywords);
