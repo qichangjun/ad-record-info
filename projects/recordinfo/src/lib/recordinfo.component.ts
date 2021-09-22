@@ -391,7 +391,9 @@ export class RecordinfoComponent implements OnInit {
                     }
                     if (this.formType == 'create') {
                         let tile: Tile = this.tiles.find((row: Tile) => row.options.attrName == c.attrName)
-                        this.entity[c.attrName] = this.getDefaultValue(tile.options.defaultValue)
+                        if(!this.entity[c.attrName]){
+                            this.entity[c.attrName] = this.getDefaultValue(tile.options.defaultValue)
+                        }
                     } else {
                         this.entity[c.attrName] = ''
                     }
