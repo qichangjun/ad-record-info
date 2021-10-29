@@ -7,7 +7,7 @@ import { AdImageError } from './ad-image-error.directive';
   imports: [
     CommonModule,    
     FormsModule, ReactiveFormsModule
-  ],
+  ],  
   exports:[AdImageError]
 })
 export class AdImageModule { }

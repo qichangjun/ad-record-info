@@ -1,6 +1,7 @@
+import { environment } from './../environments/environment';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,7 +15,6 @@ import zh from '@angular/common/locales/zh';
 import { AdUiModule } from '../../projects/ad-ui/src/lib/ad-ui.module';
 import { AdUiTreeComponent } from './ad-ui-tree/ad-ui-tree.component';
 import { AdRecordinfoComponent } from './ad-recordinfo/ad-recordinfo.component';
-
 registerLocaleData(zh);
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ registerLocaleData(zh);
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    HttpClientModule,    
     HttpModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -33,6 +33,7 @@ registerLocaleData(zh);
     AdUiModule
   ],
   providers: [
+    {provide:'assetsUrl',useValue:environment.assetsUrl},
     // { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_LOCALE, useValue: 'zh-CN' }
     // { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }

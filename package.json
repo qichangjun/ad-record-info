@@ -7,6 +7,7 @@
     "start": "ng serve --proxy-config proxy.conf.demo.json --port=4300",
     "prodstart": "ng serve --proxy-config proxy.conf.prod.json --port=4200",
     "build": "ng build recordinfo",
+    "ad_ui_build": "ng build ad-ui",
     "coverage": "node index.js"
   },
   "private": true,
