@@ -8,3 +8,4 @@ export * from './lib/ad-ui.module';
 export * from './lib/ad-tree/ad-tree.module';
 export * from './lib/ad-tree/ad-tree.interface';
 export * from './lib/ad-scroll-box/ad-scroll-box.module'
+export * from './lib/ad-image-error/ad-image-error.module'

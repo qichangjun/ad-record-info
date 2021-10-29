@@ -2,7 +2,7 @@ import { Directive, ElementRef, Input } from '@angular/core';
 import { environment } from 'src/environments/environment';
 @Directive({ selector: '[imgError]' })
 
-export class ImageError {
+export class AdImageError {
     @Input() imgError: any;
     private index: number = 0
     constructor(private el: ElementRef) {
