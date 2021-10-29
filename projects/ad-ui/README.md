@@ -37,4 +37,4 @@ Easy to use Angular2 directives for files upload ([demo](http://valor-software.g
 [链接地址](./src/lib/ad-scroll-box)
 
 ## adImageError
-[链接地址](./src/lib/ad-scroll-box)
+[链接地址](./src/lib/ad-image-error)
